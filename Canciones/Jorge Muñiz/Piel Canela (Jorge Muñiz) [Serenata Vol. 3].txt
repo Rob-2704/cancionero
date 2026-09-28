@@ -1,0 +1,73 @@
+Tremolo = []
+
+(Intro)
+  ________________________________
+  |      x2      ||      x2      |
+❚❙-----------8----❙-----------7----❙-----------8----❙--10-8-7-----❙--------------❙
+❚❙-------------7--❙-------------7--❙-------------7--❙---------10--❙------7-8--8--❙
+❚❙--[7]-8-9-------❙--[7]-8-9-------❙--[7]-8-9-------❙-------------❙--7-9---------❙
+❚❙----------------❙----------------❙----------------❙-------------❙--------------❙
+❚❙----------------❙----------------❙----------------❙-------------❙--------------❙
+❚❙----------------❙----------------❙----------------❙-------------❙--------------❙
+
+(Intro)
+LAm7, RE7, LAm7, RE7, SOL, MIm, SOL, MIm, LAm7, RE7, LAm7, RE7, SOL, SOL
+
+       LAm          RE7        SOL     MIm
+Que se quede el infinito sin estrellas
+      LAm             RE7           SOL
+Y que pierda el ancho mar su inmensidad,
+        SI7                      MIm
+Pero el negro de tus ojos que no muera
+       LAm                       RE7
+Piel canela de tu piel se quede igual.
+
+      LAm           RE7       SOL   MIm
+Si perdiera el arco iris su belleza
+      LAm          RE7         SOL
+Y las flores su perfume y su color
+     SI7                    MIm
+No sería tan inmensa mi tristeza
+      LAm                        RE7
+Como aquella de quedarme sin tu amor.
+
+            LAm   RE7   LAm
+Me importas tú, y tú, y tú,
+  RE7       SOL   MIm   SOL
+Y solamente tú, y tú, y tú.
+            LAm   RE7   LAm
+Me importas tú, y tú, y tú,
+  RE7           SOL
+Y nadie más que tú.
+
+     MI7
+Ojos negros, piel canela,
+       LAm             RE7
+Que me llegan a desesperar.
+
+            LAm   RE7   LAm
+Me importas tú, y tú, y tú,
+  RE7       SOL   MIm   SOL
+Y solamente tú, y tú, y tú.
+            LAm   RE7   LAm
+Me importas tú, y tú, y tú,
+  RE7           SOL
+Y nadie más que tú.
+
+(Intro)
+
+     MI7
+Ojos negros, piel canela,
+       LAm             RE7
+Que me llegan a desesperar.
+
+            LAm   RE7   LAm
+Me importas tú, y tú, y tú,
+  RE7       SOL   MIm   SOL
+Y solamente tú, y tú, y tú.
+            LAm   RE7   LAm
+Me importas tú, y tú, y tú,
+  RE7           SOL
+Y nadie más que tú.
+
+(Intro)
