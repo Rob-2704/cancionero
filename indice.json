@@ -211,6 +211,14 @@
           "terminada": false
         },
         {
+          "idC": "Jorge Muñiz/---Para Volver A Volver (Jorge Muñiz)",
+          "nombreC": "Para Volver A Volver",
+          "autor": "Jorge Muñiz",
+          "nombreA": "Jorge Muñiz",
+          "albumC": "",
+          "terminada": false
+        },
+        {
           "idC": "Jorge Muñiz/Como Han Pasado Los Años (Jorge Muñiz) [Serenata Vol. 2]",
           "nombreC": "Como Han Pasado Los Años",
           "autor": "Jorge Muñiz",
@@ -240,14 +248,6 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Azulejos",
-          "terminada": true
-        },
-        {
-          "idC": "Jorge Muñiz/Para Volver A Volver (Jorge Muñiz)",
-          "nombreC": "Para Volver A Volver",
-          "autor": "Jorge Muñiz",
-          "nombreA": "Jorge Muñiz",
-          "albumC": "",
           "terminada": true
         },
         {
