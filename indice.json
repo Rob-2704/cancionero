@@ -1,0 +1,844 @@
+{
+  "artistas": [
+    {
+      "idA": "Alejandro Fernández",
+      "nombreA": "Alejandro Fernández",
+      "canciones": [
+        {
+          "idC": "Alejandro Fernández/Como Quien Pierde Una Estrella (Alejandro Fernández) [Que Seas Muy Feliz]",
+          "nombreC": "Como Quien Pierde Una Estrella (Alejandro Fernández) [Que Seas Muy Feliz]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Álvaro Carrillo",
+      "nombreA": "Álvaro Carrillo",
+      "canciones": [
+        {
+          "idC": "Álvaro Carrillo/---No Te Vayas No (Álvaro Carrillo) [José José - Sabor A Mi]",
+          "nombreC": "---No Te Vayas No (Álvaro Carrillo) [José José - Sabor A Mi]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Álvaro Carrillo/Cancionero (Álvaro Carrillo) [José José - Romántico]",
+          "nombreC": "Cancionero (Álvaro Carrillo) [José José - Romántico]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Álvaro Carrillo/El Andariego (Álvaro Carrillo) [José José - El Príncipe Y El Bolero]",
+          "nombreC": "El Andariego (Álvaro Carrillo) [José José - El Príncipe Y El Bolero]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Álvaro Carrillo/Luz De Luna (Álvaro Carrillo) [José José - Sabor A Mi]",
+          "nombreC": "Luz De Luna (Álvaro Carrillo) [José José - Sabor A Mi]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Álvaro Carrillo/Sabor A Mí (Álvaro Carrillo) [José José - Gavilán O Paloma]",
+          "nombreC": "Sabor A Mí (Álvaro Carrillo) [José José - Gavilán O Paloma]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Álvaro Carrillo/Sabor A Mí (Álvaro Carrillo) [Luis Miguel - Romances]",
+          "nombreC": "Sabor A Mí (Álvaro Carrillo) [Luis Miguel - Romances]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Álvaro Carrillo/Un Minuto De Amor (Álvaro Carrillo) [José José - Sabor A Mi]",
+          "nombreC": "Un Minuto De Amor (Álvaro Carrillo) [José José - Sabor A Mi]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Álvaro Carrillo/Un Poco Más (Álvaro Carrillo) [José José - Romántico]",
+          "nombreC": "Un Poco Más (Álvaro Carrillo) [José José - Romántico]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Armando Manzanero",
+      "nombreA": "Armando Manzanero",
+      "canciones": [
+        {
+          "idC": "Armando Manzanero/---Cuando Estoy Contigo (Armando Manzanero) [A Mi Amor... Con Mi Amor]",
+          "nombreC": "---Cuando Estoy Contigo (Armando Manzanero) [A Mi Amor... Con Mi Amor]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Armando Manzanero/---Llévatela (Armando Manzanero) [Canciones De Amor]",
+          "nombreC": "---Llévatela (Armando Manzanero) [Canciones De Amor]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Armando Manzanero/---Mía (Armando Manzanero) [A Mi Amor... Con Mi Amor]",
+          "nombreC": "---Mía (Armando Manzanero) [A Mi Amor... Con Mi Amor]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Armando Manzanero/Algo Contigo (Armando Manzanero) [Manzanero Presenta A Fabiola Finkmann]",
+          "nombreC": "Algo Contigo (Armando Manzanero) [Manzanero Presenta A Fabiola Finkmann]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Cri-Cri",
+      "nombreA": "Cri-Cri",
+      "canciones": [
+        {
+          "idC": "Cri-Cri/---Caminito De La Escuela (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "nombreC": "---Caminito De La Escuela (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Cri-Cri/---Di Porqué (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "nombreC": "---Di Porqué (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Cri-Cri/---El Ratón Vaquero (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "nombreC": "---El Ratón Vaquero (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Cri-Cri/---El Ropero (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "nombreC": "---El Ropero (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Javier Solís",
+      "nombreA": "Javier Solís",
+      "canciones": [
+        {
+          "idC": "Javier Solís/Amigo Organillero (Javier Solís) [Y Todavía Te Quiero]",
+          "nombreC": "Amigo Organillero (Javier Solís) [Y Todavía Te Quiero]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Javier Solís/En Tu Pelo (Javier Solís) [Vida De Bohemio]",
+          "nombreC": "En Tu Pelo (Javier Solís) [Vida De Bohemio]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Javier Solís/Muñequita Linda (Javier Solís) [Javier Solís En Nueva York]",
+          "nombreC": "Muñequita Linda (Javier Solís) [Javier Solís En Nueva York]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Javier Solís/Tómate Una Copa (Javier Solís) [Payaso]",
+          "nombreC": "Tómate Una Copa (Javier Solís) [Payaso]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Jorge Muñiz",
+      "nombreA": "Jorge Muñiz",
+      "canciones": [
+        {
+          "idC": "Jorge Muñiz/Como Han Pasado Los Años (Jorge Muñiz) [Serenata Vol. 2]",
+          "nombreC": "Como Han Pasado Los Años (Jorge Muñiz) [Serenata Vol. 2]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Jorge Muñiz/El Milagro De Tus Ojos (Jorge Muñiz) [Noche De Rondalla]",
+          "nombreC": "El Milagro De Tus Ojos (Jorge Muñiz) [Noche De Rondalla]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Jorge Muñiz/Fina Estampa (Jorge Muñiz) [Azulejos 2]",
+          "nombreC": "Fina Estampa (Jorge Muñiz) [Azulejos 2]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Jorge Muñiz/Luz Y Sombra (Jorge Muñiz) [Azulejos]",
+          "nombreC": "Luz Y Sombra (Jorge Muñiz) [Azulejos]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Jorge Muñiz/Piel Canela (Jorge Muñiz) [Serenata Vol. 3]",
+          "nombreC": "Piel Canela (Jorge Muñiz) [Serenata Vol. 3]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Jorge Muñiz/Por El Amor De Una Mujer (Jorge Muñiz) [Azulejos]",
+          "nombreC": "Por El Amor De Una Mujer (Jorge Muñiz) [Azulejos]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Jorge Muñiz/Vuélveme A Querer (Jorge Muñiz) [Serenata]",
+          "nombreC": "Vuélveme A Querer (Jorge Muñiz) [Serenata]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "José José",
+      "nombreA": "José José",
+      "canciones": [
+        {
+          "idC": "José José/---Camino Verde (José José) [El Principe Con Trio Vol. 3]",
+          "nombreC": "---Camino Verde (José José) [El Principe Con Trio Vol. 3]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---Del Altar A La Tumba (José José) [La Nave Del Olvido]",
+          "nombreC": "---Del Altar A La Tumba (José José) [La Nave Del Olvido]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---El Solitario (José José) [De Pueblo En Pueblo]",
+          "nombreC": "---El Solitario (José José) [De Pueblo En Pueblo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---Farolero (José José) [Volcán]",
+          "nombreC": "---Farolero (José José) [Volcán]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---Paloma (José José) [Tan Cerca... Tan Lejos]",
+          "nombreC": "---Paloma (José José) [Tan Cerca... Tan Lejos]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---Por Estar Contigo (José José) [Siempre Contigo]",
+          "nombreC": "---Por Estar Contigo (José José) [Siempre Contigo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---Qué Memoria Tienes (José José) [El Príncipe Y El Bolero]",
+          "nombreC": "---Qué Memoria Tienes (José José) [El Príncipe Y El Bolero]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---Si Te Parece Poco (José José) [Soy Así]",
+          "nombreC": "---Si Te Parece Poco (José José) [Soy Así]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---Solo Amor (José José) [Buscando Una Sonrisa]",
+          "nombreC": "---Solo Amor (José José) [Buscando Una Sonrisa]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/---Tranquilo (José José) [Gracias]",
+          "nombreC": "---Tranquilo (José José) [Gracias]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/A Esa (José José) [Secretos]",
+          "nombreC": "A Esa (José José) [Secretos]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Ahora No (José José) [Lo Pasado Pasado]",
+          "nombreC": "Ahora No (José José) [Lo Pasado Pasado]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Buenos Días Amor (José José) [Reencuentro]",
+          "nombreC": "Buenos Días Amor (José José) [Reencuentro]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Buscando Una Sonrisa (José José) [Buscando Una Sonrisa]",
+          "nombreC": "Buscando Una Sonrisa (José José) [Buscando Una Sonrisa]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Como Ya No Me Amas (José José) [Tenampa]",
+          "nombreC": "Como Ya No Me Amas (José José) [Tenampa]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Condenado (José José) [Qué Es El amor]",
+          "nombreC": "Condenado (José José) [Qué Es El amor]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Déjalo Todo (José José) [Grandeza Mexicana]",
+          "nombreC": "Déjalo Todo (José José) [Grandeza Mexicana]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/El Reloj (José José) [Romántico]",
+          "nombreC": "El Reloj (José José) [Romántico]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/El Triste (José José) [El Triste]",
+          "nombreC": "El Triste (José José) [El Triste]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Escuchando Ofertas (José José) [En Las Buenas... Y En Las Malas]",
+          "nombreC": "Escuchando Ofertas (José José) [En Las Buenas... Y En Las Malas]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/José y Manuel (José José) [Grandeza Mexicana]",
+          "nombreC": "José y Manuel (José José) [Grandeza Mexicana]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/La Gloria Eres Tú (José José) [Romántico]",
+          "nombreC": "La Gloria Eres Tú (José José) [Romántico]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Llegaste A Mi (José José) [Buscando Una Sonrisa]",
+          "nombreC": "Llegaste A Mi (José José) [Buscando Una Sonrisa]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/No Me Platiques Más (José José) [Amor, Amor]",
+          "nombreC": "No Me Platiques Más (José José) [Amor, Amor]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/No Valió La Pena (José José) [Mujeriego]",
+          "nombreC": "No Valió La Pena (José José) [Mujeriego]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Promesas (José José) [Promesas]",
+          "nombreC": "Promesas (José José) [Promesas]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Regresar Al Ayer (José José) [Mi Vida]",
+          "nombreC": "Regresar Al Ayer (José José) [Mi Vida]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Si Alguna Vez (José José) [Reencuentro]",
+          "nombreC": "Si Alguna Vez (José José) [Reencuentro]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Vanidad (José José)",
+          "nombreC": "Vanidad (José José)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Vergüenza Me Da Quererte (José José) [Soy Así]",
+          "nombreC": "Vergüenza Me Da Quererte (José José) [Soy Así]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Viajera (José José)",
+          "nombreC": "Viajera (José José)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "José José/Ya Viví (José José) [El Príncipe Y El Bolero]",
+          "nombreC": "Ya Viví (José José) [El Príncipe Y El Bolero]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Los Panchos",
+      "nombreA": "Los Panchos",
+      "canciones": [
+        {
+          "idC": "Los Panchos/Piel Canela (Los Panchos) [Eydie Gorme Y Trio Los Panchos]",
+          "nombreC": "Piel Canela (Los Panchos) [Eydie Gorme Y Trio Los Panchos]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Luis Miguel",
+      "nombreA": "Luis Miguel",
+      "canciones": [
+        {
+          "idC": "Luis Miguel/---La Barca (Luis Miguel) [Romance]",
+          "nombreC": "---La Barca (Luis Miguel) [Romance]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Luis Miguel/---Mucho Corazón (Luis Miguel) [Romance]",
+          "nombreC": "---Mucho Corazón (Luis Miguel) [Romance]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Luis Miguel/---Por Qué Te Conocí (Luis Miguel) [¡México Por Siempre!]",
+          "nombreC": "---Por Qué Te Conocí (Luis Miguel) [¡México Por Siempre!]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Luis Miguel/La Bikina (Luis Miguel) [Vivo]",
+          "nombreC": "La Bikina (Luis Miguel) [Vivo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Luis Miguel/México En La Piel (Luis Miguel) [México En La Piel]",
+          "nombreC": "México En La Piel (Luis Miguel) [México En La Piel]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Luis Miguel/Sabes Una Cosa (Luis Miguel) [México En La Piel]",
+          "nombreC": "Sabes Una Cosa (Luis Miguel) [México En La Piel]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Otros",
+      "nombreA": "Otros",
+      "canciones": [
+        {
+          "idC": "Otros/---Besame Mucho (Consuelo Velázquez)",
+          "nombreC": "---Besame Mucho (Consuelo Velázquez)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/---Lamento Boliviano (Enanitos Verdes)",
+          "nombreC": "---Lamento Boliviano (Enanitos Verdes)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/---Las Mañanitas",
+          "nombreC": "---Las Mañanitas",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/---Serenata Huasteca (José Alfredo Jiménez)",
+          "nombreC": "---Serenata Huasteca (José Alfredo Jiménez)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/---Si Los Niños Gobernaran Al Mundo (Chabelo)",
+          "nombreC": "---Si Los Niños Gobernaran Al Mundo (Chabelo)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/---Si Nos Dejan (José Alfredo Jiménez)",
+          "nombreC": "---Si Nos Dejan (José Alfredo Jiménez)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/---Tomando Té (Chava Flores)",
+          "nombreC": "---Tomando Té (Chava Flores)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/El Mion",
+          "nombreC": "El Mion",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/Fly Me To The Moon (Frank Sinatra)",
+          "nombreC": "Fly Me To The Moon (Frank Sinatra)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/Gotas De Lluvia Que Al Caer (B. J. Thomas)",
+          "nombreC": "Gotas De Lluvia Que Al Caer (B. J. Thomas)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/La Malagueña (Elpidio Ramírez)",
+          "nombreC": "La Malagueña (Elpidio Ramírez)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/Los Bueyes'n",
+          "nombreC": "Los Bueyes'n",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/Raindrops Keep Fallin' On My Head (B. J. Thomas)",
+          "nombreC": "Raindrops Keep Fallin' On My Head (B. J. Thomas)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/Recuérdame (Coco)",
+          "nombreC": "Recuérdame (Coco)",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/San Marqueña",
+          "nombreC": "San Marqueña",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/Taca La Petaca (Chespirito)",
+          "nombreC": "Taca La Petaca (Chespirito)",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Pedro Infante",
+      "nombreA": "Pedro Infante",
+      "canciones": [
+        {
+          "idC": "Pedro Infante/---Flor Sin Retoño (Pedro Infante) [15 Inmortales]",
+          "nombreC": "---Flor Sin Retoño (Pedro Infante) [15 Inmortales]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Pedro Infante/Cien Años (Pedro Infante) [15 Inmortales]",
+          "nombreC": "Cien Años (Pedro Infante) [15 Inmortales]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Pedro Infante/El Oso Carpintero (Pedro Infante)",
+          "nombreC": "El Oso Carpintero (Pedro Infante)",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Pepe Aguilar",
+      "nombreA": "Pepe Aguilar",
+      "canciones": [
+        {
+          "idC": "Pepe Aguilar/Cruz De Olvido (Pepe Aguilar) [Con Orgullo Por Herencia]",
+          "nombreC": "Cruz De Olvido (Pepe Aguilar) [Con Orgullo Por Herencia]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Pepe Aguilar/Llamarada (Pepe Aguilar) [Por El Amor De Siempre]",
+          "nombreC": "Llamarada (Pepe Aguilar) [Por El Amor De Siempre]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Roberto Carlos",
+      "nombreA": "Roberto Carlos",
+      "canciones": [
+        {
+          "idC": "Roberto Carlos/Cama Y Mesa (Roberto Carlos) [Pra Sempre em Espanhol Vol. 2]",
+          "nombreC": "Cama Y Mesa (Roberto Carlos) [Pra Sempre em Espanhol Vol. 2]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Vicente Fernández",
+      "nombreA": "Vicente Fernández",
+      "canciones": [
+        {
+          "idC": "Vicente Fernández/---Botas De Charro (Vicente Fernández) [El Tahúr]",
+          "nombreC": "---Botas De Charro (Vicente Fernández) [El Tahúr]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/---Fíjate Que No (Vicente Fernández) [Hoy Platiqué Con Mi Gallo]",
+          "nombreC": "---Fíjate Que No (Vicente Fernández) [Hoy Platiqué Con Mi Gallo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/---La Derrota (Vicente Fernández) [Para Siempre]",
+          "nombreC": "---La Derrota (Vicente Fernández) [Para Siempre]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/---La Diferencia (Vicente Fernández) [...Es La Diferencia]",
+          "nombreC": "---La Diferencia (Vicente Fernández) [...Es La Diferencia]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/---Lástima Que Seas Ajena (Vicente Fernández) [Lástima Que Seas Ajena]",
+          "nombreC": "---Lástima Que Seas Ajena (Vicente Fernández) [Lástima Que Seas Ajena]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Bohemio De Afición (Vicente Fernández) [Entre El Amor Y Yo]",
+          "nombreC": "Bohemio De Afición (Vicente Fernández) [Entre El Amor Y Yo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Cielito Lindo (Vicente Fernández) [Mi Viejo]",
+          "nombreC": "Cielito Lindo (Vicente Fernández) [Mi Viejo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Cielo Rojo (Vicente Fernández) [A Mis 80's]",
+          "nombreC": "Cielo Rojo (Vicente Fernández) [A Mis 80's]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Cuando Yo Quería Ser Grande (Vicente Fernández) [El Tahúr]",
+          "nombreC": "Cuando Yo Quería Ser Grande (Vicente Fernández) [El Tahúr]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/El Rey (Vicente Fernández) [El Idolo De México]",
+          "nombreC": "El Rey (Vicente Fernández) [El Idolo De México]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/El Tapatío (Vicente Fernández) [De Qué Manera Te Olvido]",
+          "nombreC": "El Tapatío (Vicente Fernández) [De Qué Manera Te Olvido]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/El Último Beso (Vicente Fernández) [Para Siempre]",
+          "nombreC": "El Último Beso (Vicente Fernández) [Para Siempre]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Hermoso Cariño (Vicente Fernández) [Vicente Fernández]",
+          "nombreC": "Hermoso Cariño (Vicente Fernández) [Vicente Fernández]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/La Ley Del Monte (Vicente Fernández) [El Hijo Del Pueblo]",
+          "nombreC": "La Ley Del Monte (Vicente Fernández) [El Hijo Del Pueblo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Linda Por Fuera (Vicente Fernández) [Lástima Que Seas Ajena]",
+          "nombreC": "Linda Por Fuera (Vicente Fernández) [Lástima Que Seas Ajena]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Me Voy A Quitar De Enmedio (Vicente Fernández) [Entre El Amor Y Yo]",
+          "nombreC": "Me Voy A Quitar De Enmedio (Vicente Fernández) [Entre El Amor Y Yo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/México Lindo Y Querido (Vicente Fernández) [Un Mexicano En La México]",
+          "nombreC": "México Lindo Y Querido (Vicente Fernández) [Un Mexicano En La México]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Motivos (Vicente Fernández) [Motivos Del Alma]",
+          "nombreC": "Motivos (Vicente Fernández) [Motivos Del Alma]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Mujeres Divinas (Vicente Fernández) [Mujeres Divinas]",
+          "nombreC": "Mujeres Divinas (Vicente Fernández) [Mujeres Divinas]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/No Me Se Rajar (Vicente Fernández) [De Qué Manera Te Olvido]",
+          "nombreC": "No Me Se Rajar (Vicente Fernández) [De Qué Manera Te Olvido]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Nuestro Juramento (Vicente Fernández) [Lástima Que Seas Ajena]",
+          "nombreC": "Nuestro Juramento (Vicente Fernández) [Lástima Que Seas Ajena]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Peleas (Vicente Fernández) [Mi Viejo]",
+          "nombreC": "Peleas (Vicente Fernández) [Mi Viejo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Perdón (Vicente Fernández) [Lástima Que Seas Ajena]",
+          "nombreC": "Perdón (Vicente Fernández) [Lástima Que Seas Ajena]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Sabrás Que Te Quiero (Vicente Fernández) [Canta Para Recordar]",
+          "nombreC": "Sabrás Que Te Quiero (Vicente Fernández) [Canta Para Recordar]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Si Te Vas No Hay Lío (Vicente Fernández) [Mujeres Divinas]",
+          "nombreC": "Si Te Vas No Hay Lío (Vicente Fernández) [Mujeres Divinas]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Sublime Mujer (Vicente Fernández) [Entre El Amor Y Yo]",
+          "nombreC": "Sublime Mujer (Vicente Fernández) [Entre El Amor Y Yo]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Urge (Vicente Fernández) [Mientras Ustedes No Dejen De Aplaudir]",
+          "nombreC": "Urge (Vicente Fernández) [Mientras Ustedes No Dejen De Aplaudir]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Vicente Fernández/Ya No Insistas Corazón (Vicente Fernández) [A Mis 80's]",
+          "nombreC": "Ya No Insistas Corazón (Vicente Fernández) [A Mis 80's]",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    },
+    {
+      "idA": "Víctor Yturbe",
+      "nombreA": "Víctor Yturbe",
+      "canciones": [
+        {
+          "idC": "Víctor Yturbe/---Total (Víctor Yturbe) [El Siempre Romántico]",
+          "nombreC": "---Total (Víctor Yturbe) [El Siempre Romántico]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Víctor Yturbe/A Que No Te Atreves (Víctor Yturbe) [Lo Mejor de Mi...]",
+          "nombreC": "A Que No Te Atreves (Víctor Yturbe) [Lo Mejor de Mi...]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Víctor Yturbe/Me Quedé Con Las Ganas (Víctor Yturbe) [21 Black Jack]",
+          "nombreC": "Me Quedé Con Las Ganas (Víctor Yturbe) [21 Black Jack]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Víctor Yturbe/Morenita Mía (Víctor Yturbe) [21 Black Jack]",
+          "nombreC": "Morenita Mía (Víctor Yturbe) [21 Black Jack]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Víctor Yturbe/Soy Lo Prohibido (Víctor Yturbe) [Lo Mejor de Mi...]",
+          "nombreC": "Soy Lo Prohibido (Víctor Yturbe) [Lo Mejor de Mi...]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Víctor Yturbe/Ven Que Te Quiero (Víctor Yturbe) [Imágenes]",
+          "nombreC": "Ven Que Te Quiero (Víctor Yturbe) [Imágenes]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Víctor Yturbe/Verónica (Víctor Yturbe) [Condición]",
+          "nombreC": "Verónica (Víctor Yturbe) [Condición]",
+          "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Víctor Yturbe/Yo Lo Comprendo (Víctor Yturbe)",
+          "nombreC": "Yo Lo Comprendo (Víctor Yturbe)",
+          "albumC": "",
+          "terminada": false
+        }
+      ]
+    }
+  ]
+}
