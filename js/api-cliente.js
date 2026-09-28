@@ -191,7 +191,8 @@ export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum) {
     const artistaBusqueda = nombreArtista;
     const albumBusqueda = nombreAlbum;
 
-    if (normalizar(albumBusqueda) === normalizar('Sencillo')) {
+    // Sin álbum (o "Sencillo"): portada por defecto
+    if (!albumBusqueda?.trim() || normalizar(albumBusqueda) === normalizar('Sencillo')) {
         return PORTADA_FALLBACK;
     }
 
