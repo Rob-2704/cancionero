@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="vinilo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sono:MONO@0..1&display=swap" rel="stylesheet">
+    <title>Visor de Letra y Acordes</title>
+    <style>
+        :root { 
+            --bg-color: #0d0d0d; 
+            --accent: #2ec4b6; 
+        }
+
+        body { 
+            font-family: 'Sono', sans-serif; 
+            font-variation-settings: 'MONO' 0.5;
+            background-color: var(--bg-color); 
+            color: #e0e0e0; 
+            margin: 0; 
+            padding: 40px; 
+            padding-bottom: 120px; 
+            box-sizing: border-box;
+        }
+        
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        
+        .btn-volver { 
+            display: inline-block; 
+            color: #888; 
+            text-decoration: none; 
+            font-size: 13px;
+            margin-bottom: 25px; 
+            transition: color 0.2s;
+        }
+
+        .btn-volver:hover { 
+            color: var(--accent); 
+        }
+        
+        .workspace { 
+            display: grid;
+            grid-template-columns: 5fr 2fr;
+            gap: 30px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .letra-contenedor {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        
+        .letra-texto { 
+            font-family: 'Sono', monospace;
+            font-variation-settings: 'MONO' 1;
+            font-size: clamp(10px, 1.3vw, 16px);
+            color: #3a3a3a;
+            margin: 0;
+            white-space: pre;
+            overflow-x: auto;
+            width: 100%;
+            display: block;
+        }
+        
+        .acorde-link { 
+            color: #0066cc;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background 0.1s;
+        }
+
+        .acorde-link:hover { 
+            background-color: #e1e4e8; 
+            color: #004499; 
+        }
+        
+        .barra-compas { 
+            color: #3a3a3a; 
+            font-weight: bold; 
+        }
+        
+        .panel-lateral { 
+            position: sticky;
+            top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .wrapper-iframe { 
+            position: relative; 
+            width: 100%; 
+            height: 0; 
+            padding-top: 56.25%; 
+            background: #000; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #222;
+        }
+
+        .wrapper-iframe iframe { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            border: 0; 
+        }
+        
+        .panel-scroll-flotante { 
+            position: fixed; 
+            bottom: 25px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: rgba(20, 20, 20, 0.95); 
+            border: 1px solid #333; 
+            padding: 12px 25px; 
+            border-radius: 30px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            backdrop-filter: blur(5px); 
+            z-index: 999; 
+        }
+
+        .btn-scroll { 
+            background: var(--accent); 
+            border: none; 
+            color: #000; 
+            width: 36px; 
+            height: 36px; 
+            border-radius: 50%; 
+            font-weight: bold; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 14px; 
+        }
+
+        .btn-scroll.activo { 
+            background: #ff3333; 
+            color: white;
+        }
+
+        .slider-scroll { 
+            width: 100px; 
+            accent-color: var(--accent); 
+        }
+
+        .label-scroll { 
+            font-size: 11px; 
+            color: #888; 
+            font-weight: bold;
+            font-family: monospace;
+        }
+        
+        .caja-acorde-emergente { 
+            position: absolute; 
+            display: none; 
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            padding: 15px; 
+            z-index: 1000; 
+            width: 210px;
+            text-align: center;
+            color: #e0e0e0;
+        }
+        
+        .caja-acorde-emergente h4 { 
+            margin: 0 0 8px 0; 
+            font-size: 18px; 
+            color: #ffffff;
+            font-family: 'Sono', sans-serif;
+            font-variation-settings: 'MONO' 0;
+        }
+
+        #wrapper-render {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 10px 0 0 0;
+            margin-left: 5px;
+        }
+
+        .info-cabecera {
+            grid-column: 1 / 3;
+            margin-bottom: 10px;
+        }
+
+        .info-cabecera h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .info-cabecera h2 {
+            margin: 0;
+            font-size: 18px;
+            color: white;
+            font-weight: 400;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .container { 
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        
+
+        /* @media only screen and (max-width: 767px) {
+        } */
+        @media (max-width: 1300px) {
+            .workspace { 
+                display: flex;
+                flex-direction: column-reverse; 
+                gap: 20px;
+            }
+
+            .panel-lateral { 
+                position: relative; 
+                top: 0; 
+                width: 100%;
+            }
+
+            body { 
+                padding: 15px;
+                padding-top: 40px;
+                padding-bottom: 100px;
+            }
+
+            .letra-contenedor {
+                padding: 20px; 
+            }
+
+            .letra-texto {
+                line-height: 1.5;
+                letter-spacing: -0.3px;
+            }
+        }
+    </style>
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+    <div class="container">
+        <a id="link-regreso" href="index.html" class="btn-volver">← Ir al Visor de Música</a>
+        <div class="info-cabecera">
+            <h1 id="titulo-cancion">Cargando...</h1>
+            <h2 id="nombre-artista"></h2>
+        </div>
+
+        <div class="workspace">
+            <article class="letra-contenedor">
+                <pre id="letra-cancion" class="letra-texto">Abriendo canción...</pre>
+            </article>
+    
+            <aside class="panel-lateral">
+                <div class="wrapper-iframe">
+                    <div id="reproductor-youtube"></div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div id="caja-acorde" class="caja-acorde-emergente">
+       <h4 id="acorde-titulo">C</h4>
+       <span id="origen-acorde-modal" style="font-size:10px; opacity:0.6; display:block; margin-bottom:4px;"></span>
+       <div id="wrapper-render"></div> 
+    </div>
+    
+    <div id="panel-scroll" class="panel-scroll-flotante">
+        <span class="label-scroll">AUTOSCROLL</span>
+        <button id="btn-play-scroll" class="btn-scroll">▶</button>
+        <input type="range" id="slider-velocidad" class="slider-scroll" min="1" max="10" value="5">
+    </div>
+
+    <script src="acordes.js"></script>
+
+    <script type="module">
+        import { obtenerContenidoCancion } from './js/api-cliente.js';
+        import { procesarLetraYAcordes, inicializarModalAcordes } from './js/modulo-acordes.js';
+        import { inyectarReproductor } from './js/modulo-reproductor.js'; // <-- CORREGIDO: Descomentado e importado
+        import { inicializarAutoscroll } from './js/modulo-autoscroll.js';
+
+        const params = new URLSearchParams(window.location.search);
+        const idC = params.get('idC');
+        const idA = params.get('idA');
+        const nombreA = params.get('nombreA') || 'Artista';
+
+        const linkRegreso = document.getElementById('link-regreso');
+        const letraCancionDiv = document.getElementById('letra-cancion');
+
+        if(idA) {
+            linkRegreso.href = `canciones.html?idA=${idA}&nombre=${encodeURIComponent(nombreA)}`;
+        }
+
+        async function cargarPlantilla() {
+            if(!idC) {
+                letraCancionDiv.textContent = "Error: No se definió el identificador de la canción.";
+                return;
+            }
+
+            try {
+                const data = await obtenerContenidoCancion(idC);
+                if (data.error) { letraCancionDiv.textContent = "Error: " + data.error; return; }
+
+                document.getElementById('titulo-cancion').textContent = data.nombreC;
+                document.getElementById('nombre-artista').textContent = nombreA;
+
+                // 1. Procesamiento e inyección de la letra y acordes interactivos
+                letraCancionDiv.innerHTML = procesarLetraYAcordes(data.contenido);
+                inicializarModalAcordes('caja-acorde');
+
+                // 2. LLAMADA MODULAR AL REPRODUCTOR: Pasa la ID de video y la metadata para la búsqueda
+                const datosContexto = { nombreA, nombreC: data.nombreC, albumC: data.albumC };
+                inyectarReproductor('.wrapper-iframe', data.ytID, datosContexto);
+
+                // 3. Inicializar herramientas de desplazamiento de pantalla automático
+                inicializarAutoscroll('btn-play-scroll', 'slider-velocidad');
+
+            } catch (err) {
+                console.error(err);
+                letraCancionDiv.textContent = "Error crítico al descargar el contenido de la canción.";
+            }
+        }
+
+        cargarPlantilla();
+    </script>
+</body>
+</html>
