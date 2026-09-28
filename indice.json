@@ -203,6 +203,14 @@
       "nombreA": "Jorge Muñiz",
       "canciones": [
         {
+          "idC": "Jorge Muñiz/---Culpable O No",
+          "nombreC": "Culpable O No",
+          "autor": "Jorge Muñiz",
+          "nombreA": "Jorge Muñiz",
+          "albumC": "",
+          "terminada": false
+        },
+        {
           "idC": "Jorge Muñiz/Como Han Pasado Los Años (Jorge Muñiz) [Serenata Vol. 2]",
           "nombreC": "Como Han Pasado Los Años",
           "autor": "Jorge Muñiz",
@@ -232,6 +240,14 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Azulejos",
+          "terminada": true
+        },
+        {
+          "idC": "Jorge Muñiz/Para Volver A Volver (Jorge Muñiz)",
+          "nombreC": "Para Volver A Volver",
+          "autor": "Jorge Muñiz",
+          "nombreA": "Jorge Muñiz",
+          "albumC": "",
           "terminada": true
         },
         {
@@ -603,6 +619,14 @@
           "terminada": false
         },
         {
+          "idC": "Otros/---El Aventurero",
+          "nombreC": "El Aventurero",
+          "autor": "Otros",
+          "nombreA": "Otros",
+          "albumC": "",
+          "terminada": false
+        },
+        {
           "idC": "Otros/---Lamento Boliviano (Enanitos Verdes)",
           "nombreC": "Lamento Boliviano",
           "autor": "Enanitos Verdes",
@@ -616,6 +640,14 @@
           "autor": "Otros",
           "nombreA": "Otros",
           "albumC": "",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/---Penelope (Diego Torres) [Luna Nueva]",
+          "nombreC": "Penelope",
+          "autor": "Diego Torres",
+          "nombreA": "Otros",
+          "albumC": "Luna Nueva",
           "terminada": false
         },
         {
@@ -654,6 +686,14 @@
           "idC": "Otros/El Mion",
           "nombreC": "El Mion",
           "autor": "Otros",
+          "nombreA": "Otros",
+          "albumC": "",
+          "terminada": true
+        },
+        {
+          "idC": "Otros/Este Terco Corazón (Emmanuel)",
+          "nombreC": "Este Terco Corazón",
+          "autor": "Emmanuel",
           "nombreA": "Otros",
           "albumC": "",
           "terminada": true
