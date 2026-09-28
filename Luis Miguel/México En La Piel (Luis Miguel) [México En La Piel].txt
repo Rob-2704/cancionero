@@ -1,0 +1,119 @@
+=: Ritmo
+X: Mute
+↑: Rasgueo hacia arriba
+↓: Rasgueo hacia abajo
+⁵: Bajeo en 5ta
+⁶: Bajeo en 6ta
+
+Ritmo: ↓↑X↓↑↓
+
+⁵(FA SOL DO FA LA# LA#) ⁶FA ⁵LA7 =(FA SOL DO FA)
+↓(LA# LA# LA# DO) ⁶FA ⁵(LA# DO) ⁶FA ⁵(LA# DO)
+
+Como una mirada hecha en Sonora
+❚❙--------------------5-----------------------------------------------------❙
+❚❙-----------5-----------5--------5--------------5--------5-----------------❙
+❚❙--------5-----5-----------5--------5--------7-----7--------7--------7-----❙
+❚❙-----7-----------7-----------------------5-----------5--------5--------5--❙
+❚❙--8--------------------------8--------7--------------------------7--------❙
+❚❙--------------------------------------------------------------------------❙
+
+Vestida con el mar de Cozumel
+❙-----------3--------1--------0-----------------5--------3-----------------❙
+❙--------3-----3--------3--------1-----------------3--------3-----------3--❙
+❙-----2-----------2--------2--------2--------4--------4--------4-----4-----❙
+❙--0--------------------------------------------------------------3--------❙
+❙-----------------------------------------5--------------------------------❙
+❙--------------------------------------3-----------------------------------❙
+
+Con el color del sol por todo el cuerpo
+❙--------------------6-----------------------------------1-----------------❙
+❙-----------6--------------6--------6-----------1-----------1-----------1--❙
+❙--------7-----7-----------------7-----------2-----2-----------2-----2-----❙
+❙-----8-----------8-----8-----8-----------3-----------3-----------3--------❙
+❙--------------------------------------------------------------------------❙
+❙--6-----------------------------------1-----------------------------------❙
+
+↓LA#               ↓LA#         ↓↓DOx4
+    Así se lleva a México en la piel
+
+⁶FA             ⁶FA           ⁶DO    ⁶DO
+ Como el buen tequila de esta tierra
+⁵LA#        ⁵LA#        ⁶SOL ⁶SOL
+ O como un amigo en Yucatán
+⁵LA#        ⁵LA#         ⁵LAm7 ⁵LAm7
+ En Aguas Calientes deshilados
+↓LA#         ↓↓LA#        ↓↓DOx4
+    O lana tejida en Teotitlán
+
+❙=FA           =SOL
+❙Así se siente México
+❙=DO           =FA
+❙Así se siente México
+❙⁵LA#           ⁵LA#          ⁶FA  ⁵LA7
+❙ Así como unos labios por la piel
+
+=FA           =SOL
+Así te envuelve México
+=DO           =FA
+Así te sabe México
+↓LA#               ↓LA#-↓DO     ⁶FA ⁵(LA# DO) ⁶FA ⁵(LA# DO) FA
+    Así se lleva a México en la piel
+
+X                        ⁶DO    ⁶DO
+Como ver la sierra de Chihuahua
+⁵LA#        ⁵LA#         ⁶SOL ⁶SOL
+ O la artesanía en San Miguel
+⁵LA#           ⁵LA#        ⁵LAm7 ⁵LAm7
+ O Remontar el cerro de la silla
+↓LA#               ↓↓LA#        ⁵DO  ⁵DO
+    Así se lleva a México en la piel
+
+⁶FA         ⁶FA           ⁶DO   ⁶DO
+ Como acompañarse con Mariachis
+⁵LA#           ⁵LA#         ⁶SOL ⁶SOL
+ Para hacer llorar a esa canción
+⁵LA#          ⁵LA#       ⁵LAm7 ⁵LAm7
+ En el sur se toca con marimba
+↓LA#              ↓↓LA#     ↓↓DOx4
+    Y en el norte con acordeón
+
+❙..
+
+=FA           =SOL
+Así te envuelve México
+=DO           =FA
+Así te sabe México
+↓LA#               ↓LA#-↓DO     ⁶FA ⁶FA ↓↓RE7x4
+    Así se lleva a México en la piel
+
+=SOL                          =SIm
+    Como un buen sarape de Saltillo
+=DO                       =LA7
+   Como bienvenida en Veracruz
+=DO                               =SOL
+   La emoción de un beso frente a frente
+=DO                            =RE7
+   Así se lleva a México en la piel
+
+=SOL                         =SIm7
+    Como contemplar el mar Caribe
+=SOL                        =LA7
+    Descubrir un bello amanecer
+=DO                           =SOL
+   Tener la fresca brisa de Morelia
+=DO                          =RE7  
+   La luna acariciando una mujer
+
+=MIm          =LA
+Así se siente México
+=RE           =SOL
+Así se siente México
+=DO                         =MIm =MI
+Así como unos labios por la piel
+=MIm            =LA
+Así te envuelve México
+=RE         =SOL
+Así te sabe México
+=DO            ↓DO ↓DO      =SOL =LA =LA# =SOLx2 ↓SOL
+Así se lleva a México en la piel

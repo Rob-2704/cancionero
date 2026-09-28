@@ -1,0 +1,168 @@
+160 BPM 3/4
+1 Tiempo = 3 Beats
+
+La versión que no usa simbología está abajo de la linea
+
+|     : Separa los acordes con muchos simbolos para que se pueda leer más fácil
+
+(z)   : Silencio de un tiempo
+
+.     : Ritmo 1
+
+:     : Ritmo 2
+
+:.    : Ritmo 3
+
+::    : Ritmo 4
+
+::.   : Ritmo 5
+
+²     : Duplica
+
+/     : Se divide a la mitad
+
+X / x : Silenciar las cuerdas
+
+[]    : Agrupa los acordes para que usen el mismo tipo de ritmo (.DO .RE .MI = .[DO RE MI])
+
+-     : Se divide el Ritmo entre los acordes unidos por - (.DO-RE aquí el ritmo 1 se divide por la mitad entre DO y RE)
+
+↑     : Rasgueo hacia arriba
+
+↓     : Rasgueo hacia abajo
+
+
+
+Ritmo 1: ↓↑X ↓↑X
+1 tiempo
+
+Ritmo 2: ↓↑ ↓↑ ↓
+1/4 de tiempo
+
+Ritmo 3: ↓↑ ↓↑ ↓↑ ↓↑ ↓
+1 tiempo
+
+Ritmo 4: ↓↑↓X ↓↑↓X
+1 tiempo
+
+Ritmo 5: ↓↑ ↓↑ ↓↑ ↓↑ ↓↑ ↓↑ ↓
+1 tiempo
+
+
+Intro:
+.²DO |↓ : :.LA#| .²DO .FA .MI7 .LAm ↓REm (z) ./DO ./LAm ./REm ./SOL ↓DO |: ↓↑DO|
+
+    .²DO               .SIm7 .MI7
+Solitaria, camina la bikina
+   .²LAm                |↓ :xSOLm| .DO7
+La gente se pone a murmurar
+.FA       .MI7      .↓LAm (z)
+Dicen que tiene una pena
+↓LAm      ↓REm7     ↓LAm         ↓REm7   ↓REm ↓SOL
+Dicen que tiene una pena, que la hace llorar
+
+    .²DO                 .SIm7 .MI7
+Altanera, preciosa y orgullosa
+      .²LAm                |↓ :xSOLm| .DO7
+No permite la quieran consolar
+.FA    .MI7      .LAm      ↓REm
+Pasa luciendo su real majestad
+./DO    ./LAm     ./REm    ./SOL    .↓DO
+Pasa, camina, los mira sin verlos jamás
+
+.FAm   .LA#   .SOLm7 .DOm7 .FAm   .LA#     ↓RE#  Cuerda 6|--6--9----8--7--6--
+La...  bi...  ki...  na..., tiene pena y dolor
+.FAm   .LA#   .SOLm7 .DOm7  .²REm7         |↓ :↓ :.SOL|
+La...  bi...  ki...  na...,  no conoce el amor
+
+    .²DO                 .SIm7 .MI7
+Altanera, preciosa y orgullosa
+      .²LAm                |↓ :xSOLm| .DO7
+No permite la quieran consolar
+.FA       .MI7       .LAm      ↓REm
+Dicen que alguien ya vino y se fue
+./DO      ./LAm    ./REm     ./SOL     .↓DO
+Dicen que pasa las noches llorando por él
+
+Puente:
+.²DO .SOLm7 .DO7 .LAm |↓ :x .DO7| .FA .MI7 .²LAm .²REm |↓ :xREm| |↓ :.SOL| .²DO .MI .MI7 .²LAm |↓ :xSOLm| .DO7 .FA .MI7 .LAm ↓REm ./DO ./LAm ./REm ./SOL .↓DO
+
+.FAm   .LA#   .SOLm7 .DOm7 .FAm   .LA#     ↓RE#  Cuerda 6|--6--9----8--7--6--
+La...  bi...  ki...  na..., tiene pena y dolor
+.FAm   .LA#   .SOLm7 .DOm7  .²REm7         |↓ :↓ :.SOL|
+La...  bi...  ki...  na...,  no conoce el amor
+
+    .²DO                 .SIm7 .MI7
+Altanera, preciosa y orgullosa
+      .²LAm                |↓ :xSOLm| ::.DO7
+No permite la quieran consolar
+.FA       .MI7       .LAm      ↓REm
+Dicen que alguien ya vino y se fue
+
+./DO      ./LAm    ./REm     ./SOL     .²DO
+Dicen que pasa las noches llorando por él
+./DO      ./LAm    ./REm     ./SOL     .²DO
+Dicen que pasa las noches llorando por él
+./DO      ./LAm    ./REm     ./SOL     .²DO ::.↓DO
+Dicen que pasa las noches llorando por él
+
+
+---------------------------------------------------------------------------------
+
+
+Intro:
+DO LA# DO FA MI7 LAm REm DO LAm REm SOL DO 
+
+    DO                 SIm7 MI7
+Solitaria, camina la bikina
+   LAm                  SOLm DO7
+La gente se pone a murmurar
+FA        MI7       LAm
+Dicen que tiene una pena
+LAm        REm7     LAm          REm7    REm SOL
+Dicen que tiene una pena, que la hace llorar
+
+    DO                   SIm7 MI7
+Altanera, preciosa y orgullosa
+      LAm                  SOLm DO7
+No permite la quieran consolar
+FA     MI7       LAm       REm
+Pasa luciendo su real majestad
+DO      LAm       REm      SOL      DO
+Pasa, camina, los mira sin verlos jamás
+
+FAm   LA#   SOLm7 DOm7  FAm    LA#      RE#
+La... bi... ki... na..., tiene pena y dolor
+FAm   LA#   SOLm7 DOm7   REm7          SOL
+La... bi... ki... na..., no conoce el amor
+
+    DO                   SIm7 MI7
+Altanera, preciosa y orgullosa
+      LAm                  SOLm DO7
+No permite la quieran consolar
+FA        MI7        LAm       REm
+Dicen que alguien ya vino y se fue
+DO        LAm      REm       SOL       DO
+Dicen que pasa las noches llorando por él
+
+Puente:
+DO SOLm7 DO7 LAm DO7 FA MI7 LAm REm SOL DO MI MI7 LAm SOLm DO7 FA MI7 LAm REm DO LAm REm SOL DO
+
+FAm   LA#   SOLm7 DOm7  FAm    LA#      RE#
+La... bi... ki... na..., tiene pena y dolor
+FAm   LA#   SOLm7 DOm7   REm7          SOL
+La... bi... ki... na..., no conoce el amor
+
+    DO                   SIm7 MI7
+Altanera, preciosa y orgullosa
+      LAm                  SOLm DO7
+No permite la quieran consolar
+FA        MI7        LAm       REm
+Dicen que alguien ya vino y se fue
+
+DO        LAm      REm       SOL       DO
+Dicen que pasa las noches llorando por él
+DO        LAm      REm       SOL       DO
+Dicen que pasa las noches llorando por él
+DO        LAm      REm       SOL       DO
+Dicen que pasa las noches llorando por él

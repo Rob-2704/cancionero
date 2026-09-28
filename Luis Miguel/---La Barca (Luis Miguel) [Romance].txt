@@ -1,0 +1,64 @@
+Tremolo = []
+                                                                   x4
+❚❙----------------------------9/13-[13]--15-13-11-10-11-13-15--(10------)-10-13-11-10-8-10-11-13--❙
+❚❙--8/11--11--8/11-11-9--8-9--9/13-------12-12-12-12-12-12-12--(11-11-13)-11-11-11-11-9-11-11-11--❙
+❚❙--9/12--12--9/12-12-10-9-10----------------------------------(---12-12)-------------------------❙
+❚❙------------------------------------------------------------------------------------------------❙
+❚❙------------------------------------------------------------------------------------------------❙
+❚❙------------------------------------------------------------------------------------------------❙
+            x4                 x4
+❙--------(8------)-8-9--10-(11------)-11-----13--10-11-13-10-11--12-9--10-12-9--10--11-8--------7/9---7--------❙
+❙--------(9-9--11)-9-10-11-(12-12-14)-12---11----11-11-11-11-11--10-10-10-10-10-10--9--9-11-9---9/11--9-11-9---❙
+❙--------(--10-10)---11-12-(---13-13)----12----------------------------------------------10-10----------12-10--❙
+❙--9-10--------------------------------------------------------------------------------------------------------❙
+❙--------------------------------------------------------------------------------------------------------------❙
+❙--------------------------------------------------------------------------------------------------------------❙
+
+     MIdim7
+  ___________
+1 | | | | | |
+  x x = = = =
+  | | | o | o
+  | | | | | |
+  | | | | | |
+  | | | | | |
+
+Intro:
+
+MIdim7,
+
+Dicen que la distancia es el olvido
+Pero yo no concibo esa razón
+Porque yo seguiré siendo el cautivo
+De los caprichos de tu corazón
+
+Supiste esclarecer mis pensamientos
+Me diste la verdad que yo soñé
+Ahuyentaste de mí los sufrimientos
+En la primera noche que te amé
+
+Hoy mi playa se viste de amargura, oh
+Porque tu barca tiene que partir
+A cruzar otros mares de locura
+Cuida que no naufrague en tu vivir
+
+Cuando la luz del sol se esté apagando y
+Te sientas cansada de vagar
+Piensa que yo por ti estaré esperando
+Hasta que tú decidas regresar
+
+Supiste esclarecer mis pensamientos
+Me diste la verdad que yo soñé
+Ahuyentaste de mí los sufrimientos
+En la primera noche que te amé
+
+Hoy mi playa se viste de amargura
+Porque tu barca tiene que partir
+A cruzar otros mares de locura
+Cuida que no naufrague en tu vivir
+
+Cuando la luz del sol se esté apagando y
+Te sientas cansada de vagar
+Piensa que yo por ti estaré esperando
+Hasta que tú decidas regresar
+(Hasta que tú decidas regresar)
