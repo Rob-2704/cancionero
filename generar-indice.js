@@ -80,9 +80,13 @@ function leerCanciones() {
 // Discogs
 // ─────────────────────────────────────────────
 
+const VERSION_CACHE = 2;   // sube este número para forzar que se vuelvan a buscar todas las portadas
+
+const buscarURL = p => 'https://api.discogs.com/database/search?' + new URLSearchParams(p);
+const esApiDiscogs = u => typeof u === 'string' && u.startsWith('https://api.discogs.com/');
+
 // Devuelve el JSON, o undefined si falló (para no guardar el fallo en la caché)
-async function discogs(params) {
-    const url = 'https://api.discogs.com/database/search?' + new URLSearchParams(params);
+async function discogs(url) {
     for (let i = 1; i <= 3; i++) {
         await dormir(DELAY_MS);
         try {
@@ -108,42 +112,75 @@ async function discogs(params) {
 // Discogs devuelve "spacer.gif" cuando no hay imagen
 const imagenValida = u => !!u && !/spacer\.gif/i.test(u);
 
+// De todas las imágenes de un disco: prefiere la principal (frente), casi cuadrada y de mayor resolución
+function mejorImagen(images) {
+    const validas = (images || []).filter(i => imagenValida(i.uri));
+    if (!validas.length) return '';
+    const area = i => (i.width || 0) * (i.height || 0);
+    const cuadrada = i => i.width && i.height && Math.abs(i.width / i.height - 1) < 0.15;
+    const mejor = arr => [...arr].sort((a, b) => area(b) - area(a))[0];
+    const primarias = validas.filter(i => i.type === 'primary');
+    return (mejor(primarias.filter(cuadrada)) || mejor(validas.filter(cuadrada))
+         || mejor(primarias) || mejor(validas)).uri;
+}
+
+// La búsqueda solo devuelve una miniatura; el detalle (master/release/artista) trae las imágenes grandes
+async function imagenDeDetalle(resourceUrl) {
+    if (!esApiDiscogs(resourceUrl)) return '';
+    const det = await discogs(resourceUrl);
+    if (det === undefined) return undefined;
+    let url = mejorImagen(det.images);
+    if (!url && esApiDiscogs(det.main_release_url)) {   // master sin imágenes: usa su release principal
+        const rel = await discogs(det.main_release_url);
+        if (rel === undefined) return undefined;
+        url = mejorImagen(rel.images);
+    }
+    return url;
+}
+
 // Mismos 3 niveles de filtrado que usaba la versión de iTunes
 function elegirAlbum(results, artista, album) {
     const albumN = normalizar(album), artN = normalizar(artista);
-    const items = results.filter(r => imagenValida(r.cover_image)).map(r => {
+    const items = results.map(r => {
         const t = r.title || '';
         const i = t.indexOf(' - ');
-        return { url: r.cover_image, art: normalizar(i > -1 ? t.slice(0, i) : ''), alb: normalizar(i > -1 ? t.slice(i + 3) : t) };
+        return { r, art: normalizar(i > -1 ? t.slice(0, i) : ''), alb: normalizar(i > -1 ? t.slice(i + 3) : t) };
     });
-    return items.find(p => p.alb === albumN && p.art.includes(artN))?.url          // exacto
-        || items.find(p => p.alb.includes(albumN) && p.art.includes(artN))?.url    // parcial
-        || items.find(p => p.alb === albumN)?.url                                  // solo álbum
-        || '';
+    return (items.find(p => p.alb === albumN && p.art.includes(artN))          // exacto
+         || items.find(p => p.alb.includes(albumN) && p.art.includes(artN))    // parcial
+         || items.find(p => p.alb === albumN))?.r;                             // solo álbum
 }
 
 async function buscarAlbum(artista, album) {
     for (const type of ['master', 'release']) {
-        const datos = await discogs({ type, artist: artista, release_title: album, per_page: 10 });
+        const datos = await discogs(buscarURL({ type, artist: artista, release_title: album, per_page: 10 }));
         if (datos === undefined) return undefined;
-        const url = elegirAlbum(datos.results || [], artista, album);
+        const r = elegirAlbum(datos.results || [], artista, album);
+        if (!r) continue;
+        let url = await imagenDeDetalle(r.resource_url);
+        if (url === undefined) return undefined;
+        if (!url && imagenValida(r.cover_image)) url = r.cover_image;   // último recurso: la miniatura
         if (url) return url;
     }
     return '';
 }
 
 async function buscarArtista(nombre) {
-    const datos = await discogs({ q: nombre, type: 'artist', per_page: 5 });
+    const datos = await discogs(buscarURL({ q: nombre, type: 'artist', per_page: 5 }));
     if (datos === undefined) return undefined;
     const n = normalizar(nombre);
     // Discogs añade "(2)" a artistas homónimos
     const r = (datos.results || []).find(r => normalizar((r.title || '').replace(/\s*\(\d+\)$/, '')) === n);
-    return r && imagenValida(r.cover_image) ? r.cover_image : '';
+    if (!r) return '';
+    const url = await imagenDeDetalle(r.resource_url);
+    if (url === undefined) return undefined;
+    return url || (imagenValida(r.cover_image) ? r.cover_image : '');
 }
 
 async function resolverPortadas(artistas) {
     let cache = {};
     try { cache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8')); } catch (_) {}
+    if (cache._v !== VERSION_CACHE) cache = {};   // caché de otra versión (p. ej. miniaturas): se descarta
 
     // clave "Artista|Álbum"  (álbum vacío = portada del artista)
     const claves = new Map();
@@ -160,7 +197,7 @@ async function resolverPortadas(artistas) {
     if (pendientes.length && !TOKEN) {
         console.warn(`⚠ Faltan ${pendientes.length} portadas pero no hay DISCOGS_TOKEN: se omiten.`);
     } else if (pendientes.length) {
-        console.log(`Buscando ${pendientes.length} portadas en Discogs (~${Math.ceil(pendientes.length * DELAY_MS / 60000)} min)...`);
+        console.log(`Buscando ${pendientes.length} portadas en Discogs (~${Math.ceil(pendientes.length * DELAY_MS * 3 / 60000)} min)...`);
         try {
             let n = 0;
             for (const [k, { artista, album }] of pendientes) {
@@ -174,6 +211,7 @@ async function resolverPortadas(artistas) {
             console.error(e.message === 'TOKEN_INVALIDO' ? '✖ Token de Discogs inválido (401).' : e);
         }
     }
+    cache._v = VERSION_CACHE;
     fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
 
     const portadas = {};
