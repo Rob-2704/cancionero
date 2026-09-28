@@ -16,25 +16,6 @@ function cargarIndice() {
     return indicePromise;
 }
 
-// Cabecera opcional al inicio del .txt:
-//   @yt: dQw4w9WgXcQ
-//   @album: Nombre del álbum
-//   @terminada: 1
-//   ---
-function separarCabecera(texto) {
-    const lineas = texto.replace(/^\uFEFF/, '').split(/\r?\n/);
-    const meta = {};
-    let i = 0;
-    while (i < lineas.length) {
-        const m = lineas[i].match(/^@(\w+)\s*:\s*(.*)$/);
-        if (!m) break;
-        meta[m[1].toLowerCase()] = m[2].trim();
-        i++;
-    }
-    if (i > 0 && (lineas[i] || '').trim() === '---') i++;
-    return { meta, contenido: lineas.slice(i).join('\n') };
-}
-
 export async function obtenerArtistas() {
     const indice = await cargarIndice();
     return indice.artistas.map(({ idA, nombreA }) => ({ idA, nombreA }));
@@ -44,22 +25,33 @@ export async function obtenerCanciones(idA) {
     const indice = await cargarIndice();
     const artista = indice.artistas.find(a => a.idA === idA);
     if (!artista) return [];
-    return artista.canciones.map(c => ({ ...c, nombreA: artista.nombreA }));
+    return artista.canciones.map(c => ({
+        ...c,
+        // codificado para que caracteres como & # ? en el título no rompan la URL
+        idC: encodeURIComponent(c.idC),
+        // si es una versión de otro artista, ese artista tiene prioridad para la portada
+        nombreA: c.nombreA || artista.nombreA
+    }));
 }
 
 export async function obtenerContenidoCancion(idC) {
-    // idC = "Artista/Nombre de la canción" (sin .txt)
+    const indice = await cargarIndice();
+    let info = null;
+    for (const a of indice.artistas) {
+        info = a.canciones.find(c => c.idC === idC);
+        if (info) break;
+    }
+
     const ruta = [CARPETA, ...idC.split('/')].map(encodeURIComponent).join('/') + '.txt';
     const r = await fetch(ruta);
     if (!r.ok) return { error: `No se encontró el archivo (${r.status})` };
 
-    const { meta, contenido } = separarCabecera(await r.text());
     return {
         idC,
-        nombreC: idC.split('/').pop(),
-        contenido,
-        ytID: meta.yt || meta.ytid || '',
-        albumC: meta.album || ''
+        nombreC: info ? info.nombreC : idC.split('/').pop(),
+        contenido: await r.text(),
+        ytID: '',
+        albumC: info ? info.albumC : ''
     };
 }
 
