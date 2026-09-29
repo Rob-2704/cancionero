@@ -48,7 +48,7 @@ const artistas = fs.readdirSync(RAIZ, { withFileTypes: true })
                     idC: `${carpeta}/${base}`,
                     nombreC,
                     autor,
-                    nombreA: version || carpeta,   // artista usado para buscar la portada
+                    nombreA: version || autor,   // artista usado para buscar la portada: el de [Artista - Álbum] o, si no hay, el de (Autor)
                     albumC: album,
                     terminada
                 };
