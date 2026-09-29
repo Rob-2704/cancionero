@@ -127,35 +127,35 @@
       "nombreA": "Cri-Cri",
       "canciones": [
         {
-          "idC": "Cri-Cri/---Caminito De La Escuela (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "idC": "Cri-Cri/---Caminito De La Escuela (Cri-Cri) [Las 100 Clásicas de Cri-Cri Vol. 2]",
           "nombreC": "Caminito De La Escuela",
           "autor": "Cri-Cri",
           "nombreA": "Cri-Cri",
-          "albumC": "Las 100 Clásicas de Cri-Cri",
+          "albumC": "Las 100 Clásicas de Cri-Cri Vol. 2",
           "terminada": false
         },
         {
-          "idC": "Cri-Cri/---Di Porqué (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "idC": "Cri-Cri/---Di Porqué (Cri-Cri) [Las 100 Clásicas de Cri-Cri Vol. 1]",
           "nombreC": "Di Porqué",
           "autor": "Cri-Cri",
           "nombreA": "Cri-Cri",
-          "albumC": "Las 100 Clásicas de Cri-Cri",
+          "albumC": "Las 100 Clásicas de Cri-Cri Vol. 1",
           "terminada": false
         },
         {
-          "idC": "Cri-Cri/---El Ratón Vaquero (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "idC": "Cri-Cri/---El Ratón Vaquero (Cri-Cri) [Las 100 Clásicas de Cri-Cri Vol. 1]",
           "nombreC": "El Ratón Vaquero",
           "autor": "Cri-Cri",
           "nombreA": "Cri-Cri",
-          "albumC": "Las 100 Clásicas de Cri-Cri",
+          "albumC": "Las 100 Clásicas de Cri-Cri Vol. 1",
           "terminada": false
         },
         {
-          "idC": "Cri-Cri/---El Ropero (Cri-Cri) [Las 100 Clásicas de Cri-Cri]",
+          "idC": "Cri-Cri/---El Ropero (Cri-Cri) [Las 100 Clásicas de Cri-Cri Vol. 2]",
           "nombreC": "El Ropero",
           "autor": "Cri-Cri",
           "nombreA": "Cri-Cri",
-          "albumC": "Las 100 Clásicas de Cri-Cri",
+          "albumC": "Las 100 Clásicas de Cri-Cri Vol. 2",
           "terminada": false
         }
       ]
@@ -1130,6 +1130,5 @@
         }
       ]
     }
-  ],
-  "portadas": {}
+  ]
 }
