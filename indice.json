@@ -211,11 +211,11 @@
           "terminada": false
         },
         {
-          "idC": "Jorge Muñiz/---Para Volver A Volver (Jorge Muñiz)",
+          "idC": "Jorge Muñiz/---Para Volver A Volver (Jorge Muñiz) [Con La Gente Que Me Gusta]",
           "nombreC": "Para Volver A Volver",
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
-          "albumC": "",
+          "albumC": "Con La Gente Que Me Gusta",
           "terminada": false
         },
         {
@@ -783,11 +783,11 @@
           "terminada": true
         },
         {
-          "idC": "Pedro Infante/El Oso Carpintero (Pedro Infante)",
+          "idC": "Pedro Infante/El Oso Carpintero (Pedro Infante) [Canciónes Infantiles]",
           "nombreC": "El Oso Carpintero",
           "autor": "Pedro Infante",
           "nombreA": "Pedro Infante",
-          "albumC": "",
+          "albumC": "Canciónes Infantiles",
           "terminada": true
         }
       ]
