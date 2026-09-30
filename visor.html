@@ -109,11 +109,25 @@
             border: 0; 
         }
         
+        #panel-flotante-wrapper {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 999;
+        }
+
+        .fila-inferior {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .panel-scroll-flotante { 
-            position: fixed; 
-            bottom: 25px; 
-            left: 50%; 
-            transform: translateX(-50%); 
             background: rgba(20, 20, 20, 0.95); 
             border: 1px solid #333; 
             padding: 12px 25px; 
@@ -123,7 +137,6 @@
             gap: 15px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
             backdrop-filter: blur(5px); 
-            z-index: 999; 
         }
 
         .btn-scroll { 
@@ -156,6 +169,45 @@
             color: #888; 
             font-weight: bold;
             font-family: monospace;
+        }
+
+        .btn-transponer {
+            background: #fff;
+            color: #111;
+            border: none;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+
+        .btn-transponer:hover {
+            background: #ddd;
+        }
+
+        #label-tonalidad {
+            font-size: 13px;
+        }
+
+        .btn-toggle-transponer {
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
         .caja-acorde-emergente { 
@@ -276,10 +328,24 @@
        <div id="wrapper-render"></div> 
     </div>
     
-    <div id="panel-scroll" class="panel-scroll-flotante">
-        <span class="label-scroll">AUTOSCROLL</span>
-        <button id="btn-play-scroll" class="btn-scroll">▶</button>
-        <input type="range" id="slider-velocidad" class="slider-scroll" min="1" max="10" value="5">
+    <div id="panel-flotante-wrapper">
+        <div id="panel-transponer" class="panel-scroll-flotante" style="display:none;">
+            <button id="label-tonalidad" class="btn-transponer" title="Tonalidad actual" disabled>—</button>
+            <button id="btn-subir-tono" class="btn-transponer" title="Subir 1 tono">+1</button>
+            <button id="btn-subir-medio" class="btn-transponer" title="Subir medio tono">+½</button>
+            <button id="btn-bajar-medio" class="btn-transponer" title="Bajar medio tono">−½</button>
+            <button id="btn-bajar-tono" class="btn-transponer" title="Bajar 1 tono">−1</button>
+            <button id="btn-reset-tono" class="btn-transponer" title="Volver a la tonalidad original">↺</button>
+        </div>
+
+        <div class="fila-inferior">
+            <div id="panel-scroll" class="panel-scroll-flotante">
+                <span class="label-scroll">AUTOSCROLL</span>
+                <button id="btn-play-scroll" class="btn-scroll">▶</button>
+                <input type="range" id="slider-velocidad" class="slider-scroll" min="1" max="10" value="5">
+            </div>
+            <button id="btn-toggle-transponer" class="btn-toggle-transponer" title="Transponer">▲</button>
+        </div>
     </div>
 
     <script src="acordes.js"></script>
@@ -289,6 +355,7 @@
         import { procesarLetraYAcordes, inicializarModalAcordes } from './js/modulo-acordes.js';
         import { inyectarReproductor } from './js/modulo-reproductor.js'; // <-- CORREGIDO: Descomentado e importado
         import { inicializarAutoscroll } from './js/modulo-autoscroll.js';
+        import { inicializarTransponer } from './js/modulo-transponer.js';
 
         const params = new URLSearchParams(window.location.search);
         const idC = params.get('idC');
@@ -325,6 +392,22 @@
 
                 // 3. Inicializar herramientas de desplazamiento de pantalla automático
                 inicializarAutoscroll('btn-play-scroll', 'slider-velocidad');
+
+                // 4. Menú de transposición: sube/baja tonos y vuelve a pintar la letra en cada cambio
+                inicializarTransponer({
+                    contenidoOriginal: data.contenido,
+                    onRetransponer: (texto) => {
+                        letraCancionDiv.innerHTML = procesarLetraYAcordes(texto);
+                    },
+                    tonalidadLabelId: 'label-tonalidad',
+                    btnSubirTonoId: 'btn-subir-tono',
+                    btnSubirMedioId: 'btn-subir-medio',
+                    btnBajarMedioId: 'btn-bajar-medio',
+                    btnBajarTonoId: 'btn-bajar-tono',
+                    btnResetId: 'btn-reset-tono',
+                    btnToggleId: 'btn-toggle-transponer',
+                    panelId: 'panel-transponer'
+                });
 
             } catch (err) {
                 console.error(err);
