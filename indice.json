@@ -619,14 +619,6 @@
           "terminada": false
         },
         {
-          "idC": "Otros/---El Aventurero",
-          "nombreC": "El Aventurero",
-          "autor": "Otros",
-          "nombreA": "Otros",
-          "albumC": "",
-          "terminada": false
-        },
-        {
           "idC": "Otros/---Lamento Boliviano (Enanitos Verdes) [Big Bang]",
           "nombreC": "Lamento Boliviano",
           "autor": "Enanitos Verdes",
@@ -651,43 +643,51 @@
           "terminada": false
         },
         {
-          "idC": "Otros/---Serenata Huasteca (José Alfredo Jiménez)",
+          "idC": "Otros/---Serenata Huasteca (José Alfredo Jiménez) [Las 100 Clasicas Vol. 2]",
           "nombreC": "Serenata Huasteca",
           "autor": "José Alfredo Jiménez",
           "nombreA": "José Alfredo Jiménez",
-          "albumC": "",
+          "albumC": "Las 100 Clasicas Vol. 2",
           "terminada": false
         },
         {
-          "idC": "Otros/---Si Los Niños Gobernaran Al Mundo (Chabelo)",
+          "idC": "Otros/---Si Los Niños Gobernaran Al Mundo (Chabelo) [Vamos A La Escuelita Con Chabelo]",
           "nombreC": "Si Los Niños Gobernaran Al Mundo",
           "autor": "Chabelo",
           "nombreA": "Chabelo",
-          "albumC": "",
+          "albumC": "Vamos A La Escuelita Con Chabelo",
           "terminada": false
         },
         {
-          "idC": "Otros/---Si Nos Dejan (José Alfredo Jiménez)",
+          "idC": "Otros/---Si Nos Dejan (José Alfredo Jiménez) [Un Mundo Raro]",
           "nombreC": "Si Nos Dejan",
           "autor": "José Alfredo Jiménez",
           "nombreA": "José Alfredo Jiménez",
-          "albumC": "",
+          "albumC": "Un Mundo Raro",
           "terminada": false
         },
         {
-          "idC": "Otros/---Tomando Té (Chava Flores)",
+          "idC": "Otros/---Tomando Té (Chava Flores) [Una Colección Inolvidable Todo En Vivo]",
           "nombreC": "Tomando Té",
           "autor": "Chava Flores",
           "nombreA": "Chava Flores",
-          "albumC": "",
+          "albumC": "Una Colección Inolvidable Todo En Vivo",
           "terminada": false
         },
         {
-          "idC": "Otros/El Mion",
+          "idC": "Otros/---Yo El Aventurero (Pedro Fernández) [Aventurero]",
+          "nombreC": "Yo El Aventurero",
+          "autor": "Pedro Fernández",
+          "nombreA": "Pedro Fernández",
+          "albumC": "Aventurero",
+          "terminada": false
+        },
+        {
+          "idC": "Otros/El Mion (Luis Y Julián) [Inspiración Norteña Vol. 1]",
           "nombreC": "El Mion",
-          "autor": "Otros",
-          "nombreA": "Otros",
-          "albumC": "",
+          "autor": "Luis Y Julián",
+          "nombreA": "Luis Y Julián",
+          "albumC": "Inspiración Norteña Vol. 1",
           "terminada": true
         },
         {
@@ -707,14 +707,6 @@
           "terminada": true
         },
         {
-          "idC": "Otros/Gotas De Lluvia Que Al Caer (B. J. Thomas)",
-          "nombreC": "Gotas De Lluvia Que Al Caer",
-          "autor": "B. J. Thomas",
-          "nombreA": "B. J. Thomas",
-          "albumC": "",
-          "terminada": true
-        },
-        {
           "idC": "Otros/La Malagueña (Elpidio Ramírez)",
           "nombreC": "La Malagueña",
           "autor": "Elpidio Ramírez",
@@ -723,19 +715,19 @@
           "terminada": true
         },
         {
-          "idC": "Otros/Los Bueyes'n",
+          "idC": "Otros/Los Bueyes'n (Rosita Quintana) [Vámonos Al Parque Céfira]",
           "nombreC": "Los Bueyes'n",
-          "autor": "Otros",
-          "nombreA": "Otros",
-          "albumC": "",
+          "autor": "Rosita Quintana",
+          "nombreA": "Rosita Quintana",
+          "albumC": "Vámonos Al Parque Céfira",
           "terminada": true
         },
         {
-          "idC": "Otros/Raindrops Keep Fallin' On My Head (B. J. Thomas)",
+          "idC": "Otros/Raindrops Keep Fallin' On My Head (B. J. Thomas) [Raindrops Keep Fallin' On My Head]",
           "nombreC": "Raindrops Keep Fallin' On My Head",
           "autor": "B. J. Thomas",
           "nombreA": "B. J. Thomas",
-          "albumC": "",
+          "albumC": "Raindrops Keep Fallin' On My Head",
           "terminada": true
         },
         {
