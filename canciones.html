@@ -183,7 +183,7 @@
 
                     if (nombreA.toLowerCase() !== 'notas') {
                         const artistaContexto = cancion.nombreA || nombreA;
-                        portadaUrl = await obtenerPortadaAlbumCancion(artistaContexto, cancion.albumC);
+                        portadaUrl = await obtenerPortadaAlbumCancion(artistaContexto, cancion.albumC, cancion.albumAnio);
                     }
 
                     tarjeta.style.backgroundImage = `url('${portadaUrl}')`;
