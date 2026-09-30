@@ -172,7 +172,11 @@ async function fetchItunes(url, etiqueta) {
 // nombreArtista y nombreAlbum llegan ya separados desde indice.json:
 // si el archivo era "[José José - Gavilán O Paloma]", nombreArtista = "José José"
 // y nombreAlbum = "Gavilán O Paloma", así que aquí ya no hay que partir el texto.
-export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum) {
+// terminoBusqueda (opcional): viene de "[Álbum {Palabras}]". Cuando el álbum se llama
+// igual que el artista (o cualquier nombre que dé malos resultados en iTunes), se busca
+// con estas palabras en su lugar, pero solo se acepta un resultado cuyo álbum sea
+// nombreAlbum: el nombre real no cambia, solo cómo se busca.
+export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum, terminoBusqueda) {
     const artistaBusqueda = nombreArtista;
     const albumBusqueda = nombreAlbum;
 
@@ -181,17 +185,17 @@ export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum) {
         return PORTADA_FALLBACK;
     }
 
-    const claveCache = `album_${normalizar(artistaBusqueda)}_${normalizar(albumBusqueda)}`;
+    const claveCache = `album_${normalizar(artistaBusqueda)}_${normalizar(albumBusqueda)}`
+        + (terminoBusqueda ? `_b${normalizar(terminoBusqueda)}` : '');
     const cacheado = obtenerDeCache(claveCache);
     if (cacheado) return cacheado;
 
-    const etiquetaLog = `${artistaBusqueda} — ${albumBusqueda || '(sin álbum)'}`;
+    const etiquetaLog = `${artistaBusqueda} — ${albumBusqueda || '(sin álbum)'}`
+        + (terminoBusqueda ? ` (buscando: "${terminoBusqueda}")` : '');
     console.group(`🎵 [${etiquetaLog}]`);
 
-    // Intento 1: artista + álbum
-    const terminoConArtista = albumBusqueda
-        ? `${artistaBusqueda} ${albumBusqueda}`
-        : artistaBusqueda;
+    // Intento 1: artista + (palabras de búsqueda, o el álbum si no las hay)
+    const terminoConArtista = `${artistaBusqueda} ${terminoBusqueda || albumBusqueda}`;
 
     let resultado = await buscarYFiltrar(terminoConArtista, artistaBusqueda, albumBusqueda, ITUNES_REGION);
 

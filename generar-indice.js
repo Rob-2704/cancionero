@@ -4,6 +4,12 @@
 // Formato del nombre de archivo:
 //   Título (Autor) [Álbum].txt
 //   Título (Autor) [Artista de la versión - Álbum].txt
+//   Título (Autor) [Álbum {Palabras de búsqueda}].txt
+//     → Álbum es el nombre real (el que debe coincidir en iTunes), pero en vez de
+//       buscar con ese nombre, se busca con "Palabras de búsqueda". Útil cuando el
+//       álbum se llama igual que el artista y esa búsqueda no encuentra el disco correcto:
+//       [Vicente Fernández {Hermoso Cariño}] busca "Vicente Fernández Hermoso Cariño"
+//       en iTunes, pero solo acepta un resultado cuyo álbum se llame "Vicente Fernández".
 //   ---Título (Autor) [Álbum].txt      ← el prefijo --- indica que NO está terminada
 //
 // Portadas de ARTISTA (solo para index.html), vía Discogs:
@@ -34,11 +40,20 @@ const normalizar = s => (s || '').toLowerCase()
 
 function parsearNombre(base, carpeta) {
     const m = base.match(/^(.*?)\s*(?:\(([^()]*)\))?\s*(?:\[([^\[\]]*)\])?\s*$/);
-    let nombreC = base, autor = carpeta, album = '', version = '';
+    let nombreC = base, autor = carpeta, album = '', version = '', busqueda = '';
     if (m) {
         nombreC = m[1].trim() || base;
         autor = (m[2] || '').trim() || carpeta;
-        const alb = (m[3] || '').trim();
+        let alb = (m[3] || '').trim();
+
+        // Palabras de búsqueda entre llaves, al final: "Álbum {Palabras}" → separa
+        // el nombre real del álbum de lo que se debe enviar a la búsqueda en iTunes.
+        const bq = alb.match(/^(.*)\{([^{}]*)\}\s*$/);
+        if (bq) {
+            alb = bq[1].trim();
+            busqueda = bq[2].trim();
+        }
+
         const i = alb.indexOf(' - ');
         if (i > -1) {
             version = alb.slice(0, i).trim();
@@ -47,7 +62,7 @@ function parsearNombre(base, carpeta) {
             album = alb;
         }
     }
-    return { nombreC, autor, album, version };
+    return { nombreC, autor, album, version, busqueda };
 }
 
 function leerCanciones() {
@@ -64,13 +79,14 @@ function leerCanciones() {
                     const base = f.replace(/\.txt$/i, '');
                     const limpio = base.replace(/^-{3}\s*/, '');   // quita el prefijo ---
                     const terminada = limpio === base;
-                    const { nombreC, autor, album, version } = parsearNombre(limpio, carpeta);
+                    const { nombreC, autor, album, version, busqueda } = parsearNombre(limpio, carpeta);
                     return {
                         idC: `${carpeta}/${base}`,
                         nombreC,
                         autor,
                         nombreA: version || autor,   // artista para portada: el de [Artista - Álbum] o, si no hay, el de (Autor)
                         albumC: album,
+                        albumBusqueda: busqueda,      // opcional: palabras para buscar en iTunes cuando el álbum se llama distinto
                         terminada
                     };
                 });
