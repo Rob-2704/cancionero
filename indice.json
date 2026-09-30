@@ -10,6 +10,7 @@
           "autor": "Alejandro Fernández",
           "nombreA": "Alejandro Fernández",
           "albumC": "Que Seas Muy Feliz",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -24,6 +25,7 @@
           "autor": "Álvaro Carrillo",
           "nombreA": "José José",
           "albumC": "Sabor A Mi",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -32,6 +34,7 @@
           "autor": "Álvaro Carrillo",
           "nombreA": "José José",
           "albumC": "Romántico",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -40,6 +43,7 @@
           "autor": "Álvaro Carrillo",
           "nombreA": "José José",
           "albumC": "El Príncipe Y El Bolero",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -48,6 +52,7 @@
           "autor": "Álvaro Carrillo",
           "nombreA": "José José",
           "albumC": "Sabor A Mi",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -56,6 +61,7 @@
           "autor": "Álvaro Carrillo",
           "nombreA": "José José",
           "albumC": "Gavilán O Paloma",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -64,6 +70,7 @@
           "autor": "Álvaro Carrillo",
           "nombreA": "Luis Miguel",
           "albumC": "Romances",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -72,6 +79,7 @@
           "autor": "Álvaro Carrillo",
           "nombreA": "José José",
           "albumC": "Sabor A Mi",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -80,6 +88,7 @@
           "autor": "Álvaro Carrillo",
           "nombreA": "José José",
           "albumC": "Romántico",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -94,6 +103,7 @@
           "autor": "Armando Manzanero",
           "nombreA": "Armando Manzanero",
           "albumC": "A Mi Amor... Con Mi Amor",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -102,6 +112,7 @@
           "autor": "Armando Manzanero",
           "nombreA": "Armando Manzanero",
           "albumC": "Canciones De Amor",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -110,6 +121,7 @@
           "autor": "Armando Manzanero",
           "nombreA": "Armando Manzanero",
           "albumC": "A Mi Amor... Con Mi Amor",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -118,6 +130,7 @@
           "autor": "Armando Manzanero",
           "nombreA": "Armando Manzanero",
           "albumC": "Manzanero Presenta A Fabiola Finkmann",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -132,6 +145,7 @@
           "autor": "Cri-Cri",
           "nombreA": "Cri-Cri",
           "albumC": "Las 100 Clásicas de Cri-Cri Vol. 2",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -140,6 +154,7 @@
           "autor": "Cri-Cri",
           "nombreA": "Cri-Cri",
           "albumC": "Las 100 Clásicas de Cri-Cri Vol. 1",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -148,6 +163,7 @@
           "autor": "Cri-Cri",
           "nombreA": "Cri-Cri",
           "albumC": "Las 100 Clásicas de Cri-Cri Vol. 1",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -156,6 +172,7 @@
           "autor": "Cri-Cri",
           "nombreA": "Cri-Cri",
           "albumC": "Las 100 Clásicas de Cri-Cri Vol. 2",
+          "albumAnio": "",
           "terminada": false
         }
       ]
@@ -170,6 +187,7 @@
           "autor": "Javier Solís",
           "nombreA": "Javier Solís",
           "albumC": "Y Todavía Te Quiero",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -178,6 +196,7 @@
           "autor": "Javier Solís",
           "nombreA": "Javier Solís",
           "albumC": "Vida De Bohemio",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -186,6 +205,7 @@
           "autor": "Javier Solís",
           "nombreA": "Javier Solís",
           "albumC": "Javier Solís En Nueva York",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -194,6 +214,7 @@
           "autor": "Javier Solís",
           "nombreA": "Javier Solís",
           "albumC": "Payaso",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -208,6 +229,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -216,6 +238,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Con La Gente Que Me Gusta",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -224,6 +247,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Serenata Vol. 2",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -232,6 +256,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Noche De Rondalla",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -240,6 +265,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Azulejos 2",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -248,6 +274,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Azulejos",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -256,6 +283,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Serenata Vol. 3",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -264,6 +292,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Azulejos",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -272,6 +301,7 @@
           "autor": "Jorge Muñiz",
           "nombreA": "Jorge Muñiz",
           "albumC": "Serenata",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -286,6 +316,7 @@
           "autor": "José Alfredo Jiménez",
           "nombreA": "José Alfredo Jiménez",
           "albumC": "Las 100 Clasicas Vol. 2",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -294,6 +325,7 @@
           "autor": "José Alfredo Jiménez",
           "nombreA": "José Alfredo Jiménez",
           "albumC": "Un Mundo Raro",
+          "albumAnio": "",
           "terminada": false
         }
       ]
@@ -308,6 +340,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "El Principe Con Trio Vol. 3",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -316,6 +349,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "La Nave Del Olvido",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -324,6 +358,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "De Pueblo En Pueblo",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -332,6 +367,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Volcán",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -340,6 +376,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Tan Cerca... Tan Lejos",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -348,6 +385,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Siempre Contigo",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -356,6 +394,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "El Príncipe Y El Bolero",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -364,6 +403,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Soy Así",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -372,6 +412,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Buscando Una Sonrisa",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -380,6 +421,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Gracias",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -388,6 +430,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Secretos",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -396,6 +439,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Lo Pasado Pasado",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -404,6 +448,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Reencuentro",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -412,6 +457,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Buscando Una Sonrisa",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -420,6 +466,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Tenampa",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -428,6 +475,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Qué Es El amor",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -436,6 +484,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Grandeza Mexicana",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -444,6 +493,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Romántico",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -452,6 +502,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "José José, Vol.1",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -460,6 +511,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "En Las Buenas... Y En Las Malas",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -468,6 +520,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Grandeza Mexicana",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -476,6 +529,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Romántico",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -484,6 +538,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Buscando Una Sonrisa",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -492,6 +547,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Amor, Amor",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -500,6 +556,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Mujeriego",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -508,6 +565,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Promesas",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -516,6 +574,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Mi Vida",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -524,6 +583,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Reencuentro",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -532,6 +592,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -540,6 +601,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "Soy Así",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -548,6 +610,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -556,6 +619,7 @@
           "autor": "José José",
           "nombreA": "José José",
           "albumC": "El Príncipe Y El Bolero",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -570,6 +634,7 @@
           "autor": "Los Panchos",
           "nombreA": "Eydie Gormé",
           "albumC": "Canta En Español Con Los Panchos",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -584,6 +649,7 @@
           "autor": "Luis Miguel",
           "nombreA": "Luis Miguel",
           "albumC": "Romance",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -592,6 +658,7 @@
           "autor": "Luis Miguel",
           "nombreA": "Luis Miguel",
           "albumC": "Romance",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -600,6 +667,7 @@
           "autor": "Luis Miguel",
           "nombreA": "Luis Miguel",
           "albumC": "¡México Por Siempre!",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -608,6 +676,7 @@
           "autor": "Luis Miguel",
           "nombreA": "Luis Miguel",
           "albumC": "Vivo",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -616,6 +685,7 @@
           "autor": "Luis Miguel",
           "nombreA": "Luis Miguel",
           "albumC": "México En La Piel",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -624,6 +694,7 @@
           "autor": "Luis Miguel",
           "nombreA": "Luis Miguel",
           "albumC": "México En La Piel",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -638,6 +709,7 @@
           "autor": "Consuelo Velázquez",
           "nombreA": "Consuelo Velázquez",
           "albumC": "",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -646,6 +718,7 @@
           "autor": "Enanitos Verdes",
           "nombreA": "Enanitos Verdes",
           "albumC": "Big Bang",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -654,6 +727,7 @@
           "autor": "Otros",
           "nombreA": "Otros",
           "albumC": "",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -662,6 +736,7 @@
           "autor": "Diego Torres",
           "nombreA": "Diego Torres",
           "albumC": "Luna Nueva",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -670,6 +745,7 @@
           "autor": "Chabelo",
           "nombreA": "Chabelo",
           "albumC": "Vamos A La Escuelita Con Chabelo",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -678,6 +754,7 @@
           "autor": "Chava Flores",
           "nombreA": "Chava Flores",
           "albumC": "Una Colección Inolvidable Todo En Vivo",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -686,6 +763,7 @@
           "autor": "Pedro Fernández",
           "nombreA": "Pedro Fernández",
           "albumC": "Aventurero",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -694,6 +772,7 @@
           "autor": "Luis Y Julián",
           "nombreA": "Luis Y Julián",
           "albumC": "Inspiración Norteña Vol. 1",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -702,6 +781,7 @@
           "autor": "Emmanuel",
           "nombreA": "Emmanuel",
           "albumC": "Íntimamente",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -710,6 +790,7 @@
           "autor": "Frank Sinatra",
           "nombreA": "Frank Sinatra",
           "albumC": "Nothing But The Best",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -718,6 +799,7 @@
           "autor": "Elpidio Ramírez",
           "nombreA": "Elpidio Ramírez",
           "albumC": "",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -726,6 +808,7 @@
           "autor": "Rosita Quintana",
           "nombreA": "Rosita Quintana",
           "albumC": "Vámonos Al Parque Céfira",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -734,6 +817,7 @@
           "autor": "B. J. Thomas",
           "nombreA": "B. J. Thomas",
           "albumC": "Raindrops Keep Fallin' On My Head",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -742,6 +826,7 @@
           "autor": "Coco",
           "nombreA": "Coco",
           "albumC": "",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -750,6 +835,7 @@
           "autor": "Otros",
           "nombreA": "Otros",
           "albumC": "",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -758,6 +844,7 @@
           "autor": "Chespirito",
           "nombreA": "Chespirito",
           "albumC": "",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -772,6 +859,7 @@
           "autor": "Pedro Infante",
           "nombreA": "Pedro Infante",
           "albumC": "15 Inmortales",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -780,6 +868,7 @@
           "autor": "Pedro Infante",
           "nombreA": "Pedro Infante",
           "albumC": "15 Inmortales",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -788,6 +877,7 @@
           "autor": "Pedro Infante",
           "nombreA": "Pedro Infante",
           "albumC": "Canciónes Infantiles",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -802,6 +892,7 @@
           "autor": "Pepe Aguilar",
           "nombreA": "Pepe Aguilar",
           "albumC": "Con Orgullo Por Herencia",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -810,6 +901,7 @@
           "autor": "Pepe Aguilar",
           "nombreA": "Pepe Aguilar",
           "albumC": "Por El Amor De Siempre",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -824,6 +916,7 @@
           "autor": "Roberto Carlos",
           "nombreA": "Roberto Carlos",
           "albumC": "Pra Sempre em Espanhol Vol. 2",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -838,6 +931,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "El Tahúr",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -846,6 +940,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Hoy Platiqué Con Mi Gallo",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -854,6 +949,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Para Siempre",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -862,6 +958,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "...Es La Diferencia",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -870,6 +967,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Lástima Que Seas Ajena",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -878,6 +976,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Entre El Amor Y Yo",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -886,6 +985,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Mi Viejo",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -894,6 +994,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "A Mis 80's",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -902,6 +1003,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "El Tahúr",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -910,6 +1012,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "El Idolo De México",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -918,6 +1021,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "De Qué Manera Te Olvido",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -926,14 +1030,16 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Para Siempre",
+          "albumAnio": "",
           "terminada": true
         },
         {
-          "idC": "Vicente Fernández/Hermoso Cariño (Vicente Fernández) [Vicente Fernández]",
+          "idC": "Vicente Fernández/Hermoso Cariño (Vicente Fernández) [Vicente Fernández (1971)]",
           "nombreC": "Hermoso Cariño",
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Vicente Fernández",
+          "albumAnio": "1971",
           "terminada": true
         },
         {
@@ -942,6 +1048,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "El Hijo Del Pueblo",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -950,6 +1057,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Lástima Que Seas Ajena",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -958,6 +1066,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Entre El Amor Y Yo",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -966,6 +1075,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Un Mexicano En La México",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -974,6 +1084,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Motivos Del Alma",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -982,6 +1093,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Mujeres Divinas",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -990,6 +1102,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "De Qué Manera Te Olvido",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -998,6 +1111,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Lástima Que Seas Ajena",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1006,6 +1120,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Mi Viejo",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1014,6 +1129,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Lástima Que Seas Ajena",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1022,6 +1138,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Para Recordar",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1030,6 +1147,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Mujeres Divinas",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1038,6 +1156,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Entre El Amor Y Yo",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1046,6 +1165,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "Mientras Ustedes No Dejen De Aplaudir",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1054,6 +1174,7 @@
           "autor": "Vicente Fernández",
           "nombreA": "Vicente Fernández",
           "albumC": "A Mis 80's",
+          "albumAnio": "",
           "terminada": true
         }
       ]
@@ -1068,6 +1189,7 @@
           "autor": "Víctor Yturbe",
           "nombreA": "Víctor Yturbe",
           "albumC": "El Siempre Romántico",
+          "albumAnio": "",
           "terminada": false
         },
         {
@@ -1076,6 +1198,7 @@
           "autor": "Víctor Yturbe",
           "nombreA": "Víctor Yturbe",
           "albumC": "Lo Mejor de Mi...",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1084,6 +1207,7 @@
           "autor": "Víctor Yturbe",
           "nombreA": "Víctor Yturbe",
           "albumC": "21 Black Jack",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1092,6 +1216,7 @@
           "autor": "Víctor Yturbe",
           "nombreA": "Víctor Yturbe",
           "albumC": "21 Black Jack",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1100,6 +1225,7 @@
           "autor": "Víctor Yturbe",
           "nombreA": "Víctor Yturbe",
           "albumC": "Lo Mejor de Mi...",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1108,6 +1234,7 @@
           "autor": "Víctor Yturbe",
           "nombreA": "Víctor Yturbe",
           "albumC": "Imágenes",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1116,6 +1243,7 @@
           "autor": "Víctor Yturbe",
           "nombreA": "Víctor Yturbe",
           "albumC": "Condición",
+          "albumAnio": "",
           "terminada": true
         },
         {
@@ -1124,6 +1252,7 @@
           "autor": "Víctor Yturbe",
           "nombreA": "Víctor Yturbe",
           "albumC": "",
+          "albumAnio": "",
           "terminada": true
         }
       ]
