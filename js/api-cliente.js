@@ -162,27 +162,19 @@ async function fetchItunes(url, etiqueta) {
 // PORTADAS
 // ─────────────────────────────────────────────
 
-export async function obtenerPortadaArtista(nombreArtista) {
-    const claveCache = `artista_${normalizar(nombreArtista)}`;
-    const cacheado = obtenerDeCache(claveCache);
-    if (cacheado) return cacheado;
+// ─────────────────────────────────────────────
+// PORTADA DE ARTISTA (solo index.html) — resuelta con Discogs en indice.json
+// ─────────────────────────────────────────────
 
-    console.log(`[iTunes] Buscando artista: "${nombreArtista}"`);
-    try {
-        const query = encodeURIComponent(nombreArtista);
-        const url = `${ITUNES_API}?term=${query}&country=${ITUNES_REGION}&media=music&entity=album&limit=1`;
-        const datos = await fetchItunes(url, nombreArtista);
-        if (datos?.results?.length > 0) {
-            const portada = datos.results[0].artworkUrl100.replace('100x100', '300x300');
-            guardarEnCache(claveCache, portada);
-            return portada;
-        }
-        return PORTADA_FALLBACK;
-    } catch (err) {
-        console.log(`💥 Error de red/parseo:`, err);
-        return PORTADA_FALLBACK;
-    }
+export async function obtenerPortadaArtista(nombreArtista) {
+    const indice = await cargarIndice();
+    return indice.portadasArtistas?.[nombreArtista] || PORTADA_FALLBACK;
 }
+
+// ─────────────────────────────────────────────
+// PORTADA DE ÁLBUM (canciones.html) — vía iTunes
+// ─────────────────────────────────────────────
+
 
 // nombreArtista y nombreAlbum llegan ya separados desde indice.json:
 // si el archivo era "[José José - Gavilán O Paloma]", nombreArtista = "José José"
