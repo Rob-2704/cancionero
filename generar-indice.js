@@ -4,8 +4,6 @@
 // Formato del nombre de archivo:
 //   Título (Autor) [Álbum].txt
 //   Título (Autor) [Artista de la versión - Álbum].txt
-//   Título (Autor) [Álbum (Año)].txt                      ← para desambiguar álbumes repetidos
-//   Título (Autor) [Artista de la versión - Álbum (Año)].txt
 //   ---Título (Autor) [Álbum].txt      ← el prefijo --- indica que NO está terminada
 //
 // Portadas de ARTISTA (solo para index.html), vía Discogs:
@@ -36,19 +34,11 @@ const normalizar = s => (s || '').toLowerCase()
 
 function parsearNombre(base, carpeta) {
     const m = base.match(/^(.*?)\s*(?:\(([^()]*)\))?\s*(?:\[([^\[\]]*)\])?\s*$/);
-    let nombreC = base, autor = carpeta, album = '', version = '', anio = '';
+    let nombreC = base, autor = carpeta, album = '', version = '';
     if (m) {
         nombreC = m[1].trim() || base;
         autor = (m[2] || '').trim() || carpeta;
-        let alb = (m[3] || '').trim();
-
-        // Año al final del corchete: "Álbum (1972)" → separa el año para desambiguar álbumes repetidos
-        const ay = alb.match(/^(.*)\((\d{4})\)\s*$/);
-        if (ay) {
-            alb = ay[1].trim();
-            anio = ay[2];
-        }
-
+        const alb = (m[3] || '').trim();
         const i = alb.indexOf(' - ');
         if (i > -1) {
             version = alb.slice(0, i).trim();
@@ -57,7 +47,7 @@ function parsearNombre(base, carpeta) {
             album = alb;
         }
     }
-    return { nombreC, autor, album, version, anio };
+    return { nombreC, autor, album, version };
 }
 
 function leerCanciones() {
@@ -74,14 +64,13 @@ function leerCanciones() {
                     const base = f.replace(/\.txt$/i, '');
                     const limpio = base.replace(/^-{3}\s*/, '');   // quita el prefijo ---
                     const terminada = limpio === base;
-                    const { nombreC, autor, album, version, anio } = parsearNombre(limpio, carpeta);
+                    const { nombreC, autor, album, version } = parsearNombre(limpio, carpeta);
                     return {
                         idC: `${carpeta}/${base}`,
                         nombreC,
                         autor,
                         nombreA: version || autor,   // artista para portada: el de [Artista - Álbum] o, si no hay, el de (Autor)
                         albumC: album,
-                        albumAnio: anio,              // opcional: para desambiguar álbumes con el mismo nombre
                         terminada
                     };
                 });

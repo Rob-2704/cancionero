@@ -1,6 +1,7 @@
 // api-cliente.js — versión estática para GitHub Pages (sin PHP)
 // Datos: indice.json (generado por generar-indice.js) + archivos .txt de /Canciones
-// Portadas: iTunes API
+// Portada de artista: indice.json (resuelta con Discogs al generar el índice)
+// Portada de álbum: iTunes API, en el navegador
 const CARPETA = 'Canciones';
 const ITUNES_API = 'https://itunes.apple.com/search';
 const ITUNES_REGION = 'mx';
@@ -61,10 +62,20 @@ export async function obtenerContenidoCancion(idC) {
 }
 
 // ─────────────────────────────────────────────
-// FUNCIONES DE PORTADAS (via iTunes API)
+// PORTADA DE ARTISTA (solo index.html) — resuelta con Discogs en indice.json
 // ─────────────────────────────────────────────
 
 const PORTADA_FALLBACK = 'https://www.shutterstock.com/image-photo/highquality-png-analog-record-disc-600nw-2561107141.jpg';
+
+export async function obtenerPortadaArtista(nombreArtista) {
+    const indice = await cargarIndice();
+    return indice.portadasArtistas?.[nombreArtista] || PORTADA_FALLBACK;
+}
+
+// ─────────────────────────────────────────────
+// PORTADA DE ÁLBUM (canciones.html) — vía iTunes
+// ─────────────────────────────────────────────
+
 const MAX_REINTENTOS = 3;
 const CONCURRENCIA_MAX = 3; // máximo de peticiones simultáneas a iTunes
 const DELAY_ENTRE_PETICIONES = 150; // ms entre cada petición
@@ -158,30 +169,10 @@ async function fetchItunes(url, etiqueta) {
     });
 }
 
-// ─────────────────────────────────────────────
-// PORTADAS
-// ─────────────────────────────────────────────
-
-// ─────────────────────────────────────────────
-// PORTADA DE ARTISTA (solo index.html) — resuelta con Discogs en indice.json
-// ─────────────────────────────────────────────
-
-export async function obtenerPortadaArtista(nombreArtista) {
-    const indice = await cargarIndice();
-    return indice.portadasArtistas?.[nombreArtista] || PORTADA_FALLBACK;
-}
-
-// ─────────────────────────────────────────────
-// PORTADA DE ÁLBUM (canciones.html) — vía iTunes
-// ─────────────────────────────────────────────
-
-
 // nombreArtista y nombreAlbum llegan ya separados desde indice.json:
 // si el archivo era "[José José - Gavilán O Paloma]", nombreArtista = "José José"
 // y nombreAlbum = "Gavilán O Paloma", así que aquí ya no hay que partir el texto.
-// anio (opcional): cuando el artista tiene 2 álbumes con el mismo nombre, viene de
-// "[Álbum (1972)]" en el nombre del archivo y se usa para elegir el correcto.
-export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum, anio) {
+export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum) {
     const artistaBusqueda = nombreArtista;
     const albumBusqueda = nombreAlbum;
 
@@ -190,11 +181,11 @@ export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum, ani
         return PORTADA_FALLBACK;
     }
 
-    const claveCache = `album_${normalizar(artistaBusqueda)}_${normalizar(albumBusqueda)}${anio ? '_' + anio : ''}`;
+    const claveCache = `album_${normalizar(artistaBusqueda)}_${normalizar(albumBusqueda)}`;
     const cacheado = obtenerDeCache(claveCache);
     if (cacheado) return cacheado;
 
-    const etiquetaLog = `${artistaBusqueda} — ${albumBusqueda || '(sin álbum)'}${anio ? ` (${anio})` : ''}`;
+    const etiquetaLog = `${artistaBusqueda} — ${albumBusqueda || '(sin álbum)'}`;
     console.group(`🎵 [${etiquetaLog}]`);
 
     // Intento 1: artista + álbum
@@ -202,12 +193,12 @@ export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum, ani
         ? `${artistaBusqueda} ${albumBusqueda}`
         : artistaBusqueda;
 
-    let resultado = await buscarYFiltrar(terminoConArtista, artistaBusqueda, albumBusqueda, anio, ITUNES_REGION);
+    let resultado = await buscarYFiltrar(terminoConArtista, artistaBusqueda, albumBusqueda, ITUNES_REGION);
 
     // Intento 2: si falló, repetir el mismo término pero con región por defecto
     if (!resultado) {
         console.log(`🔁 Reintentando con el mismo término y región por defecto...`);
-        resultado = await buscarYFiltrar(terminoConArtista, artistaBusqueda, albumBusqueda, anio, null);
+        resultado = await buscarYFiltrar(terminoConArtista, artistaBusqueda, albumBusqueda, null);
     }
 
     if (resultado) {
@@ -222,10 +213,10 @@ export async function obtenerPortadaAlbumCancion(nombreArtista, nombreAlbum, ani
 }
 
 // Realiza una búsqueda en iTunes con el término dado y aplica los 3 niveles de filtrado.
-// Dentro de cada nivel, si se dio un año, prioriza el resultado cuyo releaseDate coincida;
-// si ninguno coincide, usa el primero del nivel (igual que antes de tener año).
+// Antes de filtrar, descarta los álbumes de una sola canción (trackCount === 1): suelen
+// ser sencillos o compilaciones sueltas mal etiquetadas, no el disco real de la canción.
 // Devuelve la URL de portada (300x300) o null si no hubo coincidencia.
-async function buscarYFiltrar(termino, artistaBusqueda, albumBusqueda, anio, region) {
+async function buscarYFiltrar(termino, artistaBusqueda, albumBusqueda, region) {
     console.log(`📤 Enviado a iTunes: "${termino}"${region ? ` (región: ${region})` : ' (región por defecto)'}`);
 
     try {
@@ -241,41 +232,41 @@ async function buscarYFiltrar(termino, artistaBusqueda, albumBusqueda, anio, reg
             return null;
         }
 
+        const resultados = datos.results.filter(r => r.trackCount !== 1);
+        if (!resultados.length) {
+            console.log(`❌ Solo se encontraron álbumes de una sola canción; se descartan.`);
+            return null;
+        }
+
         const albumNorm  = normalizar(albumBusqueda);
         const artistaNorm = normalizar(artistaBusqueda);
-        const coincideAnio = r => !anio || (r.releaseDate || '').startsWith(anio);
-        // De un conjunto de candidatos, prioriza el que coincide en año; si ninguno coincide, el primero
-        const elegir = candidatos => candidatos.find(coincideAnio) || candidatos[0];
 
-        const nivelExacto = datos.results.filter(r =>
+        const exacto = resultados.find(r =>
             normalizar(r.collectionName) === albumNorm &&
             normalizar(r.artistName).includes(artistaNorm)
         );
-        if (nivelExacto.length) {
-            const elegido = elegir(nivelExacto);
-            const portada = elegido.artworkUrl100.replace('100x100', '300x300');
-            console.log(`✅ Elegido (nivel: exacto${anio && !coincideAnio(elegido) ? ', año no coincidió' : ''}):`, elegido.collectionName, '—', elegido.artistName, elegido.releaseDate?.slice(0, 4), '→', portada);
+        if (exacto) {
+            const portada = exacto.artworkUrl100.replace('100x100', '300x300');
+            console.log(`✅ Elegido (nivel: exacto):`, exacto.collectionName, '—', exacto.artistName, '→', portada);
             return portada;
         }
 
-        const nivelParcial = datos.results.filter(r =>
+        const parcial = resultados.find(r =>
             normalizar(r.collectionName).includes(albumNorm) &&
             normalizar(r.artistName).includes(artistaNorm)
         );
-        if (nivelParcial.length) {
-            const elegido = elegir(nivelParcial);
-            const portada = elegido.artworkUrl100.replace('100x100', '300x300');
-            console.log(`✅ Elegido (nivel: parcial${anio && !coincideAnio(elegido) ? ', año no coincidió' : ''}):`, elegido.collectionName, '—', elegido.artistName, elegido.releaseDate?.slice(0, 4), '→', portada);
+        if (parcial) {
+            const portada = parcial.artworkUrl100.replace('100x100', '300x300');
+            console.log(`✅ Elegido (nivel: parcial):`, parcial.collectionName, '—', parcial.artistName, '→', portada);
             return portada;
         }
 
-        const nivelSoloAlbum = datos.results.filter(r =>
+        const soloAlbum = resultados.find(r =>
             normalizar(r.collectionName) === albumNorm
         );
-        if (nivelSoloAlbum.length) {
-            const elegido = elegir(nivelSoloAlbum);
-            const portada = elegido.artworkUrl100.replace('100x100', '300x300');
-            console.log(`⚠️ Elegido (nivel: solo álbum, artista ignorado${anio && !coincideAnio(elegido) ? ', año no coincidió' : ''}):`, elegido.collectionName, '—', elegido.artistName, elegido.releaseDate?.slice(0, 4), '→', portada);
+        if (soloAlbum) {
+            const portada = soloAlbum.artworkUrl100.replace('100x100', '300x300');
+            console.log(`⚠️ Elegido (nivel: solo álbum, artista ignorado):`, soloAlbum.collectionName, '—', soloAlbum.artistName, '→', portada);
             return portada;
         }
 
