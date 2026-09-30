@@ -198,6 +198,7 @@
         .btn-scroll,
         .btn-transponer,
         .btn-toggle-transponer {
+            font-family: 'Sono', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -319,7 +320,7 @@
     
     <div id="panel-flotante-wrapper">
         <div id="panel-transponer" class="panel-scroll-flotante" style="display:none;">
-            <button id="label-tonalidad" class="btn-transponer" title="Tonalidad actual" disabled>—</button>
+            <label id="label-tonalidad" title="Tonalidad actual" disabled>—</label>
             <button id="btn-bajar-tono" class="btn-transponer" title="Bajar 1 tono">−1</button>
             <button id="btn-bajar-medio" class="btn-transponer" title="Bajar medio tono">−½</button>
             <button id="btn-subir-medio" class="btn-transponer" title="Subir medio tono">+½</button>
@@ -329,7 +330,7 @@
 
         <div class="fila-inferior">
             <div id="panel-scroll" class="panel-scroll-flotante">
-                <span class="label-scroll">AUTOSCROLL</span>
+                <span class="label-scroll">Autoscroll</span>
                 <button id="btn-play-scroll" class="btn-scroll">▶</button>
                 <input type="range" id="slider-velocidad" class="slider-scroll" min="1" max="10" value="5">
             </div>
