@@ -277,6 +277,28 @@
       ]
     },
     {
+      "idA": "José Alfredo Jiménez",
+      "nombreA": "José Alfredo Jiménez",
+      "canciones": [
+        {
+          "idC": "José Alfredo Jiménez/---Serenata Huasteca (José Alfredo Jiménez) [Las 100 Clasicas Vol. 2]",
+          "nombreC": "Serenata Huasteca",
+          "autor": "José Alfredo Jiménez",
+          "nombreA": "José Alfredo Jiménez",
+          "albumC": "Las 100 Clasicas Vol. 2",
+          "terminada": false
+        },
+        {
+          "idC": "José Alfredo Jiménez/---Si Nos Dejan (José Alfredo Jiménez) [Un Mundo Raro]",
+          "nombreC": "Si Nos Dejan",
+          "autor": "José Alfredo Jiménez",
+          "nombreA": "José Alfredo Jiménez",
+          "albumC": "Un Mundo Raro",
+          "terminada": false
+        }
+      ]
+    },
+    {
       "idA": "José José",
       "nombreA": "José José",
       "canciones": [
@@ -643,27 +665,11 @@
           "terminada": false
         },
         {
-          "idC": "Otros/---Serenata Huasteca (José Alfredo Jiménez) [Las 100 Clasicas Vol. 2]",
-          "nombreC": "Serenata Huasteca",
-          "autor": "José Alfredo Jiménez",
-          "nombreA": "José Alfredo Jiménez",
-          "albumC": "Las 100 Clasicas Vol. 2",
-          "terminada": false
-        },
-        {
           "idC": "Otros/---Si Los Niños Gobernaran Al Mundo (Chabelo) [Vamos A La Escuelita Con Chabelo]",
           "nombreC": "Si Los Niños Gobernaran Al Mundo",
           "autor": "Chabelo",
           "nombreA": "Chabelo",
           "albumC": "Vamos A La Escuelita Con Chabelo",
-          "terminada": false
-        },
-        {
-          "idC": "Otros/---Si Nos Dejan (José Alfredo Jiménez) [Un Mundo Raro]",
-          "nombreC": "Si Nos Dejan",
-          "autor": "José Alfredo Jiménez",
-          "nombreA": "José Alfredo Jiménez",
-          "albumC": "Un Mundo Raro",
           "terminada": false
         },
         {
