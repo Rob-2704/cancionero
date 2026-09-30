@@ -3,7 +3,7 @@
 // Portadas: iTunes API
 const CARPETA = 'Canciones';
 const ITUNES_API = 'https://itunes.apple.com/search';
-const ITUNES_REGION = 'mx';
+const ITUNES_REGION = 'us';
 
 // ─────────────────────────────────────────────
 // DATOS (indice.json + archivos .txt)
