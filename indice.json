@@ -614,7 +614,7 @@
           "idC": "Otros/---Besame Mucho (Consuelo Velázquez)",
           "nombreC": "Besame Mucho",
           "autor": "Consuelo Velázquez",
-          "nombreA": "Otros",
+          "nombreA": "Consuelo Velázquez",
           "albumC": "",
           "terminada": false
         },
@@ -627,11 +627,11 @@
           "terminada": false
         },
         {
-          "idC": "Otros/---Lamento Boliviano (Enanitos Verdes)",
+          "idC": "Otros/---Lamento Boliviano (Enanitos Verdes) [Big Bang]",
           "nombreC": "Lamento Boliviano",
           "autor": "Enanitos Verdes",
-          "nombreA": "Otros",
-          "albumC": "",
+          "nombreA": "Enanitos Verdes",
+          "albumC": "Big Bang",
           "terminada": false
         },
         {
@@ -646,7 +646,7 @@
           "idC": "Otros/---Penelope (Diego Torres) [Luna Nueva]",
           "nombreC": "Penelope",
           "autor": "Diego Torres",
-          "nombreA": "Otros",
+          "nombreA": "Diego Torres",
           "albumC": "Luna Nueva",
           "terminada": false
         },
@@ -654,7 +654,7 @@
           "idC": "Otros/---Serenata Huasteca (José Alfredo Jiménez)",
           "nombreC": "Serenata Huasteca",
           "autor": "José Alfredo Jiménez",
-          "nombreA": "Otros",
+          "nombreA": "José Alfredo Jiménez",
           "albumC": "",
           "terminada": false
         },
@@ -662,7 +662,7 @@
           "idC": "Otros/---Si Los Niños Gobernaran Al Mundo (Chabelo)",
           "nombreC": "Si Los Niños Gobernaran Al Mundo",
           "autor": "Chabelo",
-          "nombreA": "Otros",
+          "nombreA": "Chabelo",
           "albumC": "",
           "terminada": false
         },
@@ -670,7 +670,7 @@
           "idC": "Otros/---Si Nos Dejan (José Alfredo Jiménez)",
           "nombreC": "Si Nos Dejan",
           "autor": "José Alfredo Jiménez",
-          "nombreA": "Otros",
+          "nombreA": "José Alfredo Jiménez",
           "albumC": "",
           "terminada": false
         },
@@ -678,7 +678,7 @@
           "idC": "Otros/---Tomando Té (Chava Flores)",
           "nombreC": "Tomando Té",
           "autor": "Chava Flores",
-          "nombreA": "Otros",
+          "nombreA": "Chava Flores",
           "albumC": "",
           "terminada": false
         },
@@ -691,26 +691,26 @@
           "terminada": true
         },
         {
-          "idC": "Otros/Este Terco Corazón (Emmanuel)",
+          "idC": "Otros/Este Terco Corazón (Emmanuel) [Íntimamente]",
           "nombreC": "Este Terco Corazón",
           "autor": "Emmanuel",
-          "nombreA": "Otros",
-          "albumC": "",
+          "nombreA": "Emmanuel",
+          "albumC": "Íntimamente",
           "terminada": true
         },
         {
-          "idC": "Otros/Fly Me To The Moon (Frank Sinatra)",
+          "idC": "Otros/Fly Me To The Moon (Frank Sinatra) [Nothing But The Best]",
           "nombreC": "Fly Me To The Moon",
           "autor": "Frank Sinatra",
-          "nombreA": "Otros",
-          "albumC": "",
+          "nombreA": "Frank Sinatra",
+          "albumC": "Nothing But The Best",
           "terminada": true
         },
         {
           "idC": "Otros/Gotas De Lluvia Que Al Caer (B. J. Thomas)",
           "nombreC": "Gotas De Lluvia Que Al Caer",
           "autor": "B. J. Thomas",
-          "nombreA": "Otros",
+          "nombreA": "B. J. Thomas",
           "albumC": "",
           "terminada": true
         },
@@ -718,7 +718,7 @@
           "idC": "Otros/La Malagueña (Elpidio Ramírez)",
           "nombreC": "La Malagueña",
           "autor": "Elpidio Ramírez",
-          "nombreA": "Otros",
+          "nombreA": "Elpidio Ramírez",
           "albumC": "",
           "terminada": true
         },
@@ -734,7 +734,7 @@
           "idC": "Otros/Raindrops Keep Fallin' On My Head (B. J. Thomas)",
           "nombreC": "Raindrops Keep Fallin' On My Head",
           "autor": "B. J. Thomas",
-          "nombreA": "Otros",
+          "nombreA": "B. J. Thomas",
           "albumC": "",
           "terminada": true
         },
@@ -742,7 +742,7 @@
           "idC": "Otros/Recuérdame (Coco)",
           "nombreC": "Recuérdame",
           "autor": "Coco",
-          "nombreA": "Otros",
+          "nombreA": "Coco",
           "albumC": "",
           "terminada": true
         },
@@ -758,7 +758,7 @@
           "idC": "Otros/Taca La Petaca (Chespirito)",
           "nombreC": "Taca La Petaca",
           "autor": "Chespirito",
-          "nombreA": "Otros",
+          "nombreA": "Chespirito",
           "albumC": "",
           "terminada": true
         }
