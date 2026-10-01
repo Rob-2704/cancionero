@@ -67,16 +67,39 @@
             align-items: start;
         }
         
+        /* Contenedor de la Letra */
         .letra-contenedor {
+            position: relative;
             background: #fff;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             width: 100%;
-            overflow: hidden;
+            overflow: hidden; /* Mantiene la marca de agua dentro de los bordes redondeados */
+            z-index: 1;
+        }
+
+        /* Marca de agua sólo en el contenedor de la letra */
+        .letra-contenedor::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 85%;
+            background-image: url('fondo.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
         }
         
         .letra-texto { 
+            position: relative;
+            z-index: 1; /* Mantiene el texto por encima del fondo */
             display: block;
             font-family: 'Sono', monospace;
             font-variation-settings: 'MONO' 1;
@@ -136,22 +159,23 @@
         
         /* Modales y Cajas Emergentes */
         .caja-acorde-emergente { 
-            position: absolute; 
+            position: fixed; 
             display: none; 
             background: #1a1a1a;
             border: 1px solid #333;
             border-radius: 12px; 
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-            padding: 15px; 
+            padding: 12px; 
             z-index: 1000; 
-            width: 210px;
+            width: fit-content; /* Se ajusta exactamente al ancho del diagrama */
+            max-width: 90vw;
             text-align: center;
             color: #e0e0e0;
         }
         
         .caja-acorde-emergente h4 { 
-            margin: 0 0 8px 0; 
-            font-size: 18px; 
+            margin: 0 0 6px 0; 
+            font-size: 16px; 
             color: #fff;
             font-family: 'Sono', sans-serif;
             font-variation-settings: 'MONO' 0;
@@ -162,7 +186,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin: 10px 0 0 5px;
+            margin: 5px 0 0 0;
         }
         
         /* Panel Flotante y Controles */
@@ -266,6 +290,19 @@
             font-weight: bold;
             font-family: monospace;
         }
+
+        /* Reducción de relleno y bordes en móviles */
+        @media (max-width: 600px) {
+            .caja-acorde-emergente {
+                padding: 8px 12px;
+                border-radius: 10px;
+            }
+
+            .caja-acorde-emergente h4 {
+                font-size: 14px;
+                margin-bottom: 2px;
+            }
+        }
         
         /* Responsive / Media Queries */
         @media (max-width: 1300px) {
@@ -349,7 +386,7 @@
     <script type="module">
         import { obtenerContenidoCancion } from './js/api-cliente.js';
         import { procesarLetraYAcordes, inicializarModalAcordes } from './js/modulo-acordes.js';
-        import { inyectarReproductor } from './js/modulo-reproductor.js'; // <-- CORREGIDO: Descomentado e importado
+        import { inyectarReproductor } from './js/modulo-reproductor.js';
         import { inicializarAutoscroll } from './js/modulo-autoscroll.js';
         import { inicializarTransponer } from './js/modulo-transponer.js';
 
