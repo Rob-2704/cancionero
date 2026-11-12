@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+
+    <link rel="icon" type="image/x-icon" href="img/icono.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sono:MONO@0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap">
+
+    <link href="style.css" rel="stylesheet">
+    <title>Subir canciones</title>
+    <style>
+        .header-derecha { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        .btn-cerrar-sesion {
+            background-color: transparent;
+            color: #e71d36;
+            border: 2px solid #e71d36;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Sono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s, color 0.2s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-cerrar-sesion:hover { background-color: #e71d36; color: #fff; }
+        .btn-cerrar-sesion:active { transform: scale(0.95); }
+
+        body { padding-bottom: 60px; }
+        main { max-width: 1000px; margin: 0 auto; }
+
+        /* ───────── Guía del formato ───────── */
+        .guia {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-size: 13px;
+            color: var(--text-sec);
+            line-height: 1.6;
+            opacity: 0;
+            animation: popWiiU 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+        }
+
+        .guia code {
+            display: block;
+            font-family: 'Sono', monospace;
+            font-variation-settings: 'MONO' 1;
+            color: var(--accent);
+            background: var(--bg-color);
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin: 8px 0 12px 0;
+            font-size: 13px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 8px; }
+        .leyenda span { display: inline-flex; align-items: center; gap: 8px; color: var(--text-main); }
+        .punto { display: inline-block; width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+        .punto.terminada { background: var(--estado-terminada); }
+        .punto.revisar { background: var(--estado-revisar); }
+        .punto.pendiente { background: var(--estado-pendiente); }
+
+        /* ───────── Zona para soltar archivos ───────── */
+        .zona-soltar {
+            border: 2px dashed var(--accent);
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-align: center;
+            color: var(--text-sec);
+            font-size: 14px;
+            transition: background-color 0.2s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
+            opacity: 0;
+            animation: popWiiU 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) 0.14s forwards;
+        }
+
+        .zona-soltar.arrastrando { background-color: rgba(188, 151, 49, 0.12); transform: scale(1.01); border-color: var(--text-main); }
+        .zona-soltar .material-symbols-outlined { font-size: 40px; color: var(--accent); }
+        .zona-soltar p { margin: 6px 0 14px 0; }
+        .zona-botones { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+
+        .btn, .btn-sec {
+            border-radius: 12px;
+            padding: 9px 16px;
+            font-family: 'Sono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s, background-color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn { background-color: var(--accent); color: var(--bg-color); border: 2px solid var(--accent); }
+        .btn-sec { background-color: transparent; color: var(--text-main); border: 2px solid var(--accent); }
+        @media (hover: hover) { .btn:hover:not(:disabled), .btn-sec:hover:not(:disabled) { transform: scale(1.05); } }
+        .btn:active:not(:disabled), .btn-sec:active:not(:disabled) { transform: scale(0.95); }
+        .btn:disabled, .btn-sec:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ───────── Opciones y resumen ───────── */
+        .barra-opciones {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 18px 0 10px 0;
+        }
+
+        .barra-opciones label { font-size: 13px; color: var(--text-sec); }
+
+        .select-opcion {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 7px 12px;
+            font-family: 'Sono', monospace;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        #resumen { flex: 1; text-align: right; font-size: 12px; color: var(--text-sec); min-width: 160px; }
+
+        /* ───────── Lista de archivos ───────── */
+        .lista-subida { display: flex; flex-direction: column; gap: 10px; }
+
+        .fila {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            animation: popWiiU 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .fila.sin-animacion { opacity: 1; animation: none; }
+        .fila .punto { width: 14px; height: 14px; }
+        .fila.invalida { border: 2px solid var(--estado-pendiente); }
+
+        .fila-info { flex: 1; min-width: 0; }
+        .fila-titulo { font-weight: 700; font-size: 15px; overflow-wrap: anywhere; }
+        .fila-sub { font-size: 12px; color: var(--text-sec); margin-top: 2px; overflow-wrap: anywhere; }
+        .fila-aviso { font-size: 12px; color: var(--estado-revisar); margin-top: 2px; }
+        .fila-error { font-size: 12px; color: var(--estado-pendiente); margin-top: 2px; overflow-wrap: anywhere; }
+
+        .chip {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 2px solid currentColor;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .chip.nueva, .chip.ok { color: var(--estado-terminada); }
+        .chip.actualizar { color: var(--accent); }
+        .chip.omitir, .chip.duplicada { color: var(--text-sec); }
+        .chip.invalida, .chip.error { color: var(--estado-pendiente); }
+        .chip.subiendo { color: var(--accent); }
+        .fila .material-symbols-outlined { visibility: visible; opacity: 1; }
+        .chip .material-symbols-outlined { font-size: 14px; }
+        .chip.subiendo .material-symbols-outlined { animation: girarSync 1s linear infinite; }
+
+        .btn-quitar {
+            background: transparent;
+            border: none;
+            color: var(--text-sec);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: inline-flex;
+            transition: color 0.2s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .btn-quitar:hover:not(:disabled) { color: var(--estado-pendiente); transform: scale(1.15); }
+        .btn-quitar:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .vacio { text-align: center; color: var(--text-sec); padding: 24px; font-size: 13px; }
+
+        /* ───────── Barra de subida ───────── */
+        .barra-subida {
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .progreso { flex: 1; min-width: 160px; height: 10px; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
+        .progreso > div { height: 100%; width: 0; background: var(--accent); border-radius: 10px; transition: width 0.25s ease-out; }
+        #texto-progreso { font-size: 12px; color: var(--text-sec); min-width: 90px; }
+
+        /* ───────── Aviso emergente ───────── */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translate(-50%, 20px);
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 2px solid var(--estado-terminada);
+            padding: 12px 20px;
+            border-radius: 16px;
+            font-size: 13px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 500;
+            max-width: 90vw;
+            text-align: center;
+        }
+        #toast.visible { opacity: 1; transform: translate(-50%, 0); }
+        #toast.error { border-color: var(--estado-pendiente); }
+
+        @media (max-width: 600px) {
+            .fila { flex-wrap: wrap; }
+            #resumen { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-superior">
+            <a href="index.html" class="btn-volver">
+                <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span> Ver artistas
+            </a>
+            <div class="header-derecha">
+                <button type="button" id="btn-cerrar-sesion" class="btn-cerrar-sesion">
+                    <span class="material-symbols-outlined" style="font-size:16px;">logout</span> Cerrar sesión
+                </button>
+            </div>
+        </div>
+        <h1>Subir canciones</h1>
+        <p>Sube tus archivos .txt a la base de datos. El contenido se guarda tal cual.</p>
+    </header>
+
+    <main>
+        <section class="guia">
+            Nombre del archivo:
+            <code>--nombreC (artistaP) [albumC - artistaS].txt</code>
+            <div class="leyenda">
+                <span><i class="punto terminada"></i> 0 guiones: terminada</span>
+                <span><i class="punto revisar"></i> 1 guion: por revisar</span>
+                <span><i class="punto pendiente"></i> 2 guiones: sin terminar</span>
+            </div>
+            <b>artistaP</b> es el artista principal (donde se guarda la canción). <b>artistaS</b> es opcional:
+            solo cambia de quién se busca la carátula del álbum. El álbum también es opcional.
+        </section>
+
+        <div id="zona-soltar" class="zona-soltar">
+            <span class="material-symbols-outlined">upload_file</span>
+            <p>Arrastra aquí tus archivos .txt</p>
+            <div class="zona-botones">
+                <button type="button" id="btn-archivos" class="btn">
+                    <span class="material-symbols-outlined" style="font-size:18px;">description</span> Elegir archivos
+                </button>
+                <button type="button" id="btn-carpeta" class="btn-sec">
+                    <span class="material-symbols-outlined" style="font-size:18px;">folder_open</span> Elegir carpeta
+                </button>
+            </div>
+            <input type="file" id="input-archivos" accept=".txt,text/plain" multiple hidden>
+            <input type="file" id="input-carpeta" webkitdirectory multiple hidden>
+        </div>
+
+        <div class="barra-opciones">
+            <label for="si-existe">Si la canción ya existe:</label>
+            <select id="si-existe" class="select-opcion">
+                <option value="actualizar">Actualizarla</option>
+                <option value="omitir">Omitirla</option>
+            </select>
+            <span id="resumen"></span>
+            <button type="button" id="btn-limpiar" class="btn-sec" style="padding:6px 12px; font-size:12px;" disabled>Limpiar lista</button>
+        </div>
+
+        <div id="lista" class="lista-subida">
+            <div class="vacio">Todavía no has elegido archivos.</div>
+        </div>
+
+        <div class="barra-subida">
+            <div class="progreso"><div id="barra-progreso"></div></div>
+            <span id="texto-progreso"></span>
+            <button type="button" id="btn-subir" class="btn" disabled>
+                <span class="material-symbols-outlined" style="font-size:18px;">cloud_upload</span>
+                <span id="texto-btn-subir">Subir canciones</span>
+            </button>
+        </div>
+    </main>
+
+    <div id="toast" role="status"></div>
+
+    <script type="module">
+        import { protegerPaginaAdmin, cerrarSesion } from './js/auth-guard.js';
+        import { FIREBASE_VERSION } from './js/firebase-config.js';
+        import {
+            obtenerCancionesFrescas, obtenerIdsRemotos, sincronizarAhora,
+            escaparHTML, normalizar, ETIQUETA_ESTADO
+        } from './js/api-cliente.js';
+        import { parsearNombreArchivo } from './js/nombre-cancion.js';
+        import { activarAnimacionIconos } from './js/ui.js';
+
+        let iniciado = false;
+
+        protegerPaginaAdmin(() => {
+            if (iniciado) return;      // el aviso de sesión puede repetirse: la página se inicia una sola vez
+            iniciado = true;
+            activarAnimacionIconos();
+
+            const TAM_LOTE = 40;   // canciones por escritura a Firebase
+
+            const zona = document.getElementById('zona-soltar');
+            const inputArchivos = document.getElementById('input-archivos');
+            const inputCarpeta = document.getElementById('input-carpeta');
+            const listaDiv = document.getElementById('lista');
+            const selectSiExiste = document.getElementById('si-existe');
+            const resumen = document.getElementById('resumen');
+            const btnLimpiar = document.getElementById('btn-limpiar');
+            const btnSubir = document.getElementById('btn-subir');
+            const textoBtnSubir = document.getElementById('texto-btn-subir');
+            const barra = document.getElementById('barra-progreso');
+            const textoProgreso = document.getElementById('texto-progreso');
+            const toastEl = document.getElementById('toast');
+
+            let items = [];                    // archivos elegidos
+            let existentes = new Map();        // clave de canción -> id en la base de datos
+            let existentesListos = false;
+            let subiendo = false;
+            let contadorUid = 0;
+
+            // ───────── Utilidades ─────────
+
+            let temporizadorToast = null;
+            function toast(mensaje, error = false) {
+                toastEl.textContent = mensaje;
+                toastEl.className = 'visible' + (error ? ' error' : '');
+                clearTimeout(temporizadorToast);
+                temporizadorToast = setTimeout(() => { toastEl.className = error ? 'error' : ''; }, 4500);
+            }
+
+            // Una canción es "la misma" si coinciden título, artista principal y álbum (sin acentos/mayúsculas)
+            const claveCancion = (p) => `${normalizar(p.nombreC)}|${normalizar(p.artistaP)}|${normalizar(p.albumC)}`;
+
+            async function cargarExistentes() {
+                existentesListos = false;
+                actualizarVista();
+                try {
+                    const lista = await obtenerCancionesFrescas();
+                    existentes = new Map();
+                    lista.forEach(c => {
+                        const k = claveCancion({ nombreC: c.nombreC, artistaP: c.artistaP, albumC: c.albumC });
+                        if (!existentes.has(k)) existentes.set(k, c.idC);
+                    });
+                    existentesListos = true;
+                } catch (err) {
+                    console.error(err);
+                    toast('No se pudo leer la base de datos. Revisa tu conexión o la configuración de Firebase.', true);
+                }
+                actualizarVista();
+            }
+
+            // ───────── Evaluación de cada archivo ─────────
+
+            function evaluar() {
+                const vistos = new Set();
+                for (const it of items) {
+                    if (it.fase === 'ok') { if (it.parsed.ok) vistos.add(claveCancion(it.parsed)); continue; }
+                    it.fase = it.fase === 'error' ? 'error' : 'listo';
+
+                    if (!it.parsed.ok) { it.accion = 'invalida'; continue; }
+
+                    const k = claveCancion(it.parsed);
+                    if (vistos.has(k)) { it.accion = 'duplicada'; it.idExistente = null; continue; }
+                    vistos.add(k);
+
+                    const id = existentes.get(k) || null;
+                    it.idExistente = id;
+                    it.accion = id ? (selectSiExiste.value === 'omitir' ? 'omitir' : 'actualizar') : 'nueva';
+                }
+            }
+
+            const accionSubible = (it) => it.fase !== 'ok' && (it.accion === 'nueva' || it.accion === 'actualizar');
+
+            // ───────── Pintado ─────────
+
+            const CHIPS = {
+                nueva:     { texto: 'Nueva', icono: 'add_circle' },
+                actualizar:{ texto: 'Se actualizará', icono: 'sync' },
+                omitir:    { texto: 'Ya existe: se omite', icono: 'block' },
+                duplicada: { texto: 'Repetida en la lista', icono: 'content_copy' },
+                invalida:  { texto: 'Nombre no válido', icono: 'error' },
+                subiendo:  { texto: 'Subiendo', icono: 'progress_activity' },
+                ok:        { texto: 'Subida', icono: 'check_circle' },
+                error:     { texto: 'Error', icono: 'error' }
+            };
+
+            function crearFila(it, animar, indice) {
+                const fila = document.createElement('div');
+                fila.className = 'fila';
+                if (animar) {
+                    fila.style.animationDelay = `${Math.min(indice, 20) * 0.03}s`;
+                    const terminar = () => { fila.style.animation = 'none'; fila.style.opacity = '1'; };
+                    fila.addEventListener('animationend', terminar, { once: true });
+                    setTimeout(terminar, Math.min(indice, 20) * 30 + 700);
+                } else {
+                    fila.classList.add('sin-animacion');
+                }
+                it.el = fila;
+                return fila;
+            }
+
+            function pintarFila(it) {
+                const fila = it.el;
+                const p = it.parsed;
+                const claveChip = it.fase === 'subiendo' ? 'subiendo'
+                                : it.fase === 'ok' ? 'ok'
+                                : it.fase === 'error' ? 'error'
+                                : it.accion;
+                const chip = CHIPS[claveChip];
+
+                fila.classList.toggle('invalida', !p.ok);
+
+                let html;
+                if (p.ok) {
+                    const sub = [p.artistaP];
+                    if (p.albumC) sub.push(p.albumC);
+                    if (p.artistaS) sub.push(`portada de ${p.artistaS}`);
+                    html = `
+                        <i class="punto ${escaparHTML(p.estado)}" title="${escaparHTML(ETIQUETA_ESTADO[p.estado])}"></i>
+                        <div class="fila-info">
+                            <div class="fila-titulo">${escaparHTML(p.nombreC)}</div>
+                            <div class="fila-sub">${escaparHTML(sub.join(' · '))} · ${escaparHTML(ETIQUETA_ESTADO[p.estado])}</div>
+                            ${it.avisoCodificacion ? '<div class="fila-aviso">Posible problema de acentos: el archivo no parece estar guardado en UTF-8.</div>' : ''}
+                            ${it.mensajeError ? `<div class="fila-error">${escaparHTML(it.mensajeError)}</div>` : ''}
+                        </div>`;
+                } else {
+                    html = `
+                        <i class="punto pendiente"></i>
+                        <div class="fila-info">
+                            <div class="fila-titulo">${escaparHTML(it.nombreArchivo)}</div>
+                            <div class="fila-error">${escaparHTML(p.error)}</div>
+                        </div>`;
+                }
+
+                html += `
+                    <span class="chip ${claveChip}">
+                        <span class="material-symbols-outlined">${chip.icono}</span>${chip.texto}
+                    </span>
+                    <button type="button" class="btn-quitar" title="Quitar de la lista" ${subiendo ? 'disabled' : ''}>
+                        <span class="material-symbols-outlined">close</span>
+                    </button>`;
+
+                fila.innerHTML = html;
+                fila.querySelector('.btn-quitar').onclick = () => quitar(it);
+            }
+
+            function actualizarVista() {
+                evaluar();
+
+                if (items.length === 0) {
+                    listaDiv.innerHTML = '<div class="vacio">Todavía no has elegido archivos.</div>';
+                } else {
+                    const vacio = listaDiv.querySelector('.vacio');
+                    if (vacio) vacio.remove();
+                    items.forEach(it => { if (!it.el.isConnected) listaDiv.appendChild(it.el); pintarFila(it); });
+                }
+
+                const nuevas = items.filter(it => it.fase !== 'ok' && it.accion === 'nueva').length;
+                const actualiza = items.filter(it => it.fase !== 'ok' && it.accion === 'actualizar').length;
+                const invalidas = items.filter(it => it.accion === 'invalida').length;
+                const omitidas = items.filter(it => it.fase !== 'ok' && (it.accion === 'omitir' || it.accion === 'duplicada')).length;
+                const subibles = nuevas + actualiza;
+
+                const partes = [];
+                if (nuevas) partes.push(`${nuevas} nueva${nuevas === 1 ? '' : 's'}`);
+                if (actualiza) partes.push(`${actualiza} por actualizar`);
+                if (omitidas) partes.push(`${omitidas} omitida${omitidas === 1 ? '' : 's'}`);
+                if (invalidas) partes.push(`${invalidas} con error de nombre`);
+                resumen.textContent = existentesListos ? partes.join(' · ') : 'Leyendo canciones existentes...';
+
+                textoBtnSubir.textContent = subibles > 0
+                    ? `Subir ${subibles} ${subibles === 1 ? 'canción' : 'canciones'}`
+                    : 'Subir canciones';
+                btnSubir.disabled = subiendo || !existentesListos || subibles === 0;
+                btnLimpiar.disabled = subiendo || items.length === 0;
+            }
+
+            function quitar(it) {
+                if (subiendo) return;
+                it.el.remove();
+                items = items.filter(x => x !== it);
+                actualizarVista();
+            }
+
+            // ───────── Lectura de archivos ─────────
+
+            async function agregarArchivos(listaArchivos) {
+                const archivos = Array.from(listaArchivos || []);
+                const txt = archivos.filter(f => /\.txt$/i.test(f.name));
+                const ignorados = archivos.length - txt.length;
+                const nuevos = [];
+
+                for (const archivo of txt) {
+                    const it = {
+                        uid: ++contadorUid,
+                        nombreArchivo: archivo.name,
+                        parsed: parsearNombreArchivo(archivo.name),
+                        contenido: '',
+                        avisoCodificacion: false,
+                        fase: 'listo',
+                        accion: 'nueva',
+                        idExistente: null,
+                        mensajeError: ''
+                    };
+
+                    if (it.parsed.ok) {
+                        try {
+                            // El texto se guarda exactamente como está en el archivo
+                            it.contenido = await archivo.text();
+                            it.avisoCodificacion = it.contenido.includes('�');
+                        } catch (err) {
+                            it.parsed = { ok: false, error: 'No se pudo leer el archivo' };
+                        }
+                    }
+                    nuevos.push(it);
+                }
+
+                const primero = items.length;
+                nuevos.forEach((it, i) => {
+                    crearFila(it, true, i);
+                    items.push(it);
+                });
+                actualizarVista();
+
+                if (ignorados > 0) toast(`${ignorados} archivo${ignorados === 1 ? '' : 's'} ignorado${ignorados === 1 ? '' : 's'} (solo se aceptan .txt).`, true);
+                return primero;
+            }
+
+            // ───────── Subida ─────────
+
+            function registro(it, id) {
+                const p = it.parsed;
+                const cancion = {
+                    idC: id,
+                    nombreC: p.nombreC,
+                    artistaP: p.artistaP,
+                    artistaS: p.artistaS,
+                    albumC: p.albumC,
+                    estado: p.estado,
+                    contenido: it.contenido
+                };
+                if (p.albumBusqueda) cancion.albumBusqueda = p.albumBusqueda;
+                return cancion;
+            }
+
+            async function subir() {
+                const pendientes = items.filter(accionSubible);
+                if (pendientes.length === 0 || subiendo) return;
+
+                subiendo = true;
+                pendientes.forEach(it => { it.mensajeError = ''; });
+                btnSubir.disabled = true;
+                barra.style.width = '0%';
+                textoProgreso.textContent = `0 / ${pendientes.length}`;
+                actualizarVista();
+
+                try {
+                    // Siguiente id numérico libre (se consulta justo ahora para no pisar a otro administrador)
+                    let maxId = 0;
+                    let claves = [];
+                    try { claves = await obtenerIdsRemotos(); }
+                    catch (_) { claves = [...existentes.values()]; }
+                    claves.forEach(k => { if (/^\d+$/.test(k)) maxId = Math.max(maxId, parseInt(k, 10)); });
+
+                    const { getDatabase, ref, update } =
+                        await import(`https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-database.js`);
+                    const db = getDatabase();
+
+                    let hechas = 0, fallidas = 0;
+
+                    for (let i = 0; i < pendientes.length; i += TAM_LOTE) {
+                        const lote = pendientes.slice(i, i + TAM_LOTE);
+                        const cambios = {};
+
+                        lote.forEach(it => {
+                            const id = it.idExistente || String(++maxId);
+                            cambios[`canciones/${id}`] = registro(it, id);
+                            it.fase = 'subiendo';
+                            pintarFila(it);
+                        });
+
+                        try {
+                            await update(ref(db), cambios);   // un solo envío por lote: o entra todo o nada
+                            lote.forEach(it => { it.fase = 'ok'; });
+                            hechas += lote.length;
+                        } catch (err) {
+                            console.error(err);
+                            const sinPermiso = err && (err.code === 'PERMISSION_DENIED' || /permission/i.test(err.message || ''));
+                            const mensaje = sinPermiso
+                                ? 'Sin permiso para escribir: revisa las reglas de la base de datos y que tu correo esté autorizado.'
+                                : 'No se pudo subir. Revisa tu conexión e inténtalo de nuevo.';
+                            lote.forEach(it => { it.fase = 'error'; it.mensajeError = mensaje; });
+                            fallidas += lote.length;
+                        }
+
+                        lote.forEach(pintarFila);
+                        const avance = Math.min(i + lote.length, pendientes.length);
+                        barra.style.width = `${Math.round((avance / pendientes.length) * 100)}%`;
+                        textoProgreso.textContent = `${avance} / ${pendientes.length}`;
+                    }
+
+                    if (hechas > 0) {
+                        await sincronizarAhora();      // la copia local ya incluye lo recién subido
+                    }
+                    subiendo = false;
+                    if (hechas > 0) await cargarExistentes();
+
+                    if (fallidas === 0) toast(`Listo: ${hechas} ${hechas === 1 ? 'canción subida' : 'canciones subidas'}.`);
+                    else toast(`${hechas} subida${hechas === 1 ? '' : 's'} y ${fallidas} con error. Puedes reintentar las que fallaron.`, true);
+                } catch (err) {
+                    console.error(err);
+                    toast('Ocurrió un error inesperado al subir.', true);
+                } finally {
+                    subiendo = false;
+                    actualizarVista();
+                }
+            }
+
+            // ───────── Eventos ─────────
+
+            document.getElementById('btn-archivos').onclick = () => inputArchivos.click();
+            document.getElementById('btn-carpeta').onclick = () => inputCarpeta.click();
+
+            [inputArchivos, inputCarpeta].forEach(input => {
+                input.addEventListener('change', async () => {
+                    await agregarArchivos(input.files);
+                    input.value = '';       // permite volver a elegir los mismos archivos
+                });
+            });
+
+            ['dragenter', 'dragover'].forEach(ev => zona.addEventListener(ev, (e) => {
+                e.preventDefault();
+                zona.classList.add('arrastrando');
+            }));
+            ['dragleave', 'drop'].forEach(ev => zona.addEventListener(ev, (e) => {
+                e.preventDefault();
+                zona.classList.remove('arrastrando');
+            }));
+            zona.addEventListener('drop', (e) => agregarArchivos(e.dataTransfer.files));
+
+            // Soltar fuera de la zona no debe abrir el archivo en el navegador
+            window.addEventListener('dragover', (e) => e.preventDefault());
+            window.addEventListener('drop', (e) => e.preventDefault());
+
+            selectSiExiste.addEventListener('change', actualizarVista);
+            btnSubir.addEventListener('click', subir);
+            btnLimpiar.addEventListener('click', () => {
+                if (subiendo) return;
+                items = [];
+                barra.style.width = '0%';
+                textoProgreso.textContent = '';
+                actualizarVista();
+            });
+
+            window.addEventListener('beforeunload', (e) => {
+                if (subiendo) { e.preventDefault(); e.returnValue = ''; }
+            });
+
+            document.getElementById('btn-cerrar-sesion').onclick = async () => {
+                try {
+                    await cerrarSesion();
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    toast('Error al cerrar sesión', true);
+                }
+            };
+
+            actualizarVista();
+            cargarExistentes();
+        });
+    </script>
+</body>
+</html>

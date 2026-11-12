@@ -25,14 +25,14 @@ export function inicializarAutoscroll(btnPlayId, sliderId) {
 export function iniciarAutoscroll(btnPlay, slider) {
     if (intervaloScroll) clearTimeout(intervaloScroll);
     estaScrolleando = true;
-    btnPlay.textContent = "❚❚";
+    btnPlay.textContent = "pause";
     btnPlay.classList.add('activo');
 
     function realizarScroll() {
         if (!estaScrolleando) return;
 
         const velocidadSlider = parseInt(slider.value);
-        const delay = 110 - (velocidadSlider * 10); 
+        const delay = 200 - (velocidadSlider * 10); 
 
         window.scrollBy(0, 1);
 
@@ -51,7 +51,7 @@ export function detenerAutoscroll(btnPlay) {
     estaScrolleando = false;
     if (intervaloScroll) clearTimeout(intervaloScroll);
     if(btnPlay) {
-        btnPlay.textContent = "▶";
+        btnPlay.textContent = "play_arrow";
         btnPlay.classList.remove('activo');
     }
 }

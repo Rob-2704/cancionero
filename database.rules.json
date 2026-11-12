@@ -1,0 +1,19 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "canciones": {
+      ".read": true,
+      ".write": "auth != null && (auth.token.email == 'elgamer00727@gmail.com' || auth.token.email == 'todoeschido21@gmail.com')",
+      "$id": {
+        ".validate": "newData.hasChildren(['nombreC', 'artistaP', 'estado', 'contenido'])",
+        "nombreC": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "artistaP": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "artistaS": { ".validate": "newData.isString()" },
+        "albumC": { ".validate": "newData.isString()" },
+        "estado": { ".validate": "newData.isString() && (newData.val() == 'terminada' || newData.val() == 'revisar' || newData.val() == 'pendiente')" },
+        "contenido": { ".validate": "newData.isString()" }
+      }
+    }
+  }
+}
