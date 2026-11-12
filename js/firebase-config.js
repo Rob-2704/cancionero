@@ -2,14 +2,14 @@
 // ÚNICO lugar donde se configura la NUEVA base de datos de Firebase.
 // Firebase Console → Configuración del proyecto → Tus apps (</>) → "Configuración del SDK" → copia los valores aquí.
 
-export const FIREBASE_CONFIG = {
-    apiKey: "PEGA_AQUI_TU_API_KEY",
-    authDomain: "TU-PROYECTO.firebaseapp.com",
-    databaseURL: "https://TU-PROYECTO-default-rtdb.firebaseio.com",
-    projectId: "TU-PROYECTO",
-    storageBucket: "TU-PROYECTO.firebasestorage.app",
-    messagingSenderId: "000000000000",
-    appId: "1:000000000000:web:0000000000000000000000"
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDXxj5YZe_2lXV0yPez12qwfe7DvdoD34M",
+    authDomain: "cancionero-a09ee.firebaseapp.com",
+    databaseURL: "https://cancionero-a09ee-default-rtdb.firebaseio.com",
+    projectId: "cancionero-a09ee",
+    storageBucket: "cancionero-a09ee.firebasestorage.app",
+    messagingSenderId: "244451211659",
+    appId: "1:244451211659:web:b1161e0135c5fc586cd78e"
 };
 
 export const FIREBASE_VERSION = '10.8.0';
@@ -19,7 +19,6 @@ export const DATABASE_URL = FIREBASE_CONFIG.databaseURL;
 // (deben ser los mismos que pongas en database.rules.json)
 export const ADMINS_PERMITIDOS = [
     "elgamer00727@gmail.com",
-    "todoeschido21@gmail.com"
 ];
 
 // false mientras no hayas pegado tu configuración real
