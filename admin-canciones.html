@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="img/icono.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sono:MONO@0..1&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <link href="style.css" rel="stylesheet">
+    <title>Gestor de Canciones</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #1E1E24;
+            --text-main: #ffffff;
+            --text-sec: #999999;
+            --accent: #BC9731;
+        }
+
+        body {
+            max-width: 80%;
+            margin: 0 auto;
+            background-color: #0d0d0d;
+            font-family: 'Sono', monospace;
+            padding-bottom: 40px;
+        }
+
+        header {
+            position: relative;
+            z-index: 100;
+            isolation: isolate;
+            margin: 0 auto 15px auto;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes deslizarTexto {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIconoPlay {
+            0% { opacity: 0; transform: scale(0.2); }
+            70% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .header-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .header-derecha {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-volver-admin {
+            background-color: transparent;
+            color: var(--text-sec);
+            border: 2px solid var(--text-sec);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Sono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-volver-admin:hover {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
+        .btn-volver-admin:active { transform: scale(0.95); }
+
+        .btn-cerrar-sesion {
+            background-color: transparent;
+            color: #e71d36;
+            border: 2px solid #e71d36;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Sono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s, color 0.2s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-cerrar-sesion:hover {
+            background-color: #e71d36;
+            color: #ffffff;
+        }
+
+        .btn-cerrar-sesion:active { transform: scale(0.95); }
+
+        .grupo-zip {
+            display: inline-flex;
+            align-items: center;
+            background-color: transparent;
+            border: 2px solid #2ec4b6;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .grupo-zip:hover { transform: scale(1.02); }
+
+        .select-zip-mini {
+            background-color: transparent;
+            color: #2ec4b6;
+            border: none;
+            padding: 6px 26px 6px 10px;
+            font-family: 'Sono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232ec4b6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            background-size: 12px;
+        }
+        .select-zip-mini option {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+        }
+
+        .btn-zip-mini {
+            background-color: #2ec4b6;
+            color: var(--bg-color);
+            border: none;
+            padding: 8px 12px;
+            font-family: 'Sono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-zip-mini:hover { opacity: 0.9; }
+        .btn-zip-mini:active { transform: scale(0.96); }
+
+        h1 {
+            margin: 0;
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: deslizarTexto 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @media (max-width: 600px) {
+            body { max-width: 92%; }
+            h1 { font-size: 32px; }
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 13px;
+            color: var(--text-sec);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: deslizarTexto 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s forwards;
+        }
+
+        .btn-crear {
+            background-color: var(--accent);
+            color: var(--bg-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-family: 'Sono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (hover: hover) {
+            .btn-crear:hover { transform: scale(1.05); }
+        }
+        .btn-crear:active { transform: scale(0.95); }
+
+        .titulo-seccion {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 18px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Sono', monospace;
+        }
+
+        .contador-canciones {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-sec);
+        }
+
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined' !important;
+            user-select: none;
+            font-weight: normal !important;
+            font-style: normal !important;
+            font-feature-settings: 'liga';
+            -webkit-font-feature-settings: 'liga';
+            visibility: hidden;
+            opacity: 0;
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            will-change: transform, opacity, visibility;
+        }
+
+        .icono-grabacion {
+            font-family: 'Material Symbols Outlined' !important;
+            font-size: 20px;
+            color: var(--accent);
+            user-select: none;
+            font-weight: normal !important;
+            font-style: normal !important;
+            font-feature-settings: 'liga';
+            -webkit-font-feature-settings: 'liga';
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+            visibility: hidden;
+            opacity: 0;
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            will-change: transform, opacity, visibility;
+        }
+
+        .fuente-cargada {
+            visibility: visible !important;
+            animation: popIconoPlay 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+        }
+
+        .contenedor-filtro {
+            margin: 12px 0 10px 0;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 100;
+        }
+
+        .contenedor-busqueda {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+            z-index: 101;
+        }
+
+        .select-filtro,
+        .input-busqueda {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-family: 'Sono', monospace;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .select-filtro {
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            padding-right: 36px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23bc9731' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 14px;
+        }
+
+        .select-filtro option {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+        }
+
+        .select-filtro:hover,
+        .input-busqueda:hover { transform: translateY(-1px); }
+
+        .select-filtro:active,
+        .input-busqueda:active { transform: translateY(1px) scale(0.98); }
+
+        .input-busqueda { width: 100%; box-sizing: border-box; }
+        .select-filtro:focus,
+        .input-busqueda:focus { border-color: var(--text-main); }
+        .input-busqueda::placeholder { color: var(--text-sec); opacity: 0.7; }
+
+        .lista-canciones {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 600px) { .lista-canciones { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 900px) { .lista-canciones { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1200px) { .lista-canciones { grid-template-columns: repeat(4, 1fr); } }
+
+        .fila-cancion {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            opacity: 0;
+            animation: popWiiU 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            outline: none;
+        }
+
+        @media (hover: hover) {
+            .fila-cancion:hover { transform: scale(1.05); z-index: 2; }
+        }
+        .fila-cancion:active { transform: scale(1.05); }
+        .fila-cancion:focus-visible { box-shadow: 0 0 0 2px var(--accent); }
+
+        .fila-cancion h2 {
+            margin: 0 0 12px 0;
+            gap: 10px;
+            padding-bottom: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .contenedor-iconos-header { display: inline-flex; align-items: center; gap: 8px; }
+
+        .estado-icono { display: inline-block; width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+        .estado-icono.terminada { background-color: #2ec4b6; }
+        .estado-icono.revisar { background-color: #f5c518; }
+        .estado-icono.pendiente { background-color: #e71d36; }
+
+        .fila-cancion .meta { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--text-sec); }
+        .cargando { text-align: center; color: var(--accent); padding: 20px; font-family: 'Sono', monospace; grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-superior">
+            <a href="index.html" class="btn-volver-admin">← Ver artistas</a>
+            <div class="header-derecha">
+                <a href="subir-canciones.html" class="btn-volver-admin">
+                    <span class="material-symbols-outlined" style="font-size:16px;">upload_file</span> Subir
+                </a>
+                <div class="grupo-zip">
+                    <button type="button" id="btn-descargar-zip" class="btn-zip-mini" title="Descargar todas las canciones en un ZIP, organizadas por carpeta">
+                        <span class="material-symbols-outlined" style="font-size:15px;">folder_zip</span> ZIP
+                    </button>
+                </div>
+                <button type="button" id="btn-cerrar-sesion" class="btn-cerrar-sesion">
+                    <span class="material-symbols-outlined" style="font-size:16px;">logout</span> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+        <h1>Gestor de Canciones</h1>
+        <p>Toca una canción para editarla, borrarla o descargarla, o crea una nueva</p>
+    </header>
+
+    <main>
+        <div class="titulo-seccion">
+            <span class="material-symbols-outlined">queue_music</span> Canciones
+            <span id="contador-canciones" class="contador-canciones"></span>
+        </div>
+
+        <div class="contenedor-filtro">
+            <a href="editor-cancion.html" class="btn-crear">
+                <span class="material-symbols-outlined" style="font-size:16px;">add</span> Añadir canción
+            </a>
+            <select id="select-carpeta" class="select-filtro" title="Carpeta">
+                <option value="todas">Todas las carpetas</option>
+            </select>
+            <select id="select-estado" class="select-filtro" title="Estado">
+                <option value="todos">Cualquier estado</option>
+                <option value="terminada">Terminada</option>
+                <option value="revisar">Por revisar</option>
+                <option value="pendiente">Sin terminar</option>
+            </select>
+            <div class="contenedor-busqueda">
+                <input type="text" id="input-busqueda" class="input-busqueda" placeholder="Buscar canción, artista, álbum o carpeta..." autocomplete="off">
+            </div>
+        </div>
+
+        <div id="lista-canciones" class="lista-canciones">
+            <div class="cargando">Cargando canciones...</div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { protegerPaginaAdmin, cerrarSesion } from './js/auth-guard.js';
+        import { obtenerCanciones, obtenerContenidoCancion, sincronizarAhora, ETIQUETA_ESTADO, ORDEN_ESTADO } from './js/api-cliente.js';
+        import { construirNombreArchivo } from './js/nombre-cancion.js';
+
+        protegerPaginaAdmin((user) => {
+            const btnCerrarSesion = document.getElementById('btn-cerrar-sesion');
+
+            btnCerrarSesion.onclick = async () => {
+                try {
+                    await cerrarSesion();
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    alert('Error al cerrar sesión');
+                }
+            };
+
+            const listaDiv = document.getElementById('lista-canciones');
+            const selectCarpeta = document.getElementById('select-carpeta');
+            const selectEstado = document.getElementById('select-estado');
+            const inputBusqueda = document.getElementById('input-busqueda');
+            const contador = document.getElementById('contador-canciones');
+            const btnDescargarZip = document.getElementById('btn-descargar-zip');
+
+            let cancionesGlobal = [];
+
+            function normalizarTexto(texto) {
+                return (texto || '')
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[̀-ͯ]/g, "")
+                    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"']/g, "")
+                    .replace(/\s+/g, " ")
+                    .trim();
+            }
+
+            function escaparHTML(texto) {
+                return String(texto ?? '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            function activarAnimacionIconos() {
+                document.fonts.ready.then(() => {
+                    document.querySelectorAll('.material-symbols-outlined, .icono-grabacion').forEach(icono => {
+                        icono.classList.add('fuente-cargada');
+                    });
+                });
+            }
+
+            function obtenerNumColumnas() {
+                const ancho = window.innerWidth;
+                if (ancho >= 1200) return 4;
+                if (ancho >= 900) return 3;
+                if (ancho >= 600) return 2;
+                return 1;
+            }
+
+            function abrirEditor(idC) {
+                window.location.href = `editor-cancion.html?idC=${encodeURIComponent(idC)}`;
+            }
+
+            // Llena el selector de carpetas conservando la elección actual
+            function actualizarCarpetas() {
+                const actual = selectCarpeta.value;
+                const carpetas = [...new Set(cancionesGlobal.map(c => c.carpeta))]
+                    .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
+                selectCarpeta.innerHTML = '<option value="todas">Todas las carpetas</option>';
+                carpetas.forEach(nombre => {
+                    const o = document.createElement('option');
+                    o.value = nombre;
+                    o.textContent = nombre;
+                    selectCarpeta.appendChild(o);
+                });
+                selectCarpeta.value = carpetas.includes(actual) ? actual : 'todas';
+            }
+
+            btnDescargarZip.onclick = async () => {
+                if (cancionesGlobal.length === 0) {
+                    alert('No hay canciones para descargar.');
+                    return;
+                }
+
+                const zip = new JSZip();
+                const textoOriginalBtn = btnDescargarZip.innerHTML;
+                btnDescargarZip.innerHTML = `<span class="material-symbols-outlined" style="font-size:15px;">progress_activity</span>`;
+                btnDescargarZip.disabled = true;
+
+                try {
+                    const usados = new Set();
+                    for (const c of cancionesGlobal) {
+                        const completa = await obtenerContenidoCancion(c.idC);
+                        const texto = completa && !completa.error ? (completa.contenido || '') : '';
+
+                        // Estructura: Carpeta/--nombre (artista) [artistaS - album].txt (igual que al subirlas)
+                        const carpeta = c.carpeta.replace(/[<>:"/\\|?*]/g, '').trim() || 'Sin carpeta';
+                        let nombre = construirNombreArchivo(c);
+                        let ruta = `${carpeta}/${nombre}`;
+                        for (let n = 2; usados.has(ruta.toLowerCase()); n++) {
+                            ruta = `${carpeta}/${nombre.replace(/\.txt$/, '')} (${n}).txt`;
+                        }
+                        usados.add(ruta.toLowerCase());
+                        zip.file(ruta, texto);
+                    }
+
+                    const contenidoZip = await zip.generateAsync({ type: "blob" });
+                    const url = URL.createObjectURL(contenidoZip);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Canciones.zip';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } catch (err) {
+                    console.error("Error al generar el ZIP:", err);
+                    alert("Ocurrió un error al generar el archivo ZIP.");
+                } finally {
+                    btnDescargarZip.innerHTML = textoOriginalBtn;
+                    btnDescargarZip.disabled = false;
+                    activarAnimacionIconos();
+                }
+            };
+
+            function renderizarLista() {
+                const carpetaSel = selectCarpeta.value;
+                const estadoSel = selectEstado.value;
+                const textoBusqueda = normalizarTexto(inputBusqueda.value);
+                listaDiv.innerHTML = "";
+
+                const filtradas = cancionesGlobal.filter(c => {
+                    if (carpetaSel !== 'todas' && c.carpeta !== carpetaSel) return false;
+                    if (estadoSel !== 'todos' && c.estado !== estadoSel) return false;
+                    return normalizarTexto([c.nombreC, c.artistaP, c.artistaS, c.albumC, c.carpeta].join(' ')).includes(textoBusqueda);
+                });
+
+                contador.textContent = `(${filtradas.length})`;
+
+                if (filtradas.length === 0) {
+                    listaDiv.innerHTML = "<div class='cargando'>No se encontraron canciones.</div>";
+                    return;
+                }
+
+                const fragmento = document.createDocumentFragment();
+                const numColumnas = obtenerNumColumnas();
+
+                filtradas.forEach((cancion, indice) => {
+                    const fila = document.createElement('div');
+                    fila.className = "fila-cancion";
+                    fila.tabIndex = 0;
+                    fila.setAttribute('role', 'link');
+
+                    const retraso = (Math.floor(indice / numColumnas) + (indice % numColumnas)) * 0.025;
+                    fila.style.animationDelay = `${retraso}s`;
+
+                    const terminarEntrada = () => { fila.style.animation = 'none'; fila.style.opacity = '1'; };
+                    fila.addEventListener('animationend', terminarEntrada);
+                    setTimeout(terminarEntrada, retraso * 1000 + 700);
+
+                    fila.onclick = () => abrirEditor(cancion.idC);
+                    fila.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') abrirEditor(cancion.idC);
+                    });
+
+                    const claseEstado = cancion.estado || 'terminada';
+                    const artistas = [cancion.artistaP, cancion.artistaS].filter(Boolean).join(' / ');
+
+                    fila.innerHTML = `
+                        <h2>
+                            <span>${escaparHTML(cancion.nombreC)}</span>
+                            <span class="contenedor-iconos-header">
+                                <span class="icono-grabacion" title="Editar canción">edit</span>
+                                <span class="estado-icono ${escaparHTML(claseEstado)}" title="${escaparHTML(ETIQUETA_ESTADO[claseEstado] || claseEstado)}"></span>
+                            </span>
+                        </h2>
+                        <div class="meta">
+                            <span>Carpeta: ${escaparHTML(cancion.carpeta)}</span>
+                            <span>Artista: ${escaparHTML(artistas) || '—'}</span>
+                            <span>Álbum: ${escaparHTML(cancion.albumC) || '—'}</span>
+                        </div>
+                    `;
+                    fragmento.appendChild(fila);
+                });
+
+                listaDiv.appendChild(fragmento);
+                activarAnimacionIconos();
+            }
+
+            async function init() {
+                activarAnimacionIconos();
+                try {
+                    cancionesGlobal = (await obtenerCanciones()).slice()
+                        .sort((a, b) => a.carpeta.localeCompare(b.carpeta, 'es', { sensitivity: 'base' })
+                            || (ORDEN_ESTADO[a.estado] ?? 0) - (ORDEN_ESTADO[b.estado] ?? 0)
+                            || a.nombreC.localeCompare(b.nombreC, 'es', { sensitivity: 'base' }));
+                    actualizarCarpetas();
+
+                    renderizarLista();
+                } catch (err) {
+                    console.error(err);
+                    listaDiv.innerHTML = "<div class='cargando'>Error al cargar las canciones.</div>";
+                }
+            }
+
+            selectCarpeta.addEventListener('change', renderizarLista);
+            selectEstado.addEventListener('change', renderizarLista);
+            inputBusqueda.addEventListener('input', renderizarLista);
+
+            init();
+
+            // Si llegan datos nuevos de Firebase mientras la página está abierta, se actualiza la lista
+            sincronizarAhora().then(async () => {
+                const nuevas = await obtenerCanciones();
+                if (nuevas.length !== cancionesGlobal.length || JSON.stringify(nuevas.map(c => c.idC + c.nombreC + c.carpeta + c.estado)) !== JSON.stringify(cancionesGlobal.map(c => c.idC + c.nombreC + c.carpeta + c.estado))) {
+                    await init();
+                }
+            }).catch(() => {});
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const VERSION = '1.0';
+const VERSION = '1.1';
 const CACHE_APP = `cancionero-artistas-app-${VERSION}`;
 const CACHE_CDN = 'cancionero-artistas-cdn-v1';
 const CACHE_MUESTRAS = 'cancionero-artistas-muestras-v1';
@@ -9,6 +9,8 @@ const ASSETS_TO_CACHE = [
   './canciones.html',
   './visor.html',
   './subir-canciones.html',
+  './admin-canciones.html',
+  './editor-cancion.html',
   './style.css',
   './manifest.json',
   './portadas-artistas-cache.json',
@@ -33,7 +35,8 @@ const FIREBASE_BASE = 'https://www.gstatic.com/firebasejs/10.8.0/';
 const CDN_PRECARGA = [
   `${FIREBASE_BASE}firebase-app.js`,
   `${FIREBASE_BASE}firebase-database.js`,
-  `${FIREBASE_BASE}firebase-auth.js`
+  `${FIREBASE_BASE}firebase-auth.js`,
+  'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'
 ];
 
 const FUENTES_CSS = [

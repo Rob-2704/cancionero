@@ -6,7 +6,8 @@
 //   · Portada de álbum: iTunes, en el navegador (con artista secundario si existe).
 //
 // Registro de una canción:
-//   { idC, nombreC, artistaP, artistaS, albumC, albumBusqueda, estado, contenido }
+//   { idC, nombreC, carpeta, artistaP, artistaS, albumC, albumBusqueda, estado, contenido }
+//   carpeta = dónde se organiza la canción en la página · artistaP/artistaS = solo para la carátula
 
 import { FIREBASE_CONFIG, FIREBASE_VERSION, DATABASE_URL, CONFIGURADO } from './firebase-config.js';
 import { ESTADOS, ORDEN_ESTADO, normalizar, slugArtista } from './nombre-cancion.js';
@@ -183,10 +184,13 @@ function normalizarCanciones(crudo) {
         const nombreC = texto(c.nombreC).trim();
         if (!nombreC) continue;
 
+        const artistaP = texto(c.artistaP).trim();
         salida[id] = {
             idC: id,
             nombreC,
-            artistaP: texto(c.artistaP).trim() || ARTISTA_SIN_NOMBRE,
+            // Registros sin carpeta (formato anterior): se organizan por su artista
+            carpeta: texto(c.carpeta).trim() || artistaP || ARTISTA_SIN_NOMBRE,
+            artistaP,
             artistaS: texto(c.artistaS).trim(),
             albumC: texto(c.albumC).trim(),
             albumBusqueda: texto(c.albumBusqueda).trim(),
@@ -342,12 +346,14 @@ function resumen(c) {
     return {
         idC: c.idC,
         nombreC: c.nombreC,
+        carpeta: c.carpeta,
         artistaP: c.artistaP,
         artistaS: c.artistaS,
         albumC: c.albumC,
         albumBusqueda: c.albumBusqueda,
         estado: c.estado,
-        artistaCaratula: c.artistaS || c.artistaP
+        // La carátula se busca con el artista secundario, o el principal, o (si no hay) la carpeta
+        artistaCaratula: c.artistaS || c.artistaP || c.carpeta
     };
 }
 
@@ -363,19 +369,19 @@ export async function obtenerCancionesFrescas() {
     return Object.values(datosCanciones || {}).map(resumen);
 }
 
-// "José José", "jose jose" y "JOSE JOSE" son el mismo artista (mismo idA). Para mostrarlo se usa la
-// escritura que más se repite; si empatan, la de la canción más antigua.
+// Carpetas "Los Panchos", "los panchos" y "LOS PANCHOS" son el mismo grupo (mismo idA). Para mostrarlo se usa
+// la escritura que más se repite; si empatan, la de la canción más antigua.
 function nombresCanonicos() {
     const grupos = new Map();   // idA -> Map(escritura -> { veces, idMin })
     for (const c of Object.values(datosCanciones || {})) {
-        const idA = slugArtista(c.artistaP);
+        const idA = slugArtista(c.carpeta);
         if (!grupos.has(idA)) grupos.set(idA, new Map());
         const escrituras = grupos.get(idA);
         const num = /^\d+$/.test(c.idC) ? Number(c.idC) : Number.MAX_SAFE_INTEGER;
-        const actual = escrituras.get(c.artistaP) || { veces: 0, idMin: num };
+        const actual = escrituras.get(c.carpeta) || { veces: 0, idMin: num };
         actual.veces++;
         actual.idMin = Math.min(actual.idMin, num);
-        escrituras.set(c.artistaP, actual);
+        escrituras.set(c.carpeta, actual);
     }
 
     const nombres = new Map();
@@ -387,14 +393,14 @@ function nombresCanonicos() {
     return nombres;
 }
 
-// Agrupa por artista principal: [{ idA, nombreA, total }] ordenado alfabéticamente
+// Agrupa por carpeta: [{ idA, nombreA, total }] ordenado alfabéticamente (nombreA = nombre de la carpeta)
 export async function obtenerArtistas() {
     await cargarCanciones();
     const nombres = nombresCanonicos();
     const totales = new Map();
 
     for (const c of Object.values(datosCanciones || {})) {
-        const idA = slugArtista(c.artistaP);
+        const idA = slugArtista(c.carpeta);
         totales.set(idA, (totales.get(idA) || 0) + 1);
     }
 
@@ -409,7 +415,7 @@ export async function obtenerCancionesDeArtista(idA) {
     const canciones = await obtenerCanciones();
     const nombreA = nombresCanonicos().get(idA);
     return canciones
-        .filter(c => slugArtista(c.artistaP) === idA)
+        .filter(c => slugArtista(c.carpeta) === idA)
         .map(c => ({ ...c, nombreA }))
         .sort((a, b) => (ORDEN_ESTADO[a.estado] - ORDEN_ESTADO[b.estado]) || comparar(a.nombreC, b.nombreC));
 }
@@ -432,8 +438,8 @@ export async function obtenerContenidoCancion(idC) {
     }
 
     if (!c) return { error: 'Canción no encontrada' };
-    const idA = slugArtista(c.artistaP);
-    return { ...c, idA, nombreA: nombresCanonicos().get(idA) || c.artistaP };
+    const idA = slugArtista(c.carpeta);
+    return { ...c, idA, nombreA: nombresCanonicos().get(idA) || c.carpeta };
 }
 
 // ───────────────────────── Portadas ─────────────────────────

@@ -2,7 +2,7 @@
 // ÚNICO lugar donde se configura la NUEVA base de datos de Firebase.
 // Firebase Console → Configuración del proyecto → Tus apps (</>) → "Configuración del SDK" → copia los valores aquí.
 
-const FIREBASE_CONFIG = {
+export const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDXxj5YZe_2lXV0yPez12qwfe7DvdoD34M",
     authDomain: "cancionero-a09ee.firebaseapp.com",
     databaseURL: "https://cancionero-a09ee-default-rtdb.firebaseio.com",

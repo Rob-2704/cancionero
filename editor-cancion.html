@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="img/icono.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sono:MONO@0..1&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" />
+
+    <title>Editor de Canción</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #1E1E24;
+            --text-main: #ffffff;
+            --text-sec: #999999;
+            --accent: #BC9731;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            padding-bottom: 120px;
+            font-family: 'Sono', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 40px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 90%;
+            margin: 0 auto;
+            min-width: 0;
+        }
+
+        @keyframes fadeInImagen {
+            0% { opacity: 0; }
+            100% { opacity: 0.18; }
+        }
+
+        @keyframes extenderContenedor {
+            0% { opacity: 0; transform: scaleY(0.7); transform-origin: top; }
+            70% { opacity: 1; transform: scaleY(1.025); transform-origin: top; }
+            100% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+        }
+
+        @keyframes fadeInTexto {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes desplegarCortina {
+            0% { opacity: 0; max-height: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; transform: scaleY(0); transform-origin: top; }
+            70% { opacity: 1; max-height: 250px; margin-bottom: 10px; padding-top: 12px; padding-bottom: 12px; transform: scaleY(1.05); transform-origin: top; }
+            100% { opacity: 1; max-height: 300px; margin-bottom: 10px; padding-top: 12px; padding-bottom: 12px; transform: scaleY(1); transform-origin: top; }
+        }
+
+        @keyframes popControlAudio {
+            0% { opacity: 0; transform: scale(0.4); }
+            75% { opacity: 1; transform: scale(1.15); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes deslizarTexto {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popBadgeCapo {
+            0% { opacity: 0; transform: scale(0.5); }
+            70% { opacity: 1; transform: scale(1.12); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes popModalEntrada {
+            0% { opacity: 0; transform: scale(0.6) translateY(12px); }
+            70% { opacity: 1; transform: scale(1.06) translateY(-2px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes popModalSalida {
+            0% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(0.7) translateY(8px); }
+        }
+
+        @keyframes deslizarElementoInferior {
+            0% { opacity: 0; transform: translateY(45px); }
+            70% { opacity: 1; transform: translateY(-4px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes girarSpinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes subirToast {
+            0% { opacity: 0; transform: translate(-50%, 20px); }
+            100% { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .header-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .btn-volver-admin {
+            background-color: transparent;
+            color: var(--text-sec);
+            border: 2px solid var(--text-sec);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Sono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-volver-admin:hover {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
+        .btn-volver-admin:active { transform: scale(0.95); }
+
+        .info-cabecera {
+            margin-bottom: 10px;
+        }
+
+        .titulo-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .campo-titulo {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+            padding: 0 0 2px 0;
+            font-family: 'Sono', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-main);
+            background: transparent;
+            border: none;
+            border-bottom: 2px dashed transparent;
+            outline: none;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: deslizarTexto 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transition: border-color 0.2s ease;
+        }
+
+        .campo-titulo::placeholder,
+        .campo-artista::placeholder {
+            color: var(--text-sec);
+            opacity: 0.6;
+            font-weight: 400;
+        }
+
+        .badge-capo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: popBadgeCapo 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .fila-artista {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin: 5px 0 10px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: deslizarTexto 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s forwards;
+        }
+
+        .etiqueta-artista {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .campo-artista {
+            flex: 1;
+            min-width: 0;
+            padding: 0 0 2px 0;
+            font-family: 'Sono', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-main);
+            background: transparent;
+            border: none;
+            border-bottom: 2px dashed transparent;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        @media (hover: hover) {
+            .campo-titulo:hover,
+            .campo-artista:hover { border-bottom-color: rgba(188, 151, 49, 0.45); }
+        }
+        .campo-titulo:focus,
+        .campo-artista:focus { border-bottom-color: var(--accent); }
+
+        .campos-cancion {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px 28px;
+            margin: 8px 0 12px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent);
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: deslizarTexto 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s forwards;
+        }
+
+        .campo-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .campo-meta label { font-size: 11px; color: var(--text-sec); letter-spacing: 0.3px; }
+
+        .campo-meta input {
+            width: 100%;
+            padding: 0 0 2px 0;
+            font-family: 'Sono', sans-serif;
+            font-size: 16px;
+            color: var(--text-main);
+            background: transparent;
+            border: none;
+            border-bottom: 2px dashed rgba(188, 151, 49, 0.25);
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .campo-meta input::placeholder { color: var(--text-sec); opacity: 0.5; }
+        .campo-meta input:focus { border-bottom-color: var(--accent); }
+        @media (hover: hover) { .campo-meta input:hover { border-bottom-color: rgba(188, 151, 49, 0.55); } }
+
+        @media (max-width: 600px) { .campos-cancion { grid-template-columns: 1fr; } }
+
+        .btn-toggle-transponer.peligro .material-symbols-outlined { color: #e71d36; }
+        @media (hover: hover) { .btn-toggle-transponer.peligro:hover:not(:disabled) { border-color: #e71d36; } }
+        .btn-toggle-transponer[hidden] { display: none; }
+
+        .contenedor-ajustes {
+            background: var(--card-bg);
+            padding: 12px 25px;
+            border-radius: 50px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 3%;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            will-change: transform, opacity, max-height, margin-bottom, padding;
+            animation: desplegarCortina 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .grupo-ajuste {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: popControlAudio 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .grupo-ajuste:nth-child(1) { animation-delay: 0.10s; }
+        .grupo-ajuste:nth-child(2) { animation-delay: 0.16s; }
+
+        .icono-ajuste {
+            color: var(--accent);
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .contenedor-punto {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .punto-estado {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background-color: #2ec4b6;
+            transition: background-color 0.2s ease;
+        }
+        .punto-estado.revisar { background-color: #f5c518; }
+        .punto-estado.pendiente { background-color: #e71d36; }
+
+        .select-ajuste {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            border: 2px solid var(--accent);
+            border-radius: 50px;
+            padding: 6px 34px 6px 16px;
+            font-family: 'Sono', monospace;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23bc9731' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .select-ajuste:focus { border-color: var(--text-main); }
+
+        .select-ajuste option {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+        }
+
+        .workspace {
+            display: grid;
+            gap: 30px;
+            margin: 0 auto;
+            align-items: start;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .workspace > div {
+            min-width: 0;
+            width: 100%;
+        }
+
+        .letra-contenedor {
+            position: relative;
+            background: var(--text-main);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow-x: auto;
+            overflow-y: hidden; 
+            z-index: 1;
+            
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: extenderContenedor 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+        }
+
+        .letra-contenedor::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 85%;
+            background-image: url('img/fondo.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 0;
+            will-change: opacity;
+
+            -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 90%);
+            mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 90%);
+        }
+
+        .letra-contenedor.fondo-activo::before {
+            animation: fadeInImagen 0.5s ease-out forwards;
+        }
+
+        .letra-texto,
+        .letra-editable {
+            position: relative;
+            z-index: 1;
+            display: block;
+            font-family: 'Sono', monospace;
+            font-variation-settings: 'MONO' 1;
+            font-size: clamp(10px, 1.3vw, 16px);
+            color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            white-space: pre;
+            word-break: normal;
+            overflow-wrap: normal;
+            overflow-x: visible;
+            width: max-content;
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .letra-texto {
+            opacity: 1;
+            will-change: transform, opacity;
+        }
+
+        .letra-texto.animar-entrada-texto,
+        .letra-editable.animar-entrada-texto {
+            animation: fadeInTexto 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .letra-editable {
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            overflow-y: hidden;
+            min-height: 320px;
+            caret-color: #0066cc;
+            tab-size: 4;
+        }
+
+        .letra-editable::placeholder {
+            color: #888;
+            opacity: 0.8;
+        }
+
+        .modo-edicion .letra-texto { display: none; }
+        .modo-vista .letra-editable { display: none; }
+
+        .acorde-link {
+            color: #0066cc;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Área táctil ampliada: no cambia el diseño, solo agranda la zona clicable */
+        .acorde-link { position: relative; }
+        .acorde-link::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            bottom: -10px;
+            left: -7px;
+            right: -7px;
+        }
+
+        .barra-compas {
+            color: var(--bg-color);
+            font-weight: bold;
+        }
+
+        .ayuda-formato {
+            margin: 12px 4px 0 4px;
+            font-family: 'Sono', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text-sec);
+        }
+
+        .ayuda-formato code {
+            font-family: 'Sono', monospace;
+            color: var(--accent);
+        }
+
+        .modo-vista .ayuda-formato { display: none; }
+
+        .caja-acorde-emergente {
+            position: fixed;
+            display: none;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 12px;
+            z-index: 1000;
+            width: fit-content;
+            max-width: 90vw;
+            text-align: center;
+            will-change: transform, opacity;
+        }
+
+        .caja-acorde-emergente.animar-entrada {
+            animation: popModalEntrada 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .caja-acorde-emergente.animar-salida {
+            animation: popModalSalida 0.18s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .caja-acorde-emergente h4 {
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            font-family: 'Sono', sans-serif;
+            font-variation-settings: 'MONO' 0;
+        }
+
+        #wrapper-render {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 5px 0 0 0;
+        }
+
+        #panel-flotante-wrapper {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 999;
+        }
+
+        .fila-inferior {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 360px;
+            max-width: 90vw;
+        }
+
+        .panel-scroll-flotante {
+            background: var(--card-bg);
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        #panel-modo {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 12px 18px;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: deslizarElementoInferior 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) 0.22s forwards;
+        }
+
+        .selector-modo {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 50px;
+            padding: 3px;
+        }
+
+        .opcion-modo {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            height: 32px;
+            padding: 0 12px;
+            border: none;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--text-sec);
+            font-family: 'Sono', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .opcion-modo .material-symbols-outlined {
+            font-size: 18px;
+        }
+
+        .opcion-modo.activa {
+            background: var(--accent);
+            color: var(--bg-color);
+        }
+
+        @media (hover: hover) {
+            .opcion-modo:not(.activa):hover { background: rgba(255, 255, 255, 0.12); color: var(--text-main); }
+        }
+
+        .btn-toggle-transponer {
+            font-family: 'Sono', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            flex-shrink: 0;
+            background: var(--card-bg);
+            border: 2px solid var(--card-bg);
+            color: var(--text-main);
+            height: 62px;
+            width: 62px;
+            padding: 0;
+            font-size: 11px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: deslizarElementoInferior 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+            flex-direction: column;
+            gap: 1px;
+            line-height: 1;
+        }
+
+        .btn-toggle-transponer .material-symbols-outlined {
+            font-size: 22px;
+            color: var(--accent);
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            transition: color 0.2s ease;
+        }
+
+        .btn-toggle-transponer.animacion-completada {
+            opacity: 1;
+            transform: translateY(0);
+            animation: none;
+        }
+
+        #texto-guardar {
+            display: none;
+        }
+
+        .btn-toggle-transponer.pendiente-guardar {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .btn-toggle-transponer.guardando .material-symbols-outlined {
+            animation: girarSpinner 0.8s linear infinite;
+        }
+
+        .btn-toggle-transponer:disabled {
+            cursor: default;
+            filter: grayscale(0.4);
+        }
+
+        .btn-toggle-transponer {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn-toggle-transponer:active:not(:disabled) {
+            transform: scale(1.12) !important;
+        }
+
+        @media (hover: hover) {
+            .btn-toggle-transponer:hover:not(:disabled) {
+                transform: scale(1.1) !important;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 110px;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 2px solid var(--accent);
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-family: 'Sono', monospace;
+            font-size: 13px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+            max-width: 90vw;
+            text-align: center;
+            display: none;
+        }
+
+        .toast.visible {
+            display: block;
+            animation: subirToast 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .toast.error { border-color: #e71d36; }
+
+        @media (max-width: 600px) {
+            .caja-acorde-emergente {
+                padding: 8px 12px;
+                border-radius: 20px;
+            }
+
+            .caja-acorde-emergente h4 {
+                font-size: 14px;
+                margin-bottom: 2px;
+            }
+
+            .titulo-row {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .badge-capo {
+                font-size: 12px;
+                padding: 4px 10px;
+            }
+
+            .contenedor-ajustes {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 14px 16px;
+                border-radius: 24px;
+                gap: 12px;
+            }
+
+            .grupo-ajuste {
+                width: 100%;
+                justify-content: flex-start;
+                align-items: center;
+            }
+
+            .select-ajuste {
+                flex: 1;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .campo-artista,
+            .fila-artista { font-size: 16px; }
+        }
+
+        @media (max-width: 1300px) {
+            body {
+                padding: 40px 5px 100px 5px;
+            }
+
+            .workspace {
+                display: flex;
+                flex-direction: column-reverse;
+                gap: 20px;
+                width: 100%;
+                min-width: 0;
+            }
+
+            .workspace > div {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .letra-contenedor {
+                padding: 30px;
+            }
+
+            .letra-texto,
+            .letra-editable {
+                line-height: 1.5;
+                letter-spacing: -0.3px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .fila-inferior { width: 90vw; }
+        }
+    </style>
+</head>
+<body class="modo-edicion">
+    <div class="container">
+        <div class="header-superior">
+            <a href="admin-canciones.html" class="btn-volver-admin">← Volver al gestor</a>
+        </div>
+
+        <div class="info-cabecera">
+            <div class="titulo-row">
+                <input type="text" id="input-titulo" class="campo-titulo" placeholder="Título de la canción" autocomplete="off" spellcheck="false">
+                <div id="badge-capo" class="badge-capo" style="display: none;">
+                    <span id="texto-capo"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="campos-cancion">
+            <div class="campo-meta">
+                <label for="input-carpeta">Carpeta (cómo se organiza en la página)</label>
+                <input type="text" id="input-carpeta" list="lista-carpetas" placeholder="Ej. Vicente Fernández" autocomplete="off" spellcheck="false">
+                <datalist id="lista-carpetas"></datalist>
+            </div>
+            <div class="campo-meta">
+                <label for="input-album">Álbum (para la carátula)</label>
+                <input type="text" id="input-album" list="lista-albumes" placeholder="Ej. A Mis 80's" autocomplete="off" spellcheck="false">
+                <datalist id="lista-albumes"></datalist>
+            </div>
+            <div class="campo-meta">
+                <label for="input-artista-p">Artista principal (para la carátula)</label>
+                <input type="text" id="input-artista-p" list="lista-artistas" placeholder="Ej. Álvaro Carrillo" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="campo-meta">
+                <label for="input-artista-s">Artista secundario (para la carátula)</label>
+                <input type="text" id="input-artista-s" list="lista-artistas" placeholder="Opcional" autocomplete="off" spellcheck="false">
+                <datalist id="lista-artistas"></datalist>
+            </div>
+        </div>
+
+        <div class="contenedor-ajustes">
+            <label class="grupo-ajuste" title="Estado de la canción">
+                <div class="contenedor-punto">
+                    <span id="punto-estado" class="punto-estado"></span>
+                </div>
+                <select id="select-estado" class="select-ajuste">
+                    <option value="terminada">Terminada</option>
+                    <option value="revisar">Por revisar</option>
+                    <option value="pendiente">Sin terminar</option>
+                </select>
+            </label>
+            <label class="grupo-ajuste" title="Capotraste">
+                <span class="material-symbols-outlined icono-ajuste">tune</span>
+                <select id="select-capo-editor" class="select-ajuste">
+                    <option value="0">Sin capo</option>
+                    <option value="1">Capo 1</option>
+                    <option value="2">Capo 2</option>
+                    <option value="3">Capo 3</option>
+                    <option value="4">Capo 4</option>
+                    <option value="5">Capo 5</option>
+                    <option value="6">Capo 6</option>
+                    <option value="7">Capo 7</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="workspace">
+            <div>
+                <article id="letra-contenedor" class="letra-contenedor">
+                    <textarea id="input-contenido" class="letra-editable animar-entrada-texto" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
+                        placeholder="Escribe aquí la letra con los acordes...&#10;&#10;   Do          Sol&#10;Se fue mi amor..."></textarea>
+                    <pre id="letra-cancion" class="letra-texto"></pre>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div id="caja-acorde" class="caja-acorde-emergente">
+       <h4 id="acorde-titulo"></h4>
+       <span id="origen-acorde-modal" style="font-size:10px; opacity:0.6; display:block; margin-bottom:4px;"></span>
+       <div id="wrapper-render"></div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <div id="panel-flotante-wrapper">
+        <div class="fila-inferior">
+            <div id="panel-modo" class="panel-scroll-flotante">
+                <div class="selector-modo">
+                    <button id="btn-modo-editar" class="opcion-modo activa" type="button" title="Editar el texto">
+                        <span class="material-symbols-outlined">edit</span> Editar
+                    </button>
+                    <button id="btn-modo-vista" class="opcion-modo" type="button" title="Ver como en el visor">
+                        <span class="material-symbols-outlined">visibility</span> Vista
+                    </button>
+                </div>
+            </div>
+            <button id="btn-descargar" class="btn-toggle-transponer" type="button" title="Descargar .txt con el nombre de archivo correcto">
+                <span class="material-symbols-outlined">download</span>
+                <span>Bajar</span>
+            </button>
+            <button id="btn-eliminar" class="btn-toggle-transponer peligro" type="button" title="Eliminar canción" hidden>
+                <span class="material-symbols-outlined">delete</span>
+                <span>Borrar</span>
+            </button>
+            <button id="btn-guardar" class="btn-toggle-transponer" type="button" title="Guardar canción (Ctrl + S)">
+                <span id="icono-guardar" class="material-symbols-outlined">save</span>
+                <span id="texto-guardar">Guardar</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="js/acordes.js"></script>
+
+    <script type="module">
+        import { protegerPaginaAdmin } from './js/auth-guard.js';
+        import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { obtenerContenidoCancion, obtenerCanciones, obtenerIdsRemotos, sincronizarAhora } from './js/api-cliente.js';
+        import { construirNombreArchivo } from './js/nombre-cancion.js';
+        import { procesarLetraYAcordes, inicializarModalAcordes } from './js/modulo-acordes.js';
+
+        protegerPaginaAdmin((user) => {
+            const db = getDatabase();
+            const params = new URLSearchParams(window.location.search);
+            const idCParam = params.get('idC');
+
+            window.__idActual = idCParam || null;
+
+            const body = document.body;
+            const inputTitulo = document.getElementById('input-titulo');
+            const inputCarpeta = document.getElementById('input-carpeta');
+            const inputAlbum = document.getElementById('input-album');
+            const inputArtistaP = document.getElementById('input-artista-p');
+            const inputArtistaS = document.getElementById('input-artista-s');
+            const btnDescargar = document.getElementById('btn-descargar');
+            const btnEliminar = document.getElementById('btn-eliminar');
+            let albumBusqueda = '';   // se conserva tal cual si la canción lo trae
+            const selectEstado = document.getElementById('select-estado');
+            const puntoEstado = document.getElementById('punto-estado');
+            const selectCapoEditor = document.getElementById('select-capo-editor');
+            const inputContenido = document.getElementById('input-contenido');
+            const letraCancionDiv = document.getElementById('letra-cancion');
+            const letraContenedorEl = document.getElementById('letra-contenedor');
+            const badgeCapo = document.getElementById('badge-capo');
+            const textoCapo = document.getElementById('texto-capo');
+            const btnGuardar = document.getElementById('btn-guardar');
+            const iconoGuardar = document.getElementById('icono-guardar');
+            const textoGuardar = document.getElementById('texto-guardar');
+            const btnModoEditar = document.getElementById('btn-modo-editar');
+            const btnModoVista = document.getElementById('btn-modo-vista');
+            const toast = document.getElementById('toast');
+
+            let sistemaCifrado = 'LATINO';
+            try { sistemaCifrado = localStorage.getItem('sistemaCifrado') || 'LATINO'; } catch (_) {}
+
+            let modoActual = 'edicion';
+            let guardando = false;
+            let hayCambios = false;
+            let cargaTerminada = false;
+            let modalInicializado = false;
+
+            function mostrarToast(mensaje, esError = false) {
+                toast.textContent = mensaje;
+                toast.classList.toggle('error', esError);
+                toast.classList.remove('visible');
+                void toast.offsetWidth;
+                toast.classList.add('visible');
+                clearTimeout(mostrarToast._t);
+                mostrarToast._t = setTimeout(() => toast.classList.remove('visible'), esError ? 4500 : 2200);
+            }
+
+            function marcarCambios(valor) {
+                hayCambios = valor;
+                btnGuardar.classList.toggle('pendiente-guardar', valor);
+                if (!guardando) textoGuardar.textContent = valor ? 'Guardar' : 'Guardado';
+            }
+
+            function actualizarPuntoEstado() {
+                puntoEstado.className = 'punto-estado ' + selectEstado.value;
+            }
+
+            function ajustarAlturaTextarea() {
+                const scrollActual = window.scrollY;
+                inputContenido.style.height = 'auto';
+                inputContenido.style.height = Math.max(inputContenido.scrollHeight, 320) + 'px';
+                window.scrollTo(0, scrollActual);
+            }
+
+            function separarCapo(contenido) {
+                let texto = contenido || '';
+                const matchCapo = texto.match(/Capo:\s*#?\s*(\d+)/i);
+                if (!matchCapo) return { numero: null, texto };
+
+                const lineas = texto.split(/\r?\n/);
+                if (lineas.length > 0 && /Capo:/i.test(lineas[0])) {
+                    lineas.splice(0, Math.min(2, lineas.length));
+                    texto = lineas.join('\n');
+                } else {
+                    texto = texto.replace(/^.*Capo:\s*#?\s*\d+.*(?:\r?\n)?/im, '');
+                }
+                return { numero: matchCapo[1], texto: texto.trimStart() };
+            }
+
+            function actualizarBadgeCapo() {
+                const valorCapo = selectCapoEditor.value;
+                if (valorCapo && valorCapo !== "0") {
+                    textoCapo.textContent = `Capo: ${valorCapo}º traste`;
+                    badgeCapo.style.display = 'inline-flex';
+                } else {
+                    badgeCapo.style.display = 'none';
+                }
+            }
+
+            selectCapoEditor.addEventListener('change', () => {
+                actualizarBadgeCapo();
+                if (cargaTerminada) marcarCambios(true);
+            });
+
+            function renderizarVista() {
+                let texto = inputContenido.value || '';
+                letraCancionDiv.innerHTML = texto.trim()
+                    ? procesarLetraYAcordes(texto, sistemaCifrado)
+                    : '<span style="opacity:.55">Todavía no hay letra. Cambia a "Editar" para escribirla.</span>';
+            }
+
+            function activarFondo() {
+                letraContenedorEl.classList.add('fondo-activo');
+            }
+
+            function cambiarModo(modo) {
+                if (modo === modoActual) return;
+                modoActual = modo;
+
+                const esVista = modo === 'vista';
+                body.classList.toggle('modo-vista', esVista);
+                body.classList.toggle('modo-edicion', !esVista);
+                btnModoVista.classList.toggle('activa', esVista);
+                btnModoEditar.classList.toggle('activa', !esVista);
+
+                if (esVista) {
+                    renderizarVista();
+                    if (!modalInicializado) {
+                        inicializarModalAcordes('caja-acorde', () => sistemaCifrado);
+                        modalInicializado = true;
+                        prepararAnimacionModal();
+                    }
+                    letraCancionDiv.classList.remove('animar-entrada-texto');
+                    void letraCancionDiv.offsetWidth;
+                    letraCancionDiv.classList.add('animar-entrada-texto');
+                } else {
+                    const caja = document.getElementById('caja-acorde');
+                    if (caja) caja.style.display = 'none';
+                    ajustarAlturaTextarea();
+                    inputContenido.focus({ preventScroll: true });
+
+                    inputContenido.classList.remove('animar-entrada-texto');
+                    void inputContenido.offsetWidth;
+                    inputContenido.classList.add('animar-entrada-texto');
+                }
+            }
+
+            function prepararAnimacionModal() {
+                const cajaAcordeEl = document.getElementById('caja-acorde');
+                if (!cajaAcordeEl) return;
+
+                let enProcesoDeCierre = false;
+                let ultimoDisplayVal = 'none';
+
+                document.addEventListener('click', (e) => {
+                    const linkAcorde = e.target.closest('.acorde-link');
+                    if (linkAcorde) {
+                        enProcesoDeCierre = false;
+                        cajaAcordeEl.classList.remove('animar-salida');
+                        cajaAcordeEl.classList.remove('animar-entrada');
+                        void cajaAcordeEl.offsetWidth;
+                        cajaAcordeEl.classList.add('animar-entrada');
+                    }
+                }, true);
+
+                const observadorCaja = new MutationObserver(() => {
+                    const displayActual = cajaAcordeEl.style.display;
+
+                    if (displayActual === 'none' && !enProcesoDeCierre && ultimoDisplayVal !== 'none') {
+                        enProcesoDeCierre = true;
+                        cajaAcordeEl.style.display = ultimoDisplayVal;
+                        cajaAcordeEl.classList.remove('animar-entrada');
+                        cajaAcordeEl.classList.add('animar-salida');
+
+                        setTimeout(() => {
+                            cajaAcordeEl.classList.remove('animar-salida');
+                            cajaAcordeEl.style.display = 'none';
+                            ultimoDisplayVal = 'none';
+                            enProcesoDeCierre = false;
+                        }, 180);
+                    } else if (displayActual !== 'none' && !enProcesoDeCierre) {
+                        ultimoDisplayVal = displayActual;
+                    }
+                });
+
+                observadorCaja.observe(cajaAcordeEl, { attributes: true, attributeFilter: ['style'] });
+            }
+
+            btnModoEditar.addEventListener('click', () => cambiarModo('edicion'));
+            btnModoVista.addEventListener('click', () => cambiarModo('vista'));
+
+            inputContenido.addEventListener('input', () => {
+                ajustarAlturaTextarea();
+                if (cargaTerminada) marcarCambios(true);
+            });
+
+            inputContenido.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                    e.preventDefault();
+                    const { selectionStart: ini, selectionEnd: fin, value } = inputContenido;
+                    const scrollActual = window.scrollY;
+                    inputContenido.value = value.slice(0, ini) + '    ' + value.slice(fin);
+                    inputContenido.selectionStart = inputContenido.selectionEnd = ini + 4;
+                    inputContenido.dispatchEvent(new Event('input'));
+                    window.scrollTo(0, scrollActual);
+                }
+            });
+
+            [inputTitulo, inputCarpeta, inputAlbum, inputArtistaP, inputArtistaS].forEach(el => {
+                el.addEventListener('input', () => { if (cargaTerminada) marcarCambios(true); });
+            });
+
+            selectEstado.addEventListener('change', () => {
+                actualizarPuntoEstado();
+                if (cargaTerminada) marcarCambios(true);
+            });
+
+            window.addEventListener('resize', () => { if (modoActual === 'edicion') ajustarAlturaTextarea(); });
+            document.fonts.ready.then(() => { if (modoActual === 'edicion') ajustarAlturaTextarea(); });
+
+            // Sugerencias para los campos (carpetas, artistas y álbumes que ya existen)
+            async function cargarSugerencias() {
+                try {
+                    const todas = await obtenerCanciones();
+                    const llenar = (id, valores) => {
+                        const lista = document.getElementById(id);
+                        lista.innerHTML = '';
+                        [...new Set(valores.filter(Boolean))]
+                            .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }))
+                            .forEach(v => { const o = document.createElement('option'); o.value = v; lista.appendChild(o); });
+                    };
+                    llenar('lista-carpetas', todas.map(c => c.carpeta));
+                    llenar('lista-albumes', todas.map(c => c.albumC));
+                    llenar('lista-artistas', todas.flatMap(c => [c.artistaP, c.artistaS]));
+                } catch (_) {}
+            }
+
+            async function cargarCancionExistente() {
+                cargarSugerencias();
+                actualizarPuntoEstado();
+
+                if (!window.__idActual) {
+                    inputTitulo.focus();
+                    finalizarCarga();
+                    return;
+                }
+
+                inputTitulo.placeholder = 'Cargando...';
+
+                try {
+                    const snapshot = await get(ref(db, `canciones/${window.__idActual}`));
+                    let data = null;
+
+                    if (snapshot.exists()) {
+                        data = snapshot.val();
+                    } else {
+                        const original = await obtenerContenidoCancion(window.__idActual);
+                        if (original && !original.error) data = original;
+                        else mostrarToast('No se pudo cargar la canción: ' + ((original && original.error) || 'no encontrada'), true);
+                    }
+
+                    if (data) {
+                        inputTitulo.value = data.nombreC || '';
+                        inputArtistaP.value = data.artistaP || '';
+                        inputArtistaS.value = data.artistaS || '';
+                        inputAlbum.value = data.albumC || '';
+                        // Registros sin carpeta (formato anterior): se organizan por su artista
+                        inputCarpeta.value = data.carpeta || data.artistaP || '';
+                        albumBusqueda = data.albumBusqueda || '';
+                        selectEstado.value = data.estado || 'terminada';
+                        
+                        const { numero, texto: textoLimpio } = separarCapo(data.contenido || '');
+                        inputContenido.value = textoLimpio;
+                        selectCapoEditor.value = numero || "0";
+
+                        actualizarPuntoEstado();
+                    }
+                } catch (err) {
+                    console.error("Error al cargar la canción:", err);
+                    mostrarToast('Error al cargar la canción.', true);
+                }
+
+                inputTitulo.placeholder = 'Título de la canción';
+                finalizarCarga();
+            }
+
+            function finalizarCarga() {
+                actualizarBadgeCapo();
+                ajustarAlturaTextarea();
+                cargaTerminada = true;
+                marcarCambios(false);
+                if (!window.__idActual) textoGuardar.textContent = 'Guardar';
+                btnEliminar.hidden = !window.__idActual;
+
+                const mostrarFondo = () => activarFondo();
+                letraContenedorEl.addEventListener('animationend', (e) => {
+                    if (e.animationName === 'extenderContenedor') mostrarFondo();
+                }, { once: true });
+                setTimeout(mostrarFondo, 450);
+            }
+
+            async function guardarCancion() {
+                if (guardando) return;
+
+                const titulo = inputTitulo.value.trim();
+                if (!titulo) {
+                    mostrarToast('Escribe el título de la canción antes de guardar.', true);
+                    inputTitulo.focus();
+                    return;
+                }
+                const carpeta = inputCarpeta.value.trim();
+                if (!carpeta) {
+                    mostrarToast('Escribe la carpeta donde se organiza la canción.', true);
+                    inputCarpeta.focus();
+                    return;
+                }
+
+                guardando = true;
+                btnGuardar.disabled = true;
+                btnGuardar.classList.add('guardando');
+                iconoGuardar.textContent = 'progress_activity';
+                textoGuardar.textContent = 'Guardando';
+
+                let targetId = window.__idActual;
+
+                if (!targetId) {
+                    try {
+                        // Siguiente id numérico libre (solo se piden las claves, no el texto de las canciones)
+                        const claves = await obtenerIdsRemotos();
+                        let maxNum = 0;
+                        claves.forEach(k => {
+                            const num = parseInt(k, 10);
+                            if (/^\d+$/.test(k) && num > maxNum) maxNum = num;
+                        });
+                        targetId = String(maxNum + 1);
+                    } catch (e) {
+                        targetId = String(Date.now());
+                    }
+                    window.__idActual = targetId;
+                }
+
+                let contenidoFinal = inputContenido.value;
+                const valorCapo = selectCapoEditor.value;
+                if (valorCapo && valorCapo !== "0") {
+                    contenidoFinal = `Capo: ${valorCapo}\n\n` + contenidoFinal.trimStart();
+                }
+
+                const objetoCancion = {
+                    idC: targetId,
+                    nombreC: titulo,
+                    carpeta,
+                    artistaP: inputArtistaP.value.trim(),
+                    artistaS: inputArtistaS.value.trim(),
+                    albumC: inputAlbum.value.trim(),
+                    estado: selectEstado.value,
+                    contenido: contenidoFinal
+                };
+                if (albumBusqueda) objetoCancion.albumBusqueda = albumBusqueda;
+
+                try {
+                    await set(ref(db, `canciones/${targetId}`), objetoCancion);
+                    marcarCambios(false);
+                    btnEliminar.hidden = false;
+                    sincronizarAhora();    // la copia local y el resto de páginas ya ven el cambio
+                    cargarSugerencias();
+                    mostrarToast('Canción guardada correctamente');
+
+                    if (!idCParam) {
+                        history.replaceState(null, '', `?idC=${encodeURIComponent(targetId)}`);
+                    }
+                } catch (err) {
+                    console.error("Error guardando en Firebase:", err);
+                    mostrarToast('Ocurrió un error al guardar. Revisa tu conexión e inténtalo de nuevo.', true);
+                } finally {
+                    guardando = false;
+                    btnGuardar.disabled = false;
+                    btnGuardar.classList.remove('guardando');
+                    iconoGuardar.textContent = 'save';
+                    textoGuardar.textContent = hayCambios ? 'Guardar' : 'Guardado';
+                }
+            }
+
+            btnGuardar.addEventListener('animationend', (e) => {
+                if (e.animationName === 'deslizarElementoInferior') btnGuardar.classList.add('animacion-completada');
+            });
+
+            // Contenido tal como se guardaría (con la línea "Capo:" si corresponde)
+            function contenidoCompleto() {
+                let texto = inputContenido.value;
+                const valorCapo = selectCapoEditor.value;
+                if (valorCapo && valorCapo !== "0") texto = `Capo: ${valorCapo}\n\n` + texto.trimStart();
+                return texto;
+            }
+
+            function descargarCancion() {
+                const datos = {
+                    nombreC: inputTitulo.value.trim(),
+                    artistaP: inputArtistaP.value.trim(),
+                    artistaS: inputArtistaS.value.trim(),
+                    albumC: inputAlbum.value.trim(),
+                    albumBusqueda,
+                    estado: selectEstado.value
+                };
+                if (!datos.nombreC) {
+                    mostrarToast('Escribe el título antes de descargar.', true);
+                    inputTitulo.focus();
+                    return;
+                }
+
+                const nombreArchivo = construirNombreArchivo(datos);
+                const blob = new Blob([contenidoCompleto()], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const enlace = document.createElement('a');
+                enlace.href = url;
+                enlace.download = nombreArchivo;
+                document.body.appendChild(enlace);
+                enlace.click();
+                enlace.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+                if (datos.artistaS && !datos.albumC) {
+                    mostrarToast('Descargado. El artista secundario no entra en el nombre porque no hay álbum.');
+                } else {
+                    mostrarToast('Descargado: ' + nombreArchivo);
+                }
+            }
+
+            async function eliminarCancion() {
+                if (!window.__idActual || guardando) return;
+                const nombre = inputTitulo.value.trim() || 'esta canción';
+                if (!confirm(`¿Eliminar "${nombre}" de la base de datos?\n\nEsta acción no se puede deshacer.`)) return;
+
+                guardando = true;
+                btnEliminar.disabled = true;
+                try {
+                    await remove(ref(db, `canciones/${window.__idActual}`));
+                    marcarCambios(false);    // evita el aviso de "cambios sin guardar" al salir
+                    await sincronizarAhora();
+                    window.location.href = 'admin-canciones.html';
+                } catch (err) {
+                    console.error('Error eliminando en Firebase:', err);
+                    mostrarToast('No se pudo eliminar. Revisa tu conexión y tus permisos.', true);
+                    btnEliminar.disabled = false;
+                    guardando = false;
+                }
+            }
+
+            btnDescargar.addEventListener('click', descargarCancion);
+            btnEliminar.addEventListener('click', eliminarCancion);
+
+            // Los botones redondos (descargar y eliminar) terminan su entrada igual que el de guardar
+            [btnDescargar, btnEliminar].forEach(b => b.addEventListener('animationend', (e) => {
+                if (e.animationName === 'deslizarElementoInferior') b.classList.add('animacion-completada');
+            }));
+
+            btnGuardar.addEventListener('click', guardarCancion);
+
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    guardarCancion();
+                }
+            });
+
+            window.addEventListener('beforeunload', (e) => {
+                if (hayCambios) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+
+            cargarCancionExistente();
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>

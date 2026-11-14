@@ -70,7 +70,7 @@
         }
 
         async function render(animar) {
-            if (!idA) { mostrarMensaje('Error: no se especificó un artista válido.', true); return; }
+            if (!idA) { mostrarMensaje('Error: no se especificó una carpeta válida.', true); return; }
             if (!CONFIGURADO) {
                 mostrarMensaje('Falta configurar Firebase: edita js/firebase-config.js con los datos de tu proyecto.', true);
                 return;
@@ -83,7 +83,7 @@
                 firma = nuevaFirma;
 
                 if (canciones.length === 0) {
-                    mostrarMensaje('Este artista no tiene canciones registradas aún.');
+                    mostrarMensaje('Esta carpeta no tiene canciones registradas aún.');
                     return;
                 }
 

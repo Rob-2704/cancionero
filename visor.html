@@ -1011,12 +1011,13 @@
                 if (data.error) { letraCancionDiv.textContent = "Error: " + data.error; return; }
 
                 document.getElementById('titulo-cancion').textContent = data.nombreC;
-                document.title = `${data.nombreC} - ${data.nombreA}`;
+                const artistaMostrar = data.artistaP || data.nombreA;
+                document.title = `${data.nombreC} - ${artistaMostrar}`;
 
                 // Subtítulo: artista principal · álbum
                 const sencillo = !data.albumC || data.albumC.toLowerCase() === 'sencillo';
                 document.getElementById('nombre-artista').textContent =
-                    sencillo ? data.nombreA : `${data.nombreA} · ${data.albumC}`;
+                    sencillo ? artistaMostrar : `${artistaMostrar} · ${data.albumC}`;
 
                 // El botón de regreso lleva a la lista de canciones de este artista
                 const linkRegreso = document.getElementById('link-regreso');

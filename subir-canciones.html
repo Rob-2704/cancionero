@@ -239,8 +239,8 @@
 <body>
     <header>
         <div class="header-superior">
-            <a href="index.html" class="btn-volver">
-                <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span> Ver artistas
+            <a href="admin-canciones.html" class="btn-volver">
+                <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span> Gestor de canciones
             </a>
             <div class="header-derecha">
                 <button type="button" id="btn-cerrar-sesion" class="btn-cerrar-sesion">
@@ -255,19 +255,20 @@
     <main>
         <section class="guia">
             Nombre del archivo:
-            <code>--nombreC (artistaP) [albumC - artistaS].txt</code>
+            <code>Carpeta/--nombreC (artistaP) [artistaS - albumC].txt</code>
             <div class="leyenda">
                 <span><i class="punto terminada"></i> 0 guiones: terminada</span>
                 <span><i class="punto revisar"></i> 1 guion: por revisar</span>
                 <span><i class="punto pendiente"></i> 2 guiones: sin terminar</span>
             </div>
-            <b>artistaP</b> es el artista principal (donde se guarda la canción). <b>artistaS</b> es opcional:
-            solo cambia de quién se busca la carátula del álbum. El álbum también es opcional.
+            La <b>carpeta</b> que contiene al archivo define cómo se organiza en la página (la misma estructura que tus carpetas).
+            <b>artistaP</b> y <b>artistaS</b> son opcionales y <b>solo sirven para la carátula</b> del álbum: se busca con artistaS
+            si existe, si no con artistaP, y si tampoco con el nombre de la carpeta.
         </section>
 
         <div id="zona-soltar" class="zona-soltar">
             <span class="material-symbols-outlined">upload_file</span>
-            <p>Arrastra aquí tus archivos .txt</p>
+            <p>Arrastra aquí tu carpeta (con sus subcarpetas) o tus archivos .txt</p>
             <div class="zona-botones">
                 <button type="button" id="btn-archivos" class="btn">
                     <span class="material-symbols-outlined" style="font-size:18px;">description</span> Elegir archivos
@@ -354,8 +355,8 @@
                 temporizadorToast = setTimeout(() => { toastEl.className = error ? 'error' : ''; }, 4500);
             }
 
-            // Una canción es "la misma" si coinciden título, artista principal y álbum (sin acentos/mayúsculas)
-            const claveCancion = (p) => `${normalizar(p.nombreC)}|${normalizar(p.artistaP)}|${normalizar(p.albumC)}`;
+            // Una canción es "la misma" si coinciden título, carpeta y álbum (sin acentos/mayúsculas)
+            const claveCancion = (p) => `${normalizar(p.nombreC)}|${normalizar(p.carpeta)}|${normalizar(p.albumC)}`;
 
             async function cargarExistentes() {
                 existentesListos = false;
@@ -364,7 +365,7 @@
                     const lista = await obtenerCancionesFrescas();
                     existentes = new Map();
                     lista.forEach(c => {
-                        const k = claveCancion({ nombreC: c.nombreC, artistaP: c.artistaP, albumC: c.albumC });
+                        const k = claveCancion({ nombreC: c.nombreC, carpeta: c.carpeta, albumC: c.albumC });
                         if (!existentes.has(k)) existentes.set(k, c.idC);
                     });
                     existentesListos = true;
@@ -377,9 +378,15 @@
 
             // ───────── Evaluación de cada archivo ─────────
 
+            function interpretar(it) {
+                if (it.lecturaFallida) return { ok: false, error: 'No se pudo leer el archivo' };
+                return parsearNombreArchivo(it.nombreArchivo, it.carpeta);
+            }
+
             function evaluar() {
                 const vistos = new Set();
                 for (const it of items) {
+                    if (it.fase !== 'ok') it.parsed = interpretar(it);
                     if (it.fase === 'ok') { if (it.parsed.ok) vistos.add(claveCancion(it.parsed)); continue; }
                     it.fase = it.fase === 'error' ? 'error' : 'listo';
 
@@ -438,9 +445,10 @@
 
                 let html;
                 if (p.ok) {
-                    const sub = [p.artistaP];
+                    const sub = [`Carpeta: ${p.carpeta}`];
                     if (p.albumC) sub.push(p.albumC);
-                    if (p.artistaS) sub.push(`portada de ${p.artistaS}`);
+                    const caratula = [p.artistaP, p.artistaS].filter(Boolean);
+                    if (caratula.length) sub.push(`carátula: ${caratula.join(' / ')}`);
                     html = `
                         <i class="punto ${escaparHTML(p.estado)}" title="${escaparHTML(ETIQUETA_ESTADO[p.estado])}"></i>
                         <div class="fila-info">
@@ -510,17 +518,25 @@
 
             // ───────── Lectura de archivos ─────────
 
-            async function agregarArchivos(listaArchivos) {
-                const archivos = Array.from(listaArchivos || []);
-                const txt = archivos.filter(f => /\.txt$/i.test(f.name));
-                const ignorados = archivos.length - txt.length;
+            // Carpeta que contiene al archivo (= artista cuando se organizan por carpetas)
+            function carpetaDe(archivo) {
+                const partes = String(archivo.webkitRelativePath || '').split('/').filter(Boolean);
+                return partes.length >= 2 ? partes[partes.length - 2] : '';
+            }
+
+            // entradas: [{ archivo, carpeta }]
+            async function agregarArchivos(entradas) {
+                const txt = entradas.filter(e => /\.txt$/i.test(e.archivo.name));
+                const ignorados = entradas.length - txt.length;
                 const nuevos = [];
 
-                for (const archivo of txt) {
+                for (const { archivo, carpeta } of txt) {
                     const it = {
                         uid: ++contadorUid,
                         nombreArchivo: archivo.name,
-                        parsed: parsearNombreArchivo(archivo.name),
+                        carpeta,
+                        lecturaFallida: false,
+                        parsed: { ok: true },
                         contenido: '',
                         avisoCodificacion: false,
                         fase: 'listo',
@@ -529,15 +545,14 @@
                         mensajeError: ''
                     };
 
-                    if (it.parsed.ok) {
-                        try {
-                            // El texto se guarda exactamente como está en el archivo
-                            it.contenido = await archivo.text();
-                            it.avisoCodificacion = it.contenido.includes('�');
-                        } catch (err) {
-                            it.parsed = { ok: false, error: 'No se pudo leer el archivo' };
-                        }
+                    try {
+                        // El texto se guarda exactamente como está en el archivo
+                        it.contenido = await archivo.text();
+                        it.avisoCodificacion = it.contenido.includes('�');
+                    } catch (err) {
+                        it.lecturaFallida = true;
                     }
+                    it.parsed = interpretar(it);
                     nuevos.push(it);
                 }
 
@@ -559,6 +574,7 @@
                 const cancion = {
                     idC: id,
                     nombreC: p.nombreC,
+                    carpeta: p.carpeta,
                     artistaP: p.artistaP,
                     artistaS: p.artistaS,
                     albumC: p.albumC,
@@ -649,7 +665,7 @@
 
             [inputArchivos, inputCarpeta].forEach(input => {
                 input.addEventListener('change', async () => {
-                    await agregarArchivos(input.files);
+                    await agregarArchivos(Array.from(input.files).map(archivo => ({ archivo, carpeta: carpetaDe(archivo) })));
                     input.value = '';       // permite volver a elegir los mismos archivos
                 });
             });
@@ -662,7 +678,38 @@
                 e.preventDefault();
                 zona.classList.remove('arrastrando');
             }));
-            zona.addEventListener('drop', (e) => agregarArchivos(e.dataTransfer.files));
+            // Lee un archivo o carpeta soltados (recursivo): cada .txt lleva el nombre de su carpeta contenedora
+            async function recorrerEntrada(entrada, carpeta, salida) {
+                if (entrada.isFile) {
+                    const archivo = await new Promise((ok, mal) => entrada.file(ok, mal));
+                    salida.push({ archivo, carpeta });
+                } else if (entrada.isDirectory) {
+                    const lector = entrada.createReader();
+                    let lote;
+                    do {
+                        lote = await new Promise((ok, mal) => lector.readEntries(ok, mal));
+                        for (const hijo of lote) await recorrerEntrada(hijo, entrada.name, salida);
+                    } while (lote.length > 0);
+                }
+            }
+
+            zona.addEventListener('drop', async (e) => {
+                // Las entradas deben tomarse antes de cualquier await
+                const entradas = Array.from(e.dataTransfer.items || [])
+                    .map(i => (i.webkitGetAsEntry ? i.webkitGetAsEntry() : null))
+                    .filter(Boolean);
+                const sueltos = Array.from(e.dataTransfer.files || []);
+
+                const salida = [];
+                try {
+                    if (entradas.length) for (const ent of entradas) await recorrerEntrada(ent, '', salida);
+                    else sueltos.forEach(archivo => salida.push({ archivo, carpeta: '' }));
+                } catch (err) {
+                    console.error(err);
+                    sueltos.forEach(archivo => salida.push({ archivo, carpeta: '' }));
+                }
+                await agregarArchivos(salida);
+            });
 
             // Soltar fuera de la zona no debe abrir el archivo en el navegador
             window.addEventListener('dragover', (e) => e.preventDefault());
