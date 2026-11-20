@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+
+    <link rel="icon" type="image/x-icon" href="img/icono.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sono:MONO@0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap">
+
+    <link href="style.css" rel="stylesheet">
+    <title>Limpiar base de datos</title>
+</head>
+<body>
+    <header>
+        <h1>Limpiar</h1>
+        <p>Página temporal: úsala una vez y bórrala del hosting.</p>
+    </header>
+
+    <main>
+        <section class="panel" style="margin-top:14px">
+            <h2 class="titulo-ficha" style="margin:0 0 8px">Estado actual</h2>
+            <div id="estado" class="ayuda-campo">Leyendo base de datos...</div>
+        </section>
+
+        <section class="panel" style="margin-top:14px">
+            <h2 class="titulo-ficha" style="margin:0 0 8px">1. Respaldo</h2>
+            <p class="ayuda-campo">Descarga todo lo que hay ahora (JSON) antes de tocar nada.</p>
+            <button id="btn-respaldo" class="btn" type="button" disabled>Descargar respaldo</button>
+        </section>
+
+        <section class="panel" style="margin-top:14px">
+            <h2 class="titulo-ficha" style="margin:0 0 8px">2. Limpiar campos viejos (conserva las canciones)</h2>
+            <p class="ayuda-campo">Quita el campo <b>carpeta</b> de cada canción. Si una canción no tiene artista principal, se le pone el de su carpeta.</p>
+            <button id="btn-campos" class="btn btn-primario" type="button" disabled>Limpiar campos</button>
+        </section>
+
+        <section class="panel" style="margin-top:14px">
+            <h2 class="titulo-ficha" style="margin:0 0 8px">3. Borrar TODAS las canciones</h2>
+            <p class="ayuda-campo">No se puede deshacer. Escribe <b>BORRAR</b> para activar el botón.</p>
+            <div class="barra">
+                <input type="text" id="confirmar" placeholder="BORRAR" autocomplete="off" style="max-width:200px">
+                <button id="btn-borrar" class="btn btn-peligro" type="button" disabled>Borrar todo</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <script type="module">
+        import { DATABASE_URL, CONFIGURADO } from './js/config.js';
+        import { mostrarToast } from './js/ui.js';
+
+        const $ = (id) => document.getElementById(id);
+        const URL_BD = `${DATABASE_URL.replace(/\/$/, '')}/canciones.json`;
+        let datos = {};
+
+        async function leer() {
+            if (!CONFIGURADO) { $('estado').textContent = 'Falta configurar js/config.js.'; return; }
+            try {
+                const r = await fetch(URL_BD);
+                if (!r.ok) throw new Error(r.status);
+                datos = (await r.json()) || {};
+                const n = Object.keys(datos).length;
+                const conCarpeta = Object.values(datos).filter(c => c && 'carpeta' in c).length;
+                $('estado').textContent = `${n} canciones · ${conCarpeta} con el campo "carpeta" viejo.`;
+                $('btn-respaldo').disabled = n === 0;
+                $('btn-campos').disabled = conCarpeta === 0;
+                revisarConfirmacion();
+            } catch (e) {
+                $('estado').textContent = 'No se pudo leer la base de datos. Revisa js/config.js y las reglas.';
+            }
+        }
+
+        const revisarConfirmacion = () => {
+            $('btn-borrar').disabled = $('confirmar').value.trim() !== 'BORRAR' || Object.keys(datos).length === 0;
+        };
+        $('confirmar').addEventListener('input', revisarConfirmacion);
+
+        $('btn-respaldo').onclick = () => {
+            const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'respaldo-canciones.json';
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        };
+
+        // Borra la copia local para que las páginas no muestren datos viejos
+        async function limpiarCopiaLocal() {
+            try { indexedDB.deleteDatabase('cancionero-artistas'); } catch (_) {}
+        }
+
+        $('btn-campos').onclick = async () => {
+            const cambios = {};
+            for (const [id, c] of Object.entries(datos)) {
+                if (!c || !('carpeta' in c)) continue;
+                cambios[`${id}/carpeta`] = null;
+                if (!c.artistaP) cambios[`${id}/artistaP`] = c.carpeta || 'Otros';
+            }
+            try {
+                const r = await fetch(URL_BD, { method: 'PATCH', body: JSON.stringify(cambios) });
+                if (!r.ok) throw new Error(r.status);
+                await limpiarCopiaLocal();
+                mostrarToast('Campos limpiados.');
+                await leer();
+            } catch (e) { mostrarToast('No se pudo limpiar. Revisa las reglas de la base de datos.', 'error'); }
+        };
+
+        $('btn-borrar').onclick = async () => {
+            if (!confirm('¿Seguro? Se borrarán TODAS las canciones.')) return;
+            try {
+                const r = await fetch(URL_BD, { method: 'DELETE' });
+                if (!r.ok) throw new Error(r.status);
+                await limpiarCopiaLocal();
+                $('confirmar').value = '';
+                mostrarToast('Base de datos vacía.');
+                await leer();
+            } catch (e) { mostrarToast('No se pudo borrar. Revisa las reglas de la base de datos.', 'error'); }
+        };
+
+        leer();
+    </script>
+</body>
+</html>

@@ -1,454 +1,323 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-mx">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="icono.png">
+    <meta name="theme-color" content="#0d0d0d">
+
+    <link rel="icon" type="image/x-icon" href="img/icono.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sono:MONO@0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap">
+
     <link href="style.css" rel="stylesheet">
     <title>Visor de Letra y Acordes</title>
-    <style>
-        /* Configuración Global y Reset Base */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-        
-        body { 
-            padding-bottom: 120px; 
-        }
-        
-        .container { 
-            max-width: 90%;
-            margin: 0 auto;
-        }
-        
-        /* Encabezados y Botón Volver */
-        .btn-volver { 
-            display: inline-block; 
-            color: #888; 
-            text-decoration: none; 
-            font-size: 13px;
-            margin-bottom: 25px; 
-            transition: color 0.2s;
-        }
-        
-        .btn-volver:hover { 
-            color: var(--accent); 
-        }
-        
-        .info-cabecera {
-            grid-column: 1 / 3;
-            margin-bottom: 10px;
-        }
-        
-        .info-cabecera h1 {
-            margin: 0;
-            font-size: 24px;
-            color: #fff;
-        }
-        
-        .info-cabecera h2 {
-            margin: 0 0 10px 0;
-            padding-bottom: 10px;
-            font-size: 18px;
-            color: #fff;
-            font-weight: 400;
-            border-bottom: 2px solid var(--accent);
-        }
-        
-        /* Área Principal (Workspace) */
-        .workspace { 
-            display: grid;
-            grid-template-columns: 5fr 2fr;
-            gap: 30px;
-            margin: 0 auto;
-            align-items: start;
-        }
-        
-        /* Contenedor de la Letra */
-        .letra-contenedor {
-            position: relative;
-            background: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            overflow: hidden; /* Mantiene la marca de agua dentro de los bordes redondeados */
-            z-index: 1;
-        }
-
-        /* Marca de agua sólo en el contenedor de la letra */
-        .letra-contenedor::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85%;
-            height: 85%;
-            background-image: url('fondo.png');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            opacity: 0.18;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .letra-texto { 
-            position: relative;
-            z-index: 1; /* Mantiene el texto por encima del fondo */
-            display: block;
-            font-family: 'Sono', monospace;
-            font-variation-settings: 'MONO' 1;
-            font-size: clamp(10px, 1.3vw, 16px);
-            color: #3a3a3a;
-            margin: 0;
-            white-space: pre;
-            overflow-x: auto;
-            width: 100%;
-        }
-        
-        .acorde-link { 
-            color: #0066cc;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: background 0.1s;
-        }
-        
-        .acorde-link:hover { 
-            background-color: #e1e4e8; 
-            color: #004499; 
-        }
-        
-        .barra-compas { 
-            color: #3a3a3a; 
-            font-weight: bold; 
-        }
-        
-        /* Panel Lateral e Iframe */
-        .panel-lateral { 
-            position: sticky;
-            top: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .wrapper-iframe { 
-            position: relative; 
-            width: 100%; 
-            padding-top: 56.25%; 
-            background: #000; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            border: 1px solid #222;
-        }
-        
-        .wrapper-iframe iframe { 
-            position: absolute; 
-            inset: 0; 
-            width: 100%; 
-            height: 100%; 
-            border: 0; 
-        }
-        
-        /* Modales y Cajas Emergentes */
-        .caja-acorde-emergente { 
-            position: fixed; 
-            display: none; 
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-            padding: 12px; 
-            z-index: 1000; 
-            width: fit-content; /* Se ajusta exactamente al ancho del diagrama */
-            max-width: 90vw;
-            text-align: center;
-            color: #e0e0e0;
-        }
-        
-        .caja-acorde-emergente h4 { 
-            margin: 0 0 6px 0; 
-            font-size: 16px; 
-            color: #fff;
-            font-family: 'Sono', sans-serif;
-            font-variation-settings: 'MONO' 0;
-        }
-        
-        #wrapper-render {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin: 5px 0 0 0;
-        }
-        
-        /* Panel Flotante y Controles */
-        #panel-flotante-wrapper {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            z-index: 999;
-        }
-        
-        .fila-inferior,
-        .panel-scroll-flotante {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .panel-scroll-flotante { 
-            background: rgba(20, 20, 20, 0.95); 
-            border: 1px solid #333; 
-            padding: 12px 25px; 
-            border-radius: 30px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-            backdrop-filter: blur(5px); 
-        }
-        
-        /* Estilos de Botones Comunes */
-        .btn-scroll,
-        .btn-transponer,
-        .btn-toggle-transponer {
-            font-family: 'Sono', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .btn-scroll { 
-            background: var(--accent); 
-            border: none; 
-            color: #000; 
-            width: 36px; 
-            height: 36px; 
-            font-size: 14px; 
-        }
-        
-        .btn-scroll.activo { 
-            background: #ff3333; 
-            color: #fff;
-        }
-        
-        .btn-transponer {
-            background: #fff;
-            color: #111;
-            border: none;
-            width: 36px; 
-            height: 36px; 
-            font-size: 14px; 
-            transition: background 0.15s;
-        }
-
-        #btn-reset-tono {
-            background: var(--accent);
-        }
-        
-        .btn-transponer:hover {
-            background: #ddd;
-        }
-
-        #label-tonalidad {
-            font-size: 15px;
-            font-weight: bold;
-        }
-        
-        .btn-toggle-transponer {
-            background: rgba(20, 20, 20, 0.95); 
-            border: 1px solid #333; 
-            color: #fff;
-            width: 50px; 
-            height: 50px; 
-            font-size: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px); 
-        }
-        
-        .slider-scroll { 
-            width: 100px; 
-            accent-color: var(--accent); 
-        }
-        
-        .label-scroll { 
-            font-size: 11px; 
-            color: #888; 
-            font-weight: bold;
-            font-family: monospace;
-        }
-
-        /* Reducción de relleno y bordes en móviles */
-        @media (max-width: 600px) {
-            .caja-acorde-emergente {
-                padding: 8px 12px;
-                border-radius: 10px;
-            }
-
-            .caja-acorde-emergente h4 {
-                font-size: 14px;
-                margin-bottom: 2px;
-            }
-        }
-        
-        /* Responsive / Media Queries */
-        @media (max-width: 1300px) {
-            body { 
-                padding: 40px 15px 100px 15px;
-            }
-        
-            .workspace { 
-                display: flex;
-                flex-direction: column-reverse; 
-                gap: 20px;
-            }
-        
-            .panel-lateral { 
-                position: relative; 
-                top: 0; 
-                width: 100%;
-            }
-        
-            .letra-contenedor {
-                padding: 20px; 
-            }
-        
-            .letra-texto {
-                line-height: 1.5;
-                letter-spacing: -0.3px;
-            }
-        }
-    </style>
-    <script src="https://www.youtube.com/iframe_api"></script>
 </head>
-<body>
-    <div class="container">
-        <a id="link-regreso" href="index.html" class="btn-volver">← Ir al Visor de Música</a>
-        <div class="info-cabecera">
-            <h1 id="titulo-cancion">Cargando...</h1>
-            <h2 id="nombre-artista"></h2>
+<body class="pagina-visor con-panel-flotante">
+    <header>
+        <div class="header-superior">
+            <a id="link-regreso" href="index.html" class="btn">
+                <span class="material-symbols-outlined">arrow_back</span> Artistas
+            </a>
         </div>
 
+        <div class="titulo-row">
+            <h1 id="titulo-cancion">Cargando...</h1>
+            <div id="badge-capo" class="badge-capo" style="display: none;">
+                <span id="texto-capo"></span>
+            </div>
+        </div>
+        <p id="nombre-artista"></p>
+    </header>
+
+    <main>
         <div class="workspace">
-            <article class="letra-contenedor">
+            <article id="letra-contenedor" class="letra-contenedor">
                 <pre id="letra-cancion" class="letra-texto">Abriendo canción...</pre>
             </article>
-    
-            <aside class="panel-lateral">
-                <div class="wrapper-iframe">
-                    <div id="reproductor-youtube"></div>
-                </div>
-            </aside>
         </div>
-    </div>
+    </main>
 
     <div id="caja-acorde" class="caja-acorde-emergente">
-       <h4 id="acorde-titulo">C</h4>
-       <span id="origen-acorde-modal" style="font-size:10px; opacity:0.6; display:block; margin-bottom:4px;"></span>
-       <div id="wrapper-render"></div> 
+        <h4 id="acorde-titulo"></h4>
+        <span id="origen-acorde-modal" style="font-size:10px; opacity:0.6; display:block; margin-bottom:4px;"></span>
+        <div id="wrapper-render"></div>
+        <button id="btn-reproducir-acorde" class="btn-reproducir-acorde" title="Reproducir acorde">
+            <span class="material-symbols-outlined">play_arrow</span>
+            <span class="texto-reproducir">Reproducir</span>
+        </button>
     </div>
-    
+
     <div id="panel-flotante-wrapper">
         <div id="panel-transponer" class="panel-scroll-flotante" style="display:none;">
-            <label id="label-tonalidad" title="Tonalidad actual" disabled>—</label>
-            <button id="btn-bajar-tono" class="btn-transponer" title="Bajar 1 tono">−1</button>
-            <button id="btn-bajar-medio" class="btn-transponer" title="Bajar medio tono">−½</button>
-            <button id="btn-subir-medio" class="btn-transponer" title="Subir medio tono">+½</button>
-            <button id="btn-subir-tono" class="btn-transponer" title="Subir 1 tono">+1</button>
-            <button id="btn-reset-tono" class="btn-transponer" title="Volver a la tonalidad original">↺</button>
+            <div class="grupo-pasos">
+                <button id="btn-bajar-tono" class="btn-transponer btn-paso" title="Bajar 1 tono">−1</button>
+                <button id="btn-bajar-medio" class="btn-transponer btn-paso" title="Bajar medio tono">−½</button>
+                <button id="btn-subir-medio" class="btn-transponer btn-paso" title="Subir medio tono">+½</button>
+                <button id="btn-subir-tono" class="btn-transponer btn-paso" title="Subir 1 tono">+1</button>
+            </div>
+
+            <button id="btn-reset-tono" class="btn-scroll material-symbols-outlined" title="Volver a la tonalidad original">refresh</button>
+
+            <span class="divisor-panel" aria-hidden="true"></span>
+
+            <div class="grupo-extra-transponer">
+                <button id="btn-alteracion" class="btn-transponer btn-dual btn-dual--musical" data-a="♭" data-b="♯" data-activo="b" title="Cambiar entre sostenidos y bemoles">♭</button>
+                <button id="btn-toggle-cifrado" class="btn-transponer btn-dual btn-dual--texto" data-a="DO" data-b="C" data-activo="a" title="Cambiar cifrado (Español / Inglés)"></button>
+            </div>
         </div>
 
         <div class="fila-inferior">
             <div id="panel-scroll" class="panel-scroll-flotante">
-                <span class="label-scroll">Autoscroll</span>
-                <button id="btn-play-scroll" class="btn-scroll">▶</button>
-                <input type="range" id="slider-velocidad" class="slider-scroll" min="1" max="10" value="5">
+                <button id="btn-play-scroll" class="btn-scroll material-symbols-outlined" title="Iniciar/Detener autoscroll">keyboard_double_arrow_down</button>
+                <span class="material-symbols-outlined icono-velocidad-scroll" title="Velocidad de desplazamiento">speed</span>
+                <input type="range" id="slider-velocidad" class="slider-scroll" min="1" max="30" value="10">
             </div>
-            <button id="btn-toggle-transponer" class="btn-toggle-transponer" title="Transponer">▲</button>
+            <button id="btn-toggle-transponer" class="btn-toggle-transponer" title="Transponer tonalidad">—</button>
         </div>
     </div>
 
-    <script src="acordes.js"></script>
-
     <script type="module">
-        import { obtenerContenidoCancion } from './js/api-cliente.js';
-        import { procesarLetraYAcordes, inicializarModalAcordes } from './js/modulo-acordes.js';
-        import { inyectarReproductor } from './js/modulo-reproductor.js';
-        import { inicializarAutoscroll } from './js/modulo-autoscroll.js';
-        import { inicializarTransponer } from './js/modulo-transponer.js';
+        import { obtenerContenidoCancion } from './js/datos.js';
+        import {
+            procesarLetraYAcordes, inicializarModalAcordes, inicializarReproductorAcorde,
+            inicializarAutoscroll, inicializarTransponer
+        } from './js/acordes.js';
+        import { activarIconos } from './js/ui.js';
 
-        const params = new URLSearchParams(window.location.search);
-        const idC = params.get('idC');
-        const idA = params.get('idA');
-        const nombreA = params.get('nombreA') || 'Artista';
+        activarIconos();
 
-        const linkRegreso = document.getElementById('link-regreso');
+        // Mantiene la pantalla encendida mientras se toca
+        let wakeLock = null;
+        async function solicitarWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    wakeLock.addEventListener('release', () => { wakeLock = null; });
+                }
+            } catch (err) { /* no es importante */ }
+        }
+        document.addEventListener('visibilitychange', () => {
+            if (wakeLock !== null && document.visibilityState === 'visible') solicitarWakeLock();
+        });
+        solicitarWakeLock();
+
+        const idC = new URLSearchParams(window.location.search).get('idC');
+
         const letraCancionDiv = document.getElementById('letra-cancion');
+        const letraContenedorEl = document.getElementById('letra-contenedor');
+        const btnToggleCifrado = document.getElementById('btn-toggle-cifrado');
+        const btnToggleTransponer = document.getElementById('btn-toggle-transponer');
+        const btnResetTono = document.getElementById('btn-reset-tono');
+        const btnAlteracion = document.getElementById('btn-alteracion');
+        const grupoPasos = document.querySelector('.grupo-pasos');
+        const cajaAcordeEl = document.getElementById('caja-acorde');
+        const panelTranspon = document.getElementById('panel-transponer');
 
-        if(idA) {
-            linkRegreso.href = `canciones.html?idA=${idA}&nombre=${encodeURIComponent(nombreA)}`;
+        let sistemaCifrado = 'LATINO';
+        try { sistemaCifrado = localStorage.getItem('sistemaCifrado') || 'LATINO'; } catch (_) {}
+        let contenidoActualTranspuesto = '';
+        let controladorTransponer = null;
+
+        // Los controles terminan su animación de entrada con una clase (para que el hover funcione)
+        function alTerminarAnimacion(el, nombre, clase) {
+            if (!el) return;
+            el.addEventListener('animationend', (e) => { if (e.animationName === nombre) el.classList.add(clase); });
+        }
+        alTerminarAnimacion(btnToggleTransponer, 'deslizarElementoInferior', 'animacion-completada');
+        alTerminarAnimacion(grupoPasos, 'expandirPildoraCentro', 'animacion-completada');
+        [btnResetTono, btnAlteracion, btnToggleCifrado].forEach(b => alTerminarAnimacion(b, 'popControlAudio', 'animacion-completada'));
+
+        const actualizarBotonCifrado = () => {
+            if (btnToggleCifrado) btnToggleCifrado.dataset.activo = sistemaCifrado === 'LATINO' ? 'a' : 'b';
+        };
+
+        // El botón ♭/♯ muestra la opción activa: se sincroniza con el texto que le pone el transponedor
+        function sincronizarAlteracion() {
+            const t = btnAlteracion.textContent.trim();
+            if (!t) return;
+            btnAlteracion.dataset.activo = (t === '♭' || t === 'b') ? 'b' : 'a';
+        }
+        sincronizarAlteracion();
+        new MutationObserver(sincronizarAlteracion)
+            .observe(btnAlteracion, { childList: true, characterData: true, subtree: true });
+
+        // Anima la ventanita del acorde al aparecer/desaparecer (el módulo de acordes solo cambia su display)
+        function animarVentanaAcorde() {
+            let cerrando = false;
+            let ultimoDisplay = 'none';
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.acorde-link')) return;
+                cerrando = false;
+                cajaAcordeEl.classList.remove('animar-salida', 'animar-entrada');
+                void cajaAcordeEl.offsetWidth;
+                cajaAcordeEl.classList.add('animar-entrada');
+            }, true);
+
+            new MutationObserver(() => {
+                const actual = cajaAcordeEl.style.display;
+                if (actual === 'none' && !cerrando && ultimoDisplay !== 'none') {
+                    cerrando = true;
+                    cajaAcordeEl.style.display = ultimoDisplay;
+                    cajaAcordeEl.classList.remove('animar-entrada');
+                    cajaAcordeEl.classList.add('animar-salida');
+                    setTimeout(() => {
+                        cajaAcordeEl.classList.remove('animar-salida');
+                        cajaAcordeEl.style.display = 'none';
+                        ultimoDisplay = 'none';
+                        cerrando = false;
+                    }, 180);
+                } else if (actual !== 'none' && !cerrando) {
+                    ultimoDisplay = actual;
+                }
+            }).observe(cajaAcordeEl, { attributes: true, attributeFilter: ['style'] });
         }
 
-        async function cargarPlantilla() {
-            if(!idC) {
-                letraCancionDiv.textContent = "Error: No se definió el identificador de la canción.";
-                return;
+        // Lo mismo para el panel de transposición
+        function animarPanelTransponer() {
+            let cerrando = false;
+            let ultimoDisplay = 'none';
+            const controles = () => [grupoPasos, btnResetTono, btnAlteracion, btnToggleCifrado];
+
+            new MutationObserver(() => {
+                const actual = panelTranspon.style.display;
+                if (actual === 'none' && !cerrando && ultimoDisplay !== 'none') {
+                    cerrando = true;
+                    panelTranspon.style.display = ultimoDisplay;
+                    panelTranspon.classList.remove('panel-transponer-entrada');
+                    panelTranspon.classList.add('panel-transponer-salida');
+                    btnToggleTransponer.classList.remove('abierto');
+                    controles().forEach(c => c.classList.remove('animacion-completada'));
+                    setTimeout(() => {
+                        panelTranspon.classList.remove('panel-transponer-salida');
+                        panelTranspon.style.display = 'none';
+                        ultimoDisplay = 'none';
+                        cerrando = false;
+                    }, 200);
+                } else if (actual !== 'none' && !cerrando) {
+                    ultimoDisplay = actual;
+                    panelTranspon.classList.remove('panel-transponer-salida', 'panel-transponer-entrada');
+                    btnToggleTransponer.classList.add('abierto');
+                    controles().forEach(c => c.classList.remove('animacion-completada'));
+                    void panelTranspon.offsetWidth;
+                    panelTranspon.classList.add('panel-transponer-entrada');
+                }
+            }).observe(panelTranspon, { attributes: true, attributeFilter: ['style'] });
+        }
+
+        // El botón de autoscroll muestra un icono distinto según esté activo
+        function sincronizarIconoScroll() {
+            const btn = document.getElementById('btn-play-scroll');
+            const ajustar = () => {
+                const txt = btn.textContent.trim();
+                if (['▶', 'play', 'PLAY', 'play_arrow'].includes(txt)) btn.textContent = 'keyboard_double_arrow_down';
+                else if (['⏸', 'pause', 'PAUSE', 'PAUSA'].includes(txt)) btn.textContent = 'stop';
+            };
+            ajustar();
+            new MutationObserver(ajustar).observe(btn, { childList: true, characterData: true, subtree: true });
+        }
+
+        // Quita la línea "Capo: N" del texto y la convierte en la etiqueta de la cabecera
+        function separarCapo(contenido) {
+            let texto = contenido || '';
+            const m = texto.match(/Capo:\s*#?\s*(\d+)/i);
+            if (!m) return { numero: null, texto };
+            const lineas = texto.split(/\r?\n/);
+            if (lineas.length > 0 && /Capo:/i.test(lineas[0])) {
+                lineas.splice(0, Math.min(2, lineas.length));
+                texto = lineas.join('\n');
+            } else {
+                texto = texto.replace(/^.*Capo:\s*#?\s*\d+.*(?:\r?\n)?/im, '');
             }
+            return { numero: m[1], texto };
+        }
+
+        async function cargarCancion() {
+            if (!idC) { letraCancionDiv.textContent = 'Error: no se indicó qué canción abrir.'; return; }
 
             try {
                 const data = await obtenerContenidoCancion(idC);
-                if (data.error) { letraCancionDiv.textContent = "Error: " + data.error; return; }
+                if (data.error) { letraCancionDiv.textContent = 'Error: ' + data.error; return; }
 
                 document.getElementById('titulo-cancion').textContent = data.nombreC;
-                document.getElementById('nombre-artista').textContent = nombreA;
+                document.title = `${data.nombreC} - ${data.artistaMostrar}`;
 
-                // 1. Procesamiento e inyección de la letra y acordes interactivos
-                letraCancionDiv.innerHTML = procesarLetraYAcordes(data.contenido);
-                inicializarModalAcordes('caja-acorde');
+                const sencillo = !data.albumC || data.albumC.toLowerCase() === 'sencillo';
+                document.getElementById('nombre-artista').textContent =
+                    sencillo ? data.artistaMostrar : `${data.artistaMostrar} · ${data.albumC}`;
 
-                // 2. LLAMADA MODULAR AL REPRODUCTOR: Pasa la ID de video y la metadata para la búsqueda
-                const datosContexto = { nombreA, nombreC: data.nombreC, albumC: data.albumC };
-                inyectarReproductor('.wrapper-iframe', data.ytID, datosContexto);
+                // El botón de regreso lleva a la lista de canciones de este artista
+                const regreso = document.getElementById('link-regreso');
+                regreso.href = `canciones.html?idA=${encodeURIComponent(data.idA)}`;
+                regreso.lastChild.textContent = ' ' + data.nombreA;
 
-                // 3. Inicializar herramientas de desplazamiento de pantalla automático
+                const { numero, texto } = separarCapo(data.contenido);
+                const badgeCapo = document.getElementById('badge-capo');
+                if (numero) {
+                    document.getElementById('texto-capo').textContent = `Capo: ${numero}º traste`;
+                    badgeCapo.style.display = 'inline-flex';
+                } else {
+                    badgeCapo.style.display = 'none';
+                }
+
+                contenidoActualTranspuesto = texto;
+                actualizarBotonCifrado();
+                letraCancionDiv.innerHTML = procesarLetraYAcordes(texto, sistemaCifrado);
+                letraCancionDiv.classList.remove('animar-entrada-texto');
+                void letraCancionDiv.offsetWidth;
+                letraCancionDiv.classList.add('animar-entrada-texto');
+
+                const activarFondo = () => letraContenedorEl.classList.add('fondo-activo');
+                letraContenedorEl.addEventListener('animationend', (e) => {
+                    if (e.animationName === 'extenderContenedor') activarFondo();
+                }, { once: true });
+                setTimeout(activarFondo, 450);
+
+                inicializarModalAcordes('caja-acorde', () => sistemaCifrado);
+                inicializarReproductorAcorde('btn-reproducir-acorde', 'wrapper-render');
+                animarVentanaAcorde();
+                animarPanelTransponer();
+
                 inicializarAutoscroll('btn-play-scroll', 'slider-velocidad');
+                sincronizarIconoScroll();
 
-                // 4. Menú de transposición: sube/baja tonos y vuelve a pintar la letra en cada cambio
-                inicializarTransponer({
-                    contenidoOriginal: data.contenido,
-                    onRetransponer: (texto) => {
-                        letraCancionDiv.innerHTML = procesarLetraYAcordes(texto);
+                controladorTransponer = inicializarTransponer({
+                    contenidoOriginal: texto,
+                    onRetransponer: (t) => {
+                        contenidoActualTranspuesto = t;
+                        letraCancionDiv.innerHTML = procesarLetraYAcordes(t, sistemaCifrado);
                     },
-                    tonalidadLabelId: 'label-tonalidad',
+                    tonalidadLabelId: 'btn-toggle-transponer',
                     btnSubirTonoId: 'btn-subir-tono',
                     btnSubirMedioId: 'btn-subir-medio',
                     btnBajarMedioId: 'btn-bajar-medio',
                     btnBajarTonoId: 'btn-bajar-tono',
                     btnResetId: 'btn-reset-tono',
+                    btnAlteracionId: 'btn-alteracion',
                     btnToggleId: 'btn-toggle-transponer',
-                    panelId: 'panel-transponer'
+                    panelId: 'panel-transponer',
+                    obtenerSistema: () => sistemaCifrado
                 });
 
+                btnToggleCifrado.addEventListener('click', () => {
+                    sistemaCifrado = sistemaCifrado === 'ANGLOSAJON' ? 'LATINO' : 'ANGLOSAJON';
+                    try { localStorage.setItem('sistemaCifrado', sistemaCifrado); } catch (_) {}
+                    actualizarBotonCifrado();
+                    if (contenidoActualTranspuesto) {
+                        letraCancionDiv.innerHTML = procesarLetraYAcordes(contenidoActualTranspuesto, sistemaCifrado);
+                    }
+                    if (controladorTransponer) controladorTransponer.actualizar();
+                });
             } catch (err) {
                 console.error(err);
-                letraCancionDiv.textContent = "Error crítico al descargar el contenido de la canción.";
+                letraCancionDiv.textContent = 'Error al abrir la canción.';
             }
         }
 
-        cargarPlantilla();
+        cargarCancion();
     </script>
 </body>
 </html>

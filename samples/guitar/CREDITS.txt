@@ -1,0 +1,6 @@
+Muestras de guitarra acústica (una nota por archivo, E2–D5).
+Tomadas de la biblioteca "tonejs-instruments" de N.P. Brosowsky
+https://github.com/nbrosowsky/tonejs-instruments
+Licencia de las muestras: CC-BY 3.0 (https://creativecommons.org/licenses/by/3.0/)
+Fuente original de la guitarra acústica: University of Iowa Musical Instrument Samples
+http://theremin.music.uiowa.edu/

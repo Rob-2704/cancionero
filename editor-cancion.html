@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+
+    <link rel="icon" type="image/x-icon" href="img/icono.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sono:MONO@0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap">
+
+    <link href="style.css" rel="stylesheet">
+    <title>Editar canción</title>
+</head>
+<body class="pagina-editor modo-edicion con-panel-flotante">
+    <header>
+        <div class="header-superior">
+            <a href="admin-canciones.html" class="btn">
+                <span class="material-symbols-outlined">arrow_back</span> Administrar
+            </a>
+            <span id="indicador-guardado" class="indicador-guardado" title="Sincronizando canciones...">
+                <span class="material-symbols-outlined icono-estado-guardado">sync</span>
+            </span>
+        </div>
+        <div class="titulo-row">
+            <h1 id="titulo-pagina">Editar canción</h1>
+            <div id="badge-capo" class="badge-capo" style="display: none;">
+                <span id="texto-capo"></span>
+            </div>
+        </div>
+        <p id="subtitulo-pagina">Cambia los datos o el contenido y pulsa Guardar.</p>
+    </header>
+
+    <main>
+        <section class="panel ficha">
+            <h2 class="titulo-ficha"><span class="material-symbols-outlined">edit_note</span> Datos de la canción</h2>
+            <div class="campos-ficha">
+                <div class="campo ancho-total">
+                    <label for="input-titulo">Nombre de la canción</label>
+                    <input type="text" id="input-titulo" placeholder="Ej. Luz De Luna" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="campo">
+                    <label for="input-artista-p">Artista principal</label>
+                    <input type="text" id="input-artista-p" list="lista-artistas" placeholder="Ej. Álvaro Carrillo" autocomplete="off" spellcheck="false">
+                    <span class="ayuda-campo">Con él se organiza la canción dentro de la página.</span>
+                </div>
+                <div class="campo">
+                    <label for="input-artista-s">Artista secundario</label>
+                    <input type="text" id="input-artista-s" list="lista-artistas" placeholder="Opcional" autocomplete="off" spellcheck="false">
+                    <span class="ayuda-campo">Solo cambia de quién se busca la carátula.</span>
+                    <datalist id="lista-artistas"></datalist>
+                </div>
+                <div class="campo">
+                    <label for="input-album">Álbum</label>
+                    <input type="text" id="input-album" list="lista-albumes" placeholder="Ej. A Mis 80's" autocomplete="off" spellcheck="false">
+                    <datalist id="lista-albumes"></datalist>
+                </div>
+                <div class="campo">
+                    <label for="select-estado">Estado</label>
+                    <div class="select-con-punto">
+                        <span id="punto-estado" class="punto-estado"></span>
+                        <select id="select-estado">
+                            <option value="terminada">Terminada</option>
+                            <option value="revisar">Por revisar</option>
+                            <option value="pendiente">Sin terminar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="campo">
+                    <label for="select-capo">Capotraste</label>
+                    <select id="select-capo">
+                        <option value="0">Sin capo</option>
+                        <option value="1">Capo 1</option>
+                        <option value="2">Capo 2</option>
+                        <option value="3">Capo 3</option>
+                        <option value="4">Capo 4</option>
+                        <option value="5">Capo 5</option>
+                        <option value="6">Capo 6</option>
+                        <option value="7">Capo 7</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <div class="workspace">
+            <div>
+                <article id="letra-contenedor" class="letra-contenedor">
+                    <textarea id="input-contenido" class="letra-editable animar-entrada-texto" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
+                        placeholder="Escribe aquí la letra con los acordes...&#10;&#10;   Do          Sol&#10;Se fue mi amor..."></textarea>
+                    <pre id="letra-cancion" class="letra-texto"></pre>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <div id="caja-acorde" class="caja-acorde-emergente">
+        <h4 id="acorde-titulo"></h4>
+        <span id="origen-acorde-modal" style="font-size:10px; opacity:0.6; display:block; margin-bottom:4px;"></span>
+        <div id="wrapper-render"></div>
+    </div>
+
+    <div id="panel-flotante-wrapper">
+        <div class="fila-inferior">
+            <div id="panel-modo" class="panel-scroll-flotante">
+                <div class="selector-modo">
+                    <button id="btn-modo-editar" class="opcion-modo activa" type="button" title="Editar el texto">
+                        <span class="material-symbols-outlined">edit</span> Editar
+                    </button>
+                    <button id="btn-modo-vista" class="opcion-modo" type="button" title="Ver como en el visor">
+                        <span class="material-symbols-outlined">visibility</span> Vista
+                    </button>
+                </div>
+            </div>
+            <button id="btn-descargar" class="btn-flotante" type="button" title="Descargar .txt con el nombre de archivo correcto">
+                <span class="material-symbols-outlined">download</span>
+                <span>Bajar</span>
+            </button>
+            <button id="btn-eliminar" class="btn-flotante peligro" type="button" title="Eliminar canción" hidden>
+                <span class="material-symbols-outlined">delete</span>
+                <span>Borrar</span>
+            </button>
+            <button id="btn-guardar" class="btn-flotante" type="button" title="Guardar canción (Ctrl + S)">
+                <span id="icono-guardar" class="material-symbols-outlined">save</span>
+                <span id="texto-guardar">Guardar</span>
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import {
+            obtenerContenidoCancion, obtenerCanciones, guardarCancion, eliminarCancion, reservarIds,
+            construirNombreArchivo, mensajeDeError
+        } from './js/datos.js';
+        import { procesarLetraYAcordes, inicializarModalAcordes } from './js/acordes.js';
+        import { activarIconos, conectarIndicador, mostrarToast } from './js/ui.js';
+
+        conectarIndicador();
+        activarIconos();
+
+        const $ = (id) => document.getElementById(id);
+        const toast = (m, error = false) => mostrarToast(m, error ? 'error' : 'ok');
+
+        const params = new URLSearchParams(window.location.search);
+        let idActual = params.get('idC') || null;
+
+        const body = document.body;
+        const inputTitulo = $('input-titulo');
+        const inputArtistaP = $('input-artista-p');
+        const inputArtistaS = $('input-artista-s');
+        const inputAlbum = $('input-album');
+        const selectEstado = $('select-estado');
+        const puntoEstado = $('punto-estado');
+        const selectCapo = $('select-capo');
+        const inputContenido = $('input-contenido');
+        const letraCancionDiv = $('letra-cancion');
+        const letraContenedorEl = $('letra-contenedor');
+        const badgeCapo = $('badge-capo');
+        const btnGuardar = $('btn-guardar');
+        const btnEliminar = $('btn-eliminar');
+        const btnDescargar = $('btn-descargar');
+        const iconoGuardar = $('icono-guardar');
+        const textoGuardar = $('texto-guardar');
+        const btnModoEditar = $('btn-modo-editar');
+        const btnModoVista = $('btn-modo-vista');
+
+        let albumBusqueda = '';   // se conserva tal cual si la canción lo trae
+        let sistemaCifrado = 'LATINO';
+        try { sistemaCifrado = localStorage.getItem('sistemaCifrado') || 'LATINO'; } catch (_) {}
+
+        let modoActual = 'edicion';
+        let guardando = false;
+        let hayCambios = false;
+        let cargaTerminada = false;
+        let modalInicializado = false;
+
+        // ───────── Estado de la ficha ─────────
+
+        function marcarCambios(valor) {
+            hayCambios = valor;
+            btnGuardar.classList.toggle('pendiente-guardar', valor);
+            if (!guardando) textoGuardar.textContent = valor ? 'Guardar' : 'Guardado';
+        }
+
+        const actualizarPuntoEstado = () => { puntoEstado.className = 'punto-estado ' + selectEstado.value; };
+
+        function actualizarBadgeCapo() {
+            const v = selectCapo.value;
+            if (v && v !== '0') {
+                $('texto-capo').textContent = `Capo: ${v}º traste`;
+                badgeCapo.style.display = 'inline-flex';
+            } else {
+                badgeCapo.style.display = 'none';
+            }
+        }
+
+        function ajustarAlturaTextarea() {
+            const y = window.scrollY;
+            inputContenido.style.height = 'auto';
+            inputContenido.style.height = Math.max(inputContenido.scrollHeight, 320) + 'px';
+            window.scrollTo(0, y);
+        }
+
+        // La línea "Capo: N" se guarda dentro del texto, pero aquí se edita con el selector
+        function separarCapo(contenido) {
+            let texto = contenido || '';
+            const m = texto.match(/Capo:\s*#?\s*(\d+)/i);
+            if (!m) return { numero: null, texto };
+            const lineas = texto.split(/\r?\n/);
+            if (lineas.length > 0 && /Capo:/i.test(lineas[0])) {
+                lineas.splice(0, Math.min(2, lineas.length));
+                texto = lineas.join('\n');
+            } else {
+                texto = texto.replace(/^.*Capo:\s*#?\s*\d+.*(?:\r?\n)?/im, '');
+            }
+            return { numero: m[1], texto: texto.trimStart() };
+        }
+
+        // Contenido tal como se guardaría (con la línea "Capo:" si corresponde)
+        function contenidoCompleto() {
+            const v = selectCapo.value;
+            const texto = inputContenido.value;
+            return (v && v !== '0') ? `Capo: ${v}\n\n` + texto.trimStart() : texto;
+        }
+
+        // ───────── Modo Editar / Vista ─────────
+
+        function renderizarVista() {
+            const texto = inputContenido.value || '';
+            letraCancionDiv.innerHTML = texto.trim()
+                ? procesarLetraYAcordes(texto, sistemaCifrado)
+                : '<span style="opacity:.55">Todavía no hay letra. Cambia a "Editar" para escribirla.</span>';
+        }
+
+        // Anima la ventanita del acorde (el módulo de acordes solo cambia su display)
+        function animarVentanaAcorde() {
+            const caja = $('caja-acorde');
+            let cerrando = false;
+            let ultimoDisplay = 'none';
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.acorde-link')) return;
+                cerrando = false;
+                caja.classList.remove('animar-salida', 'animar-entrada');
+                void caja.offsetWidth;
+                caja.classList.add('animar-entrada');
+            }, true);
+
+            new MutationObserver(() => {
+                const actual = caja.style.display;
+                if (actual === 'none' && !cerrando && ultimoDisplay !== 'none') {
+                    cerrando = true;
+                    caja.style.display = ultimoDisplay;
+                    caja.classList.remove('animar-entrada');
+                    caja.classList.add('animar-salida');
+                    setTimeout(() => {
+                        caja.classList.remove('animar-salida');
+                        caja.style.display = 'none';
+                        ultimoDisplay = 'none';
+                        cerrando = false;
+                    }, 180);
+                } else if (actual !== 'none' && !cerrando) {
+                    ultimoDisplay = actual;
+                }
+            }).observe(caja, { attributes: true, attributeFilter: ['style'] });
+        }
+
+        function cambiarModo(modo) {
+            if (modo === modoActual) return;
+            modoActual = modo;
+
+            const esVista = modo === 'vista';
+            body.classList.toggle('modo-vista', esVista);
+            body.classList.toggle('modo-edicion', !esVista);
+            btnModoVista.classList.toggle('activa', esVista);
+            btnModoEditar.classList.toggle('activa', !esVista);
+
+            if (esVista) {
+                renderizarVista();
+                if (!modalInicializado) {
+                    inicializarModalAcordes('caja-acorde', () => sistemaCifrado);
+                    modalInicializado = true;
+                    animarVentanaAcorde();
+                }
+                letraCancionDiv.classList.remove('animar-entrada-texto');
+                void letraCancionDiv.offsetWidth;
+                letraCancionDiv.classList.add('animar-entrada-texto');
+            } else {
+                $('caja-acorde').style.display = 'none';
+                ajustarAlturaTextarea();
+                inputContenido.focus({ preventScroll: true });
+                inputContenido.classList.remove('animar-entrada-texto');
+                void inputContenido.offsetWidth;
+                inputContenido.classList.add('animar-entrada-texto');
+            }
+        }
+
+        btnModoEditar.addEventListener('click', () => cambiarModo('edicion'));
+        btnModoVista.addEventListener('click', () => cambiarModo('vista'));
+
+        // ───────── Eventos de la ficha ─────────
+
+        inputContenido.addEventListener('input', () => {
+            ajustarAlturaTextarea();
+            if (cargaTerminada) marcarCambios(true);
+        });
+
+        inputContenido.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                e.preventDefault();
+                const { selectionStart: ini, selectionEnd: fin, value } = inputContenido;
+                const y = window.scrollY;
+                inputContenido.value = value.slice(0, ini) + '    ' + value.slice(fin);
+                inputContenido.selectionStart = inputContenido.selectionEnd = ini + 4;
+                inputContenido.dispatchEvent(new Event('input'));
+                window.scrollTo(0, y);
+            }
+        });
+
+        [inputTitulo, inputArtistaP, inputArtistaS, inputAlbum].forEach(el => {
+            el.addEventListener('input', () => { if (cargaTerminada) marcarCambios(true); });
+        });
+
+        selectEstado.addEventListener('change', () => {
+            actualizarPuntoEstado();
+            if (cargaTerminada) marcarCambios(true);
+        });
+
+        selectCapo.addEventListener('change', () => {
+            actualizarBadgeCapo();
+            if (cargaTerminada) marcarCambios(true);
+        });
+
+        window.addEventListener('resize', () => { if (modoActual === 'edicion') ajustarAlturaTextarea(); });
+        document.fonts.ready.then(() => { if (modoActual === 'edicion') ajustarAlturaTextarea(); });
+
+        // ───────── Carga ─────────
+
+        // Sugerencias para los campos (artistas y álbumes que ya existen)
+        async function cargarSugerencias() {
+            try {
+                const todas = await obtenerCanciones();
+                const llenar = (id, valores) => {
+                    const lista = $(id);
+                    lista.innerHTML = '';
+                    [...new Set(valores.filter(Boolean))]
+                        .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }))
+                        .forEach(v => { const o = document.createElement('option'); o.value = v; lista.appendChild(o); });
+                };
+                llenar('lista-albumes', todas.map(c => c.albumC));
+                llenar('lista-artistas', todas.flatMap(c => [c.artistaP, c.artistaS]));
+            } catch (_) {}
+        }
+
+        function finalizarCarga() {
+            actualizarPuntoEstado();
+            actualizarBadgeCapo();
+            ajustarAlturaTextarea();
+            cargaTerminada = true;
+            marcarCambios(false);
+            if (!idActual) textoGuardar.textContent = 'Guardar';
+            btnEliminar.hidden = !idActual;
+            activarIconos();
+
+            const activarFondo = () => letraContenedorEl.classList.add('fondo-activo');
+            letraContenedorEl.addEventListener('animationend', (e) => {
+                if (e.animationName === 'extenderContenedor') activarFondo();
+            }, { once: true });
+            setTimeout(activarFondo, 450);
+        }
+
+        async function cargarCancionExistente() {
+            cargarSugerencias();
+            actualizarPuntoEstado();
+
+            if (!idActual) {
+                $('titulo-pagina').textContent = 'Nueva canción';
+                $('subtitulo-pagina').textContent = 'Llena los datos, escribe la letra con sus acordes y pulsa Guardar.';
+                document.title = 'Nueva canción';
+                inputTitulo.focus();
+                finalizarCarga();
+                return;
+            }
+
+            try {
+                const data = await obtenerContenidoCancion(idActual);
+                if (data.error) {
+                    toast('No se pudo cargar la canción: ' + data.error, true);
+                } else {
+                    inputTitulo.value = data.nombreC || '';
+                    inputArtistaP.value = data.artistaP || '';
+                    inputArtistaS.value = data.artistaS || '';
+                    inputAlbum.value = data.albumC || '';
+                    albumBusqueda = data.albumBusqueda || '';
+                    selectEstado.value = data.estado || 'terminada';
+
+                    const { numero, texto } = separarCapo(data.contenido || '');
+                    inputContenido.value = texto;
+                    selectCapo.value = numero || '0';
+                    document.title = `Editar: ${data.nombreC}`;
+                }
+            } catch (err) {
+                console.error(err);
+                toast('Error al cargar la canción.', true);
+            }
+            finalizarCarga();
+        }
+
+        // ───────── Guardar, descargar, eliminar ─────────
+
+        async function guardar() {
+            if (guardando) return;
+
+            const titulo = inputTitulo.value.trim();
+            if (!titulo) {
+                toast('Escribe el nombre de la canción antes de guardar.', true);
+                inputTitulo.focus();
+                return;
+            }
+            const artistaP = inputArtistaP.value.trim();
+            if (!artistaP) {
+                toast('Escribe el artista principal: con él se organiza la canción.', true);
+                inputArtistaP.focus();
+                return;
+            }
+
+            guardando = true;
+            btnGuardar.disabled = true;
+            btnGuardar.classList.add('guardando');
+            iconoGuardar.textContent = 'progress_activity';
+            textoGuardar.textContent = 'Guardando';
+
+            try {
+                const eraNueva = !idActual;
+                if (eraNueva) idActual = (await reservarIds(1))[0];
+
+                await guardarCancion({
+                    idC: idActual,
+                    nombreC: titulo,
+                    artistaP,
+                    artistaS: inputArtistaS.value.trim(),
+                    albumC: inputAlbum.value.trim(),
+                    albumBusqueda,
+                    estado: selectEstado.value,
+                    contenido: contenidoCompleto()
+                });
+
+                marcarCambios(false);
+                btnEliminar.hidden = false;
+                cargarSugerencias();
+                toast('Canción guardada correctamente');
+                if (eraNueva) {
+                    history.replaceState(null, '', `?idC=${encodeURIComponent(idActual)}`);
+                    $('titulo-pagina').textContent = 'Editar canción';
+                }
+            } catch (err) {
+                console.error(err);
+                toast(mensajeDeError(err), true);
+            } finally {
+                guardando = false;
+                btnGuardar.disabled = false;
+                btnGuardar.classList.remove('guardando');
+                iconoGuardar.textContent = 'save';
+                textoGuardar.textContent = hayCambios ? 'Guardar' : 'Guardado';
+                activarIconos();
+            }
+        }
+
+        function descargar() {
+            const datos = {
+                nombreC: inputTitulo.value.trim(),
+                artistaP: inputArtistaP.value.trim(),
+                artistaS: inputArtistaS.value.trim(),
+                albumC: inputAlbum.value.trim(),
+                albumBusqueda,
+                estado: selectEstado.value
+            };
+            if (!datos.nombreC) {
+                toast('Escribe el nombre antes de descargar.', true);
+                inputTitulo.focus();
+                return;
+            }
+
+            const nombreArchivo = construirNombreArchivo(datos);
+            const blob = new Blob([contenidoCompleto()], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const enlace = document.createElement('a');
+            enlace.href = url;
+            enlace.download = nombreArchivo;
+            document.body.appendChild(enlace);
+            enlace.click();
+            enlace.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+            if (datos.artistaS && !datos.albumC) toast('Descargado. El artista secundario no entra en el nombre porque no hay álbum.');
+            else toast('Descargado: ' + nombreArchivo);
+        }
+
+        async function eliminar() {
+            if (!idActual || guardando) return;
+            const nombre = inputTitulo.value.trim() || 'esta canción';
+            if (!confirm(`¿Eliminar "${nombre}" de la base de datos?\n\nEsta acción no se puede deshacer.`)) return;
+
+            guardando = true;
+            btnEliminar.disabled = true;
+            try {
+                await eliminarCancion(idActual);
+                marcarCambios(false);    // evita el aviso de "cambios sin guardar" al salir
+                window.location.href = 'admin-canciones.html';
+            } catch (err) {
+                console.error(err);
+                toast(mensajeDeError(err), true);
+                btnEliminar.disabled = false;
+                guardando = false;
+            }
+        }
+
+        btnGuardar.addEventListener('click', guardar);
+        btnDescargar.addEventListener('click', descargar);
+        btnEliminar.addEventListener('click', eliminar);
+
+        // Los botones redondos terminan su animación de entrada con una clase (para que el hover funcione)
+        [btnGuardar, btnDescargar, btnEliminar].forEach(b => b.addEventListener('animationend', (e) => {
+            if (e.animationName === 'deslizarElementoInferior') b.classList.add('animacion-completada');
+        }));
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                e.preventDefault();
+                guardar();
+            }
+        });
+
+        window.addEventListener('beforeunload', (e) => {
+            if (hayCambios) { e.preventDefault(); e.returnValue = ''; }
+        });
+
+        cargarCancionExistente();
+    </script>
+</body>
+</html>

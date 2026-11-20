@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+
+    <link rel="icon" type="image/x-icon" href="img/icono.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sono:MONO@0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link href="style.css" rel="stylesheet">
+    <title>Administrar canciones</title>
+</head>
+<body>
+    <header>
+        <div class="header-superior">
+            <a href="index.html" class="btn">
+                <span class="material-symbols-outlined">arrow_back</span> Artistas
+            </a>
+        </div>
+        <div class="contenedor-titulo-indicador">
+            <h1>Administrar</h1>
+            <span id="indicador-guardado" class="indicador-guardado" title="Sincronizando canciones...">
+                <span class="material-symbols-outlined icono-estado-guardado">sync</span>
+            </span>
+        </div>
+        <p>Toca una canción para editarla, o añade y sube canciones nuevas.</p>
+    </header>
+
+    <main>
+        <div class="barra">
+            <a href="editor-cancion.html" class="btn btn-primario">
+                <span class="material-symbols-outlined">add</span> Añadir canción
+            </a>
+            <button type="button" id="btn-toggle-subida" class="btn">
+                <span class="material-symbols-outlined">upload_file</span> Subir archivos
+            </button>
+            <button type="button" id="btn-zip" class="btn" title="Descargar todas las canciones en un ZIP, organizadas por artista">
+                <span class="material-symbols-outlined">folder_zip</span> Descargar ZIP
+            </button>
+        </div>
+
+        <!-- Subida de archivos .txt -->
+        <section id="panel-subida" class="panel panel-subida">
+            <div id="zona-soltar" class="zona-soltar">
+                <span class="material-symbols-outlined">upload_file</span>
+                <div>Arrastra aquí tus archivos <code>.txt</code> o una carpeta con subcarpetas por artista</div>
+                <div>Formato: <code>--Nombre (Artista) [Artista secundario - Álbum].txt</code> &nbsp;·&nbsp; sin guiones = terminada, <code>-</code> = por revisar, <code>--</code> = sin terminar</div>
+                <div class="barra">
+                    <button type="button" id="btn-archivos" class="btn">
+                        <span class="material-symbols-outlined">description</span> Elegir archivos
+                    </button>
+                    <button type="button" id="btn-carpeta" class="btn">
+                        <span class="material-symbols-outlined">folder_open</span> Elegir carpeta
+                    </button>
+                </div>
+                <input type="file" id="input-archivos" accept=".txt,text/plain" multiple>
+                <input type="file" id="input-carpeta" webkitdirectory multiple>
+            </div>
+
+            <div id="lista-subida" class="lista-subida">
+                <div class="vacio">Todavía no has elegido archivos.</div>
+            </div>
+
+            <div class="progreso" id="barra-contenedor"><div id="barra-progreso"></div></div>
+            <div class="texto-progreso" id="texto-progreso"></div>
+
+            <div class="acciones-subida">
+                <div id="resumen" class="resumen"></div>
+                <div class="campo">
+                    <label for="si-existe">Si ya existe</label>
+                    <select id="si-existe">
+                        <option value="actualizar">Actualizarla</option>
+                        <option value="omitir">Omitirla</option>
+                    </select>
+                </div>
+                <button type="button" id="btn-limpiar" class="btn" disabled>Limpiar lista</button>
+                <button type="button" id="btn-subir" class="btn btn-primario" disabled>
+                    <span class="material-symbols-outlined">cloud_upload</span>
+                    <span id="texto-btn-subir">Subir canciones</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Filtros -->
+        <div class="barra">
+            <div class="grow">
+                <input type="search" id="input-busqueda" placeholder="Buscar canción, artista o álbum..." autocomplete="off">
+            </div>
+            <select id="select-artista" title="Artista">
+                <option value="todos">Todos los artistas</option>
+            </select>
+            <select id="select-estado" title="Estado">
+                <option value="todos">Cualquier estado</option>
+                <option value="terminada">Terminada</option>
+                <option value="revisar">Por revisar</option>
+                <option value="pendiente">Sin terminar</option>
+            </select>
+        </div>
+
+        <div id="lista-canciones">
+            <div class="explorador-grid"><div class="cargando">Cargando canciones...</div></div>
+        </div>
+    </main>
+
+    <script type="module">
+        import {
+            obtenerCancionesAgrupadas, obtenerCancionesFrescas, obtenerTodasCompletas,
+            reservarIds, guardarCanciones, sincronizarAhora, alActualizarDatos, mensajeDeError,
+            parsearNombreArchivo, construirNombreArchivo, normalizar, escaparHTML,
+            ETIQUETA_ESTADO, CONFIGURADO
+        } from './js/datos.js';
+        import { obtenerPortadaCancion } from './js/portadas.js';
+        import {
+            activarIconos, conectarIndicador, contarColumnas, animarEntrada,
+            crearTarjeta, portadaAlVer, mostrarMensaje, mostrarToast
+        } from './js/ui.js';
+
+        conectarIndicador();
+        activarIconos();
+
+        const $ = (id) => document.getElementById(id);
+        const toast = (m, error = false) => mostrarToast(m, error ? 'error' : 'ok');
+
+        // ═════════════════════ Lista de canciones por artista ═════════════════════
+
+        const listaDiv = $('lista-canciones');
+        const selectArtista = $('select-artista');
+        const selectEstado = $('select-estado');
+        const inputBusqueda = $('input-busqueda');
+        let grupos = [];
+        let primeraVez = true;
+
+        function llenarArtistas() {
+            const actual = selectArtista.value;
+            selectArtista.innerHTML = '<option value="todos">Todos los artistas</option>';
+            grupos.forEach(g => {
+                const o = document.createElement('option');
+                o.value = g.idA;
+                o.textContent = g.nombreA;
+                selectArtista.appendChild(o);
+            });
+            selectArtista.value = grupos.some(g => g.idA === actual) ? actual : 'todos';
+        }
+
+        function renderizarLista(animar) {
+            const idASel = selectArtista.value;
+            const estadoSel = selectEstado.value;
+            const texto = normalizar(inputBusqueda.value);
+
+            listaDiv.innerHTML = '';
+            let total = 0;
+
+            for (const g of grupos) {
+                if (idASel !== 'todos' && g.idA !== idASel) continue;
+                const canciones = g.canciones.filter(c =>
+                    (estadoSel === 'todos' || c.estado === estadoSel) &&
+                    normalizar([c.nombreC, c.artistaP, c.artistaS, c.albumC].join(' ')).includes(texto));
+                if (!canciones.length) continue;
+                total += canciones.length;
+
+                const titulo = document.createElement('div');
+                titulo.className = 'titulo-seccion';
+                titulo.innerHTML = `<span class="material-symbols-outlined">person</span>
+                    <span>${escaparHTML(g.nombreA)}</span>
+                    <span class="contador">${canciones.length} ${canciones.length === 1 ? 'canción' : 'canciones'}</span>`;
+
+                const grid = document.createElement('div');
+                grid.className = 'explorador-grid';
+                listaDiv.append(titulo, grid);
+
+                const columnas = contarColumnas(grid);
+                canciones.forEach((c, i) => {
+                    const detalles = [c.albumC, ETIQUETA_ESTADO[c.estado]].filter(Boolean).join(' · ');
+                    const tarjeta = crearTarjeta({
+                        href: `editor-cancion.html?idC=${encodeURIComponent(c.idC)}`,
+                        titulo: `Editar: ${c.nombreC} · ${detalles}`,
+                        nombre: c.nombreC,
+                        estado: c.estado
+                    });
+                    if (animar) animarEntrada(tarjeta, i, columnas);
+                    else tarjeta.classList.add('sin-animacion');
+                    grid.appendChild(tarjeta);
+                    portadaAlVer(tarjeta, () => obtenerPortadaCancion(c));
+                });
+            }
+
+            if (!total) {
+                const grid = document.createElement('div');
+                grid.className = 'explorador-grid';
+                mostrarMensaje(grid, grupos.length ? 'No se encontraron canciones.' : 'Aún no hay canciones. Añade una o sube archivos.');
+                listaDiv.appendChild(grid);
+            }
+            activarIconos();
+        }
+
+        async function cargarLista() {
+            if (!CONFIGURADO) {
+                const grid = document.createElement('div');
+                grid.className = 'explorador-grid';
+                mostrarMensaje(grid, 'Falta configurar la base de datos: edita js/config.js.', true);
+                listaDiv.innerHTML = '';
+                listaDiv.appendChild(grid);
+                return;
+            }
+            try {
+                grupos = await obtenerCancionesAgrupadas();
+                llenarArtistas();
+                renderizarLista(primeraVez);
+                primeraVez = false;
+            } catch (err) {
+                console.error(err);
+                listaDiv.innerHTML = '';
+                const grid = document.createElement('div');
+                grid.className = 'explorador-grid';
+                mostrarMensaje(grid, 'Error al cargar las canciones.', true);
+                listaDiv.appendChild(grid);
+            }
+        }
+
+        selectArtista.addEventListener('change', () => renderizarLista(true));
+        selectEstado.addEventListener('change', () => renderizarLista(true));
+        inputBusqueda.addEventListener('input', () => renderizarLista(false));
+
+        let firmaLista = '';
+        alActualizarDatos(async () => {
+            const nuevos = await obtenerCancionesAgrupadas();
+            const f = JSON.stringify(nuevos.map(g => g.canciones.map(c => [c.idC, c.nombreC, c.artistaP, c.albumC, c.estado])));
+            if (f === firmaLista) return;
+            firmaLista = f;
+            await cargarLista();
+        });
+        cargarLista();
+
+        // ═════════════════════ ZIP con todas las canciones ═════════════════════
+
+        $('btn-zip').addEventListener('click', async () => {
+            const btn = $('btn-zip');
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined fuente-cargada icono-giro">progress_activity</span> Preparando...';
+            try {
+                const todas = await obtenerTodasCompletas();
+                if (!todas.length) { toast('No hay canciones para descargar.', true); return; }
+
+                const zip = new JSZip();
+                const usados = new Set();
+                for (const c of todas) {
+                    // Estructura: Artista/--nombre (artista) [artistaS - album].txt (igual que al subirlas)
+                    const carpeta = (c.artistaP || 'Otros').replace(/[<>:"/\\|?*]/g, '').trim() || 'Otros';
+                    const nombre = construirNombreArchivo(c);
+                    let ruta = `${carpeta}/${nombre}`;
+                    for (let n = 2; usados.has(ruta.toLowerCase()); n++) {
+                        ruta = `${carpeta}/${nombre.replace(/\.txt$/, '')} (${n}).txt`;
+                    }
+                    usados.add(ruta.toLowerCase());
+                    zip.file(ruta, c.contenido || '');
+                }
+
+                const blob = await zip.generateAsync({ type: 'blob' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Canciones.zip';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            } catch (err) {
+                console.error(err);
+                toast('No se pudo generar el ZIP.', true);
+            } finally {
+                btn.innerHTML = original;
+                btn.disabled = false;
+                activarIconos();
+            }
+        });
+
+        // ═════════════════════ Subida de archivos .txt ═════════════════════
+
+        const TAM_LOTE = 40;   // canciones por envío a la base de datos
+
+        const panelSubida = $('panel-subida');
+        const zona = $('zona-soltar');
+        const inputArchivos = $('input-archivos');
+        const inputCarpeta = $('input-carpeta');
+        const listaSubida = $('lista-subida');
+        const selectSiExiste = $('si-existe');
+        const resumen = $('resumen');
+        const btnLimpiar = $('btn-limpiar');
+        const btnSubir = $('btn-subir');
+        const textoBtnSubir = $('texto-btn-subir');
+        const barraContenedor = $('barra-contenedor');
+        const barra = $('barra-progreso');
+        const textoProgreso = $('texto-progreso');
+
+        let items = [];                    // archivos elegidos
+        let existentes = new Map();        // clave de canción -> id en la base de datos
+        let existentesListos = false;
+        let subiendo = false;
+
+        $('btn-toggle-subida').addEventListener('click', () => {
+            const abierto = panelSubida.classList.toggle('abierto');
+            if (abierto && !existentesListos) cargarExistentes();
+            activarIconos();
+        });
+
+        // Una canción es "la misma" si coinciden título, artista principal y álbum (sin acentos/mayúsculas)
+        const claveCancion = (p) => `${normalizar(p.nombreC)}|${normalizar(p.artistaP)}|${normalizar(p.albumC)}`;
+
+        async function cargarExistentes() {
+            existentesListos = false;
+            actualizarVista();
+            try {
+                const lista = await obtenerCancionesFrescas();
+                existentes = new Map();
+                lista.forEach(c => {
+                    const k = claveCancion(c);
+                    if (!existentes.has(k)) existentes.set(k, c.idC);
+                });
+                existentesListos = true;
+            } catch (err) {
+                console.error(err);
+                toast('No se pudo leer la base de datos. Revisa tu conexión o js/config.js.', true);
+            }
+            actualizarVista();
+        }
+
+        function interpretar(it) {
+            if (it.lecturaFallida) return { ok: false, error: 'No se pudo leer el archivo' };
+            return parsearNombreArchivo(it.nombreArchivo, it.carpeta);
+        }
+
+        function evaluar() {
+            const vistos = new Set();
+            for (const it of items) {
+                if (it.fase !== 'ok') it.parsed = interpretar(it);
+                if (it.fase === 'ok') { if (it.parsed.ok) vistos.add(claveCancion(it.parsed)); continue; }
+                it.fase = it.fase === 'error' ? 'error' : 'listo';
+
+                if (!it.parsed.ok) { it.accion = 'invalida'; continue; }
+
+                const k = claveCancion(it.parsed);
+                if (vistos.has(k)) { it.accion = 'duplicada'; it.idExistente = null; continue; }
+                vistos.add(k);
+
+                const id = existentes.get(k) || null;
+                it.idExistente = id;
+                it.accion = id ? (selectSiExiste.value === 'omitir' ? 'omitir' : 'actualizar') : 'nueva';
+            }
+        }
+
+        const accionSubible = (it) => it.fase !== 'ok' && (it.accion === 'nueva' || it.accion === 'actualizar');
+
+        const CHIPS = {
+            nueva:      { texto: 'Nueva', icono: 'add_circle' },
+            actualizar: { texto: 'Se actualizará', icono: 'sync' },
+            omitir:     { texto: 'Ya existe: se omite', icono: 'block' },
+            duplicada:  { texto: 'Repetida en la lista', icono: 'content_copy' },
+            invalida:   { texto: 'Nombre no válido', icono: 'error' },
+            subiendo:   { texto: 'Subiendo', icono: 'progress_activity' },
+            ok:         { texto: 'Subida', icono: 'check_circle' },
+            error:      { texto: 'Error', icono: 'error' }
+        };
+
+        function crearFila(it, indice) {
+            const fila = document.createElement('div');
+            fila.className = 'fila-subida';
+            fila.style.animationDelay = `${Math.min(indice, 20) * 0.03}s`;
+            const terminar = () => { fila.style.animation = 'none'; fila.style.opacity = '1'; };
+            fila.addEventListener('animationend', terminar, { once: true });
+            setTimeout(terminar, Math.min(indice, 20) * 30 + 700);
+            it.el = fila;
+        }
+
+        function pintarFila(it) {
+            const fila = it.el;
+            const p = it.parsed;
+            const claveChip = it.fase === 'subiendo' ? 'subiendo' : it.fase === 'ok' ? 'ok' : it.fase === 'error' ? 'error' : it.accion;
+            const chip = CHIPS[claveChip];
+
+            fila.classList.toggle('invalida', !p.ok);
+
+            let html;
+            if (p.ok) {
+                const sub = [p.artistaP];
+                if (p.albumC) sub.push(p.albumC);
+                if (p.artistaS) sub.push(`carátula: ${p.artistaS}`);
+                html = `
+                    <i class="punto-estado ${escaparHTML(p.estado)}" title="${escaparHTML(ETIQUETA_ESTADO[p.estado])}"></i>
+                    <div class="fila-info">
+                        <div class="fila-titulo">${escaparHTML(p.nombreC)}</div>
+                        <div class="fila-sub">${escaparHTML(sub.join(' · '))} · ${escaparHTML(ETIQUETA_ESTADO[p.estado])}</div>
+                        ${it.avisoCodificacion ? '<div class="fila-aviso">Posible problema de acentos: el archivo no parece estar guardado en UTF-8.</div>' : ''}
+                        ${it.mensajeError ? `<div class="fila-error">${escaparHTML(it.mensajeError)}</div>` : ''}
+                    </div>`;
+            } else {
+                html = `
+                    <i class="punto-estado pendiente"></i>
+                    <div class="fila-info">
+                        <div class="fila-titulo">${escaparHTML(it.nombreArchivo)}</div>
+                        <div class="fila-error">${escaparHTML(p.error)}</div>
+                    </div>`;
+            }
+
+            html += `
+                <span class="chip ${claveChip}">
+                    <span class="material-symbols-outlined">${chip.icono}</span>${chip.texto}
+                </span>
+                <button type="button" class="btn-quitar" title="Quitar de la lista" ${subiendo ? 'disabled' : ''}>
+                    <span class="material-symbols-outlined">close</span>
+                </button>`;
+
+            fila.innerHTML = html;
+            fila.querySelector('.btn-quitar').onclick = () => quitar(it);
+        }
+
+        function actualizarVista() {
+            evaluar();
+
+            if (items.length === 0) {
+                listaSubida.innerHTML = '<div class="vacio">Todavía no has elegido archivos.</div>';
+            } else {
+                const vacio = listaSubida.querySelector('.vacio');
+                if (vacio) vacio.remove();
+                items.forEach(it => { if (!it.el.isConnected) listaSubida.appendChild(it.el); pintarFila(it); });
+            }
+
+            const nuevas = items.filter(it => it.fase !== 'ok' && it.accion === 'nueva').length;
+            const actualiza = items.filter(it => it.fase !== 'ok' && it.accion === 'actualizar').length;
+            const invalidas = items.filter(it => it.accion === 'invalida').length;
+            const omitidas = items.filter(it => it.fase !== 'ok' && (it.accion === 'omitir' || it.accion === 'duplicada')).length;
+            const subibles = nuevas + actualiza;
+
+            const partes = [];
+            if (nuevas) partes.push(`${nuevas} nueva${nuevas === 1 ? '' : 's'}`);
+            if (actualiza) partes.push(`${actualiza} por actualizar`);
+            if (omitidas) partes.push(`${omitidas} omitida${omitidas === 1 ? '' : 's'}`);
+            if (invalidas) partes.push(`${invalidas} con error de nombre`);
+            resumen.textContent = existentesListos ? partes.join(' · ') : 'Leyendo canciones existentes...';
+
+            textoBtnSubir.textContent = subibles > 0
+                ? `Subir ${subibles} ${subibles === 1 ? 'canción' : 'canciones'}`
+                : 'Subir canciones';
+            btnSubir.disabled = subiendo || !existentesListos || subibles === 0;
+            btnLimpiar.disabled = subiendo || items.length === 0;
+            activarIconos();
+        }
+
+        function quitar(it) {
+            if (subiendo) return;
+            it.el.remove();
+            items = items.filter(x => x !== it);
+            actualizarVista();
+        }
+
+        // Carpeta que contiene al archivo (= artista cuando se organizan por carpetas)
+        function carpetaDe(archivo) {
+            const partes = String(archivo.webkitRelativePath || '').split('/').filter(Boolean);
+            return partes.length >= 2 ? partes[partes.length - 2] : '';
+        }
+
+        // entradas: [{ archivo, carpeta }]
+        async function agregarArchivos(entradas) {
+            const txt = entradas.filter(e => /\.txt$/i.test(e.archivo.name));
+            const ignorados = entradas.length - txt.length;
+            const nuevos = [];
+
+            for (const { archivo, carpeta } of txt) {
+                const it = {
+                    nombreArchivo: archivo.name, carpeta,
+                    lecturaFallida: false, parsed: { ok: true }, contenido: '',
+                    avisoCodificacion: false, fase: 'listo', accion: 'nueva', idExistente: null, mensajeError: ''
+                };
+                try {
+                    // El texto se guarda exactamente como está en el archivo
+                    it.contenido = await archivo.text();
+                    it.avisoCodificacion = it.contenido.includes('�');
+                } catch (err) {
+                    it.lecturaFallida = true;
+                }
+                it.parsed = interpretar(it);
+                nuevos.push(it);
+            }
+
+            nuevos.forEach((it, i) => { crearFila(it, i); items.push(it); });
+            actualizarVista();
+
+            if (ignorados > 0) toast(`${ignorados} archivo${ignorados === 1 ? '' : 's'} ignorado${ignorados === 1 ? '' : 's'} (solo se aceptan .txt).`, true);
+        }
+
+        function registro(it, id) {
+            const p = it.parsed;
+            return {
+                idC: id, nombreC: p.nombreC, artistaP: p.artistaP, artistaS: p.artistaS,
+                albumC: p.albumC, albumBusqueda: p.albumBusqueda, estado: p.estado, contenido: it.contenido
+            };
+        }
+
+        async function subir() {
+            const pendientes = items.filter(accionSubible);
+            if (pendientes.length === 0 || subiendo) return;
+
+            subiendo = true;
+            pendientes.forEach(it => { it.mensajeError = ''; });
+            btnSubir.disabled = true;
+            barraContenedor.classList.add('activo');
+            textoProgreso.classList.add('activo');
+            barra.style.width = '0%';
+            textoProgreso.textContent = `0 / ${pendientes.length}`;
+            actualizarVista();
+
+            try {
+                // Ids nuevos: se consultan justo ahora para no pisar otros cambios
+                const nuevas = pendientes.filter(it => !it.idExistente).length;
+                const idsLibres = await reservarIds(nuevas);
+                let siguiente = 0;
+                let hechas = 0, fallidas = 0;
+
+                for (let i = 0; i < pendientes.length; i += TAM_LOTE) {
+                    const lote = pendientes.slice(i, i + TAM_LOTE);
+                    const cambios = {};
+
+                    lote.forEach(it => {
+                        const id = it.idExistente || idsLibres[siguiente++];
+                        cambios[id] = registro(it, id);
+                        it.fase = 'subiendo';
+                        pintarFila(it);
+                    });
+
+                    try {
+                        await guardarCanciones(cambios);   // un solo envío por lote
+                        lote.forEach(it => { it.fase = 'ok'; });
+                        hechas += lote.length;
+                    } catch (err) {
+                        console.error(err);
+                        lote.forEach(it => { it.fase = 'error'; it.mensajeError = mensajeDeError(err); });
+                        fallidas += lote.length;
+                    }
+
+                    lote.forEach(pintarFila);
+                    const avance = Math.min(i + lote.length, pendientes.length);
+                    barra.style.width = `${Math.round((avance / pendientes.length) * 100)}%`;
+                    textoProgreso.textContent = `${avance} / ${pendientes.length}`;
+                    activarIconos();
+                }
+
+                if (hechas > 0) await sincronizarAhora();   // la copia local ya incluye lo recién subido
+                subiendo = false;
+                if (hechas > 0) await cargarExistentes();
+
+                if (fallidas === 0) toast(`Listo: ${hechas} ${hechas === 1 ? 'canción subida' : 'canciones subidas'}.`);
+                else toast(`${hechas} subida${hechas === 1 ? '' : 's'} y ${fallidas} con error. Puedes reintentar las que fallaron.`, true);
+            } catch (err) {
+                console.error(err);
+                toast('Ocurrió un error inesperado al subir.', true);
+            } finally {
+                subiendo = false;
+                actualizarVista();
+            }
+        }
+
+        $('btn-archivos').onclick = () => inputArchivos.click();
+        $('btn-carpeta').onclick = () => inputCarpeta.click();
+
+        [inputArchivos, inputCarpeta].forEach(input => {
+            input.addEventListener('change', async () => {
+                await agregarArchivos(Array.from(input.files).map(archivo => ({ archivo, carpeta: carpetaDe(archivo) })));
+                input.value = '';       // permite volver a elegir los mismos archivos
+            });
+        });
+
+        ['dragenter', 'dragover'].forEach(ev => zona.addEventListener(ev, (e) => { e.preventDefault(); zona.classList.add('arrastrando'); }));
+        ['dragleave', 'drop'].forEach(ev => zona.addEventListener(ev, (e) => { e.preventDefault(); zona.classList.remove('arrastrando'); }));
+
+        // Lee un archivo o carpeta soltados (recursivo): cada .txt lleva el nombre de su carpeta contenedora
+        async function recorrerEntrada(entrada, carpeta, salida) {
+            if (entrada.isFile) {
+                const archivo = await new Promise((ok, mal) => entrada.file(ok, mal));
+                salida.push({ archivo, carpeta });
+            } else if (entrada.isDirectory) {
+                const lector = entrada.createReader();
+                let lote;
+                do {
+                    lote = await new Promise((ok, mal) => lector.readEntries(ok, mal));
+                    for (const hijo of lote) await recorrerEntrada(hijo, entrada.name, salida);
+                } while (lote.length > 0);
+            }
+        }
+
+        zona.addEventListener('drop', async (e) => {
+            // Las entradas deben tomarse antes de cualquier await
+            const entradas = Array.from(e.dataTransfer.items || [])
+                .map(i => (i.webkitGetAsEntry ? i.webkitGetAsEntry() : null))
+                .filter(Boolean);
+            const sueltos = Array.from(e.dataTransfer.files || []);
+
+            const salida = [];
+            try {
+                if (entradas.length) for (const ent of entradas) await recorrerEntrada(ent, '', salida);
+                else sueltos.forEach(archivo => salida.push({ archivo, carpeta: '' }));
+            } catch (err) {
+                console.error(err);
+                sueltos.forEach(archivo => salida.push({ archivo, carpeta: '' }));
+            }
+            await agregarArchivos(salida);
+        });
+
+        // Soltar fuera de la zona no debe abrir el archivo en el navegador
+        window.addEventListener('dragover', (e) => e.preventDefault());
+        window.addEventListener('drop', (e) => e.preventDefault());
+
+        selectSiExiste.addEventListener('change', actualizarVista);
+        btnSubir.addEventListener('click', subir);
+        btnLimpiar.addEventListener('click', () => {
+            if (subiendo) return;
+            items = [];
+            barra.style.width = '0%';
+            barraContenedor.classList.remove('activo');
+            textoProgreso.classList.remove('activo');
+            actualizarVista();
+        });
+
+        window.addEventListener('beforeunload', (e) => {
+            if (subiendo) { e.preventDefault(); e.returnValue = ''; }
+        });
+    </script>
+</body>
+</html>
